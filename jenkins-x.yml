@@ -1,0 +1,24 @@
+buildPack: none
+pipelineConfig:
+  pipelines:
+    pullRequest:
+      pipeline:
+        agent:
+          image: gcr.io/jenkinsxio/builder-go
+        stages:
+        - name: ci
+          steps:
+          - name: test
+            command: make
+            args:
+            - test
+            dir: /workspace/source
+    release:
+      pipeline:
+        agent:
+          image: gcr.io/jenkinsxio/builder-go
+        stages:
+        - name: release
+          steps:
+          - name: changelog
+            command: ./changelog.sh
