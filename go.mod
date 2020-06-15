@@ -3,17 +3,19 @@ module github.com/jenkins-x/jx-api
 go 1.13
 
 require (
+	github.com/Azure/go-autorest/autorest v0.9.0 // indirect
 	github.com/alecthomas/jsonschema v0.0.0-20200530073317-71f438968921
-	github.com/cenkalti/backoff v2.1.1+incompatible
+	github.com/cenkalti/backoff v2.2.1+incompatible
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-openapi/spec v0.19.7
+	github.com/gophercloud/gophercloud v0.1.0 // indirect
 	github.com/imdario/mergo v0.3.8
 	github.com/jenkins-x/jx-logging v0.0.8
 	github.com/jenkins-x/jx/v2 v2.1.65
 	github.com/pkg/errors v0.9.1
 	github.com/satori/go.uuid v1.2.1-0.20180103174451-36e9d2ebbde5
 	github.com/sirupsen/logrus v1.6.0
-	github.com/spf13/cobra v0.0.5
+	github.com/spf13/cobra v1.0.0
 	github.com/stoewer/go-strcase v1.2.0
 	github.com/stretchr/testify v1.6.0
 	github.com/vrischmann/envconfig v1.2.0
