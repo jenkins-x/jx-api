@@ -7,6 +7,11 @@ pipelineConfig:
           image: gcr.io/jenkinsxio/builder-go
         stages:
         - name: ci
+          environment:
+          - name: BASE_WORKSPACE
+            value: /workspace/source
+          - name: GOPATH
+            value: /workspace/go
           steps:
           - name: test
             command: make
