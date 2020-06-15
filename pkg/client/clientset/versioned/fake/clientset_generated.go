@@ -3,9 +3,9 @@
 package fake
 
 import (
-	clientset "github.com/jenkins-x/jx-api/v1/pkg/client/clientset/versioned"
-	jenkinsv1 "github.com/jenkins-x/jx-api/v1/pkg/client/clientset/versioned/typed/jenkins.io/v1"
-	fakejenkinsv1 "github.com/jenkins-x/jx-api/v1/pkg/client/clientset/versioned/typed/jenkins.io/v1/fake"
+	clientset "github.com/jenkins-x/jx-api/pkg/client/clientset/versioned"
+	jenkinsv1 "github.com/jenkins-x/jx-api/pkg/client/clientset/versioned/typed/jenkins.io/v1"
+	fakejenkinsv1 "github.com/jenkins-x/jx-api/pkg/client/clientset/versioned/typed/jenkins.io/v1/fake"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/discovery"

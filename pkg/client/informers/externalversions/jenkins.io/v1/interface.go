@@ -3,7 +3,7 @@
 package v1
 
 import (
-	internalinterfaces "github.com/jenkins-x/jx-api/v1/pkg/client/informers/externalversions/internalinterfaces"
+	internalinterfaces "github.com/jenkins-x/jx-api/pkg/client/informers/externalversions/internalinterfaces"
 )
 
 // Interface provides access to all the informers in this group version.

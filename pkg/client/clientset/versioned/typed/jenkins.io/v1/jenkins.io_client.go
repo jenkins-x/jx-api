@@ -4,7 +4,7 @@ package v1
 
 import (
 	v1 "github.com/jenkins-x/jx-api/pkg/apis/jenkins.io/v1"
-	"github.com/jenkins-x/jx-api/v1/pkg/client/clientset/versioned/scheme"
+	"github.com/jenkins-x/jx-api/pkg/client/clientset/versioned/scheme"
 	rest "k8s.io/client-go/rest"
 )
 

@@ -6,9 +6,9 @@ import (
 	time "time"
 
 	jenkinsiov1 "github.com/jenkins-x/jx-api/pkg/apis/jenkins.io/v1"
-	versioned "github.com/jenkins-x/jx-api/v1/pkg/client/clientset/versioned"
-	internalinterfaces "github.com/jenkins-x/jx-api/v1/pkg/client/informers/externalversions/internalinterfaces"
-	v1 "github.com/jenkins-x/jx-api/v1/pkg/client/listers/jenkins.io/v1"
+	versioned "github.com/jenkins-x/jx-api/pkg/client/clientset/versioned"
+	internalinterfaces "github.com/jenkins-x/jx-api/pkg/client/informers/externalversions/internalinterfaces"
+	v1 "github.com/jenkins-x/jx-api/pkg/client/listers/jenkins.io/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	watch "k8s.io/apimachinery/pkg/watch"
