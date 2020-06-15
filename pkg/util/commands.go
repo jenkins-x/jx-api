@@ -235,8 +235,6 @@ func PathWithBinary(customPaths ...string) string {
 		}
 	}
 
-	// TODO need to fix this
-	//jxBinDir, _ := JXBinLocation()
-	// return jxBinDir + string(os.PathListSeparator) + existingEnvironmentPath + extraPaths
-	return existingEnvironmentPath + extraPaths
+	jxBinDir, _ := JXBinLocation()
+	return jxBinDir + string(os.PathListSeparator) + existingEnvironmentPath + extraPaths
 }
