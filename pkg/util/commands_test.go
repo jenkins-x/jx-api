@@ -1,12 +1,13 @@
 package util_test
 
 import (
-	"github.com/jenkins-x/jx-client/pkg/util"
 	"os"
 	"path/filepath"
 	"runtime"
 	"testing"
 	"time"
+
+	"github.com/jenkins-x/jx-api/pkg/util"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -21,6 +22,7 @@ func TestRunWithoutRetry(t *testing.T) {
 		panic(err)
 	}
 	tempfile, err := os.Create(filepath.Join(startPath, "/test_data/scripts", tmpFileName))
+	assert.NoError(t, err)
 	tempfile.Close()
 	defer os.Remove(tempfile.Name())
 
@@ -52,6 +54,7 @@ func TestRunVerbose(t *testing.T) {
 		panic(err)
 	}
 	tempfile, err := os.Create(filepath.Join(startPath, "/test_data/scripts", tmpFileName))
+	assert.NoError(t, err)
 	tempfile.Close()
 	defer os.Remove(tempfile.Name())
 
@@ -82,6 +85,7 @@ func TestRunQuiet(t *testing.T) {
 		panic(err)
 	}
 	tempfile, err := os.Create(filepath.Join(startPath, "/test_data/scripts", tmpFileName))
+	assert.NoError(t, err)
 	tempfile.Close()
 	defer os.Remove(tempfile.Name())
 
