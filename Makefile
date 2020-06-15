@@ -30,11 +30,21 @@ importfmt: get-fmt-deps
 lint: ## Lint the code
 	./hack/linter.sh
 
+.PHONY: modtidy
 modtidy:
 	$(GO) mod tidy
 
+.PHONY: coverage
 coverage:
 	$(GO) tool cover -html=coverage.out
 
+.PHONY: cover
 cover:
 	$(GO) tool cover -func coverage.out | grep total
+
+.PHONY: code-generate
+code-generate:
+	./hack/generate.sh
+
+include Makefile.codegen
+
