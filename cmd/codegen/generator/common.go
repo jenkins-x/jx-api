@@ -44,9 +44,8 @@ func defaultGenerate(generator string, name string, groupsWithVersions []string,
 		inputDirsStr := strings.Join(inputDirs, ",")
 		generateCommand.Args = append(generateCommand.Args, "--input-dirs", inputDirsStr)
 	}
-	for _, arg := range args {
-		generateCommand.Args = append(generateCommand.Args, arg)
-	}
+	generateCommand.Args = append(generateCommand.Args, args...)
+
 	out, err := generateCommand.RunWithoutRetry()
 	if err != nil {
 		return errors.Wrapf(err, "running %s, output %s", generateCommand.String(), out)
