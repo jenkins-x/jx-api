@@ -11,9 +11,9 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/ghodss/yaml"
-	"github.com/jenkins-x/jx-client/pkg/cloud"
-	"github.com/jenkins-x/jx-client/pkg/config"
-	"github.com/jenkins-x/jx-client/pkg/util"
+	"github.com/jenkins-x/jx-api/pkg/cloud"
+	"github.com/jenkins-x/jx-api/pkg/config"
+	"github.com/jenkins-x/jx-api/pkg/util"
 	"github.com/jenkins-x/jx-logging/pkg/log"
 	"github.com/stretchr/testify/assert"
 )

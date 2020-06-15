@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"path/filepath"
 
-	"github.com/jenkins-x/jx-client/pkg/util"
+	"github.com/jenkins-x/jx-api/pkg/util"
 	"github.com/jenkins-x/jx-logging/pkg/log"
 
 	v1 "k8s.io/api/rbac/v1"

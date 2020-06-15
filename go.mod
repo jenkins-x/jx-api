@@ -1,4 +1,4 @@
-module github.com/jenkins-x/jx-client
+module github.com/jenkins-x/jx-api
 
 go 1.13
 

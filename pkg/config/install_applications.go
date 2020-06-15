@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/jenkins-x/jx-client/pkg/util"
+	"github.com/jenkins-x/jx-api/pkg/util"
 
 	"github.com/ghodss/yaml"
 	"github.com/pkg/errors"

@@ -1,13 +1,14 @@
 package util_test
 
 import (
-	"github.com/jenkins-x/jx-client/pkg/util"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/jenkins-x/jx-api/pkg/util"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func Test_FileExists_for_non_existing_file_returns_false(t *testing.T) {
@@ -25,7 +26,7 @@ func Test_FileExists_for_existing_file_returns_true(t *testing.T) {
 
 	data := []byte("hello\nworld\n")
 	testFile := filepath.Join(tmpDir, "hello.txt")
-	err = ioutil.WriteFile(testFile, data, 0644)
+	err = ioutil.WriteFile(testFile, data, 0600)
 	require.NoError(t, err, "failed to create test file %s", testFile)
 
 	exists, err := util.FileExists(testFile)
@@ -44,4 +45,3 @@ func Test_FileExists_for_existing_directory_returns_false(t *testing.T) {
 	assert.NoError(t, err)
 	assert.False(t, exists)
 }
-
