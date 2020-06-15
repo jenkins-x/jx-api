@@ -24,9 +24,9 @@ pipelineConfig:
           - name: lint
             command: ./hack/linter.sh
             image: golang:1.13.10
-            #          - name: verify-codegen
-            #            command: ./hack/generate.sh
-            #            image: golang:1.13.10
+          - name: verify-codegen
+            command: ./hack/generate.sh
+            image: golang:1.13.10
     release:
       pipeline:
         agent:
