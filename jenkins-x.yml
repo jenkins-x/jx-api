@@ -17,13 +17,16 @@ pipelineConfig:
           steps:
           - name: test
             command: make
+            image: golang:1.13.10
             args:
             - test
             dir: /workspace/source
           - name: lint
             command: ./hack/linter.sh
-            #          - name: verify-codegen
-            #command: ./hack/generate.sh
+            image: golang:1.13.10
+          - name: verify-codegen
+            command: ./hack/generate.sh
+            image: golang:1.13.10
     release:
       pipeline:
         agent:
