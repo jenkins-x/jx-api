@@ -34,6 +34,5 @@ replace (
 	k8s.io/apiextensions-apiserver => k8s.io/apiextensions-apiserver v0.0.0-20190819143637-0dbe462fe92d
 	k8s.io/apimachinery => k8s.io/apimachinery v0.16.5
 	k8s.io/client-go => k8s.io/client-go v0.16.5
-	k8s.io/klog/v2 => k8s.io/klog/v2 v2.0.0
 	k8s.io/metrics => k8s.io/metrics v0.0.0-20190819143841-305e1cef1ab1
 )
