@@ -15,7 +15,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/jenkins-x/jx/v2/cmd/codegen/util"
+	"github.com/jenkins-x/jx-api/cmd/codegen/util"
 
 	"github.com/ghodss/yaml"
 
@@ -78,7 +78,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/jenkins-x/jx/v2/cmd/codegen/generator"
+	"github.com/jenkins-x/jx-api/cmd/codegen/generator"
 )
 
 func main() {
@@ -166,7 +166,7 @@ type schemaWriterTemplateData struct {
 // InstallOpenApiGen installs the openapi-gen tool from the github.com/kubernetes/kube-openapi repository.
 func InstallOpenApiGen(version string, gopath string) error {
 	util.AppLogger().Infof("installing %s with version %s via 'go get' to %s", openApiGen, version, gopath)
-	err := util.GoGet(openApiGen, version, gopath, true, false, true)
+	err := util.GoGet(openApiGen, version, gopath, true, false, false)
 	if err != nil {
 		return err
 	}
@@ -312,7 +312,7 @@ func WriteSchemaToDisk(outputDir string, title string, version string, definitio
 		},
 		GetDefinitions: definitions,
 		GetDefinitionName: func(name string) (string, spec.Extensions) {
-			// For example "github.com/jenkins-x/jx/v2/pkg/apis/jenkins.io/v1.AppSpec"
+			// For example "github.com/jenkins-x/jx-api/pkg/apis/jenkins.io/v1.AppSpec"
 			parts := strings.Split(name, "/")
 			if len(parts) < 3 {
 				// Can't do anything with it, return raw

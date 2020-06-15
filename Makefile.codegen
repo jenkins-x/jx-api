@@ -6,7 +6,7 @@ CODE_GEN_BUILDFLAGS := -gcflags "all=-N -l" $(CODE_GEN_BUILDFLAGS)
 endif
 
 PEGOMOCK_VERSION := v2.7.0
-CLIENTSET_GENERATOR_VERSION := kubernetes-1.12.9
+CLIENTSET_GENERATOR_VERSION := kubernetes-1.15.12
 GEN_APIDOCS_VERSION := v0.0.0-20190912061656-a61bc210ee54
 OPENAPI_GEN_VERSION := 36ebc4887cdc
 
@@ -40,12 +40,12 @@ codegen-clientset: build-codegen ## Generate the k8s types and clients
 	# sleep for one second to prevent collision with previous codegen's replacement of go.mod
 	sleep 1
 	@echo "Generating Kubernetes Clients for pkg/apis in pkg/client for jenkins.io:v1"
-	./build/$(CODE_GEN_BIN_NAME) --generator-version $(CLIENTSET_GENERATOR_VERSION) clientset --output-package=pkg/client --input-package=v2/pkg/apis --group-with-version=jenkins.io:v1 --semver=v2
+	./build/$(CODE_GEN_BIN_NAME) --generator-version $(CLIENTSET_GENERATOR_VERSION) clientset --output-package=pkg/client --input-package=pkg/apis --group-with-version=jenkins.io:v1 --semver=v1
 
 codegen-config: build-codegen ## Generate the deepcopy for the config, jenkinsfile, and tekton/syntax packages
 	# sleep for one second to prevent collision with previous codegen's replacement of go.mod
 	sleep 1
-	./build/$(CODE_GEN_BIN_NAME) --generator-version $(CLIENTSET_GENERATOR_VERSION) clientset --generator deepcopy --output-package=pkg --input-package=v2/pkg --group-with-version=config: --group-with-version=jenkinsfile: --group-with-version=tekton:syntax --semver=v2
+	./build/$(CODE_GEN_BIN_NAME) --generator-version $(CLIENTSET_GENERATOR_VERSION) clientset --generator deepcopy --output-package=pkg --input-package=pkg --group-with-version=config: --semver=v1
 
 # Generated docs are not checked in
 generate-docs: build-codegen ## Generate the docs
@@ -56,7 +56,7 @@ generate-openapi: codegen-openapi fmt importfmt
 
 codegen-openapi: build-codegen
 	@echo "Generating OpenAPI structs for Kubernetes Clients"
-	./build/$(CODE_GEN_BIN_NAME) --generator-version $(OPENAPI_GEN_VERSION) openapi --output-package=pkg/client --input-package=github.com/jenkins-x/jx/v2/pkg/apis --group-with-version=jenkins.io:v1 --version=2.0 --module-name=github.com/jenkins-x/jx/v2 --semver=v2
+	./build/$(CODE_GEN_BIN_NAME) --generator-version $(OPENAPI_GEN_VERSION) openapi --output-package=pkg/client --input-package=github.com/jenkins-x/jx-client/pkg/apis --group-with-version=jenkins.io:v1 --version=1.0 --module-name=github.com/jenkins-x/jx-client --semver=v1
 
 install-refdocs:
 	$(GO) get github.com/jenkins-x/gen-crd-api-reference-docs

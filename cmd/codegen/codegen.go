@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/jenkins-x/jx/v2/cmd/codegen/app"
+	"github.com/jenkins-x/jx-api/cmd/codegen/app"
 )
 
 func main() {
