@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/jenkins-x/jx/v2/cmd/codegen/generator"
-	"github.com/jenkins-x/jx/v2/cmd/codegen/util"
+	"github.com/jenkins-x/jx-api/cmd/codegen/generator"
+	"github.com/jenkins-x/jx-api/cmd/codegen/util"
 
 	"github.com/pkg/errors"
 
@@ -33,8 +33,8 @@ the specified custom resources.
 	createClientOpenAPIExample = `
 # lets generate client docs
 codegen openapi
-	--output-package=github.com/jenkins-x/jx/v2/pkg/client \
-	--input-package=github.com/jenkins-x/pkg-apis \
+	--output-package=github.com/jenkins-x/jx-api/pkg/client \
+	--input-package=github.com/jenkins-x/jx-api/pkg-apis \
 	--group-with-version=jenkins.io:v1
 	--version=1.2.3
 	--title=Jenkins X
@@ -42,8 +42,8 @@ codegen openapi
 # You will normally want to add a target to your Makefile that looks like
 generate-openapi:
 	codegen openapi
-		--output-package=github.com/jenkins-x/jx/v2/pkg/client \
-		--input-package=github.com/jenkins-x/jx/v2/pkg/apis \
+		--output-package=github.com/jenkins-x/jx-api/pkg/client \
+		--input-package=github.com/jenkins-x/jx-api/pkg/apis \
 		--group-with-version=jenkins.io:v1
 		--version=${VERSION}
 		--title=${TITLE}

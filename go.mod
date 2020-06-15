@@ -3,15 +3,13 @@ module github.com/jenkins-x/jx-api
 go 1.13
 
 require (
-	github.com/Azure/go-autorest/autorest v0.9.0 // indirect
 	github.com/alecthomas/jsonschema v0.0.0-20200530073317-71f438968921
 	github.com/cenkalti/backoff v2.2.1+incompatible
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-openapi/spec v0.19.7
-	github.com/gophercloud/gophercloud v0.1.0 // indirect
 	github.com/imdario/mergo v0.3.8
 	github.com/jenkins-x/jx-logging v0.0.8
-	github.com/jenkins-x/jx/v2 v2.1.65
+	github.com/petergtz/pegomock v2.7.0+incompatible // indirect
 	github.com/pkg/errors v0.9.1
 	github.com/satori/go.uuid v1.2.1-0.20180103174451-36e9d2ebbde5
 	github.com/sirupsen/logrus v1.6.0
@@ -27,3 +25,13 @@ require (
 	k8s.io/client-go v11.0.1-0.20190805182717-6502b5e7b1b5+incompatible
 	k8s.io/kube-openapi v0.0.0-20190816220812-743ec37842bf
 )
+
+replace k8s.io/api => k8s.io/api v0.16.5
+
+replace k8s.io/metrics => k8s.io/metrics v0.0.0-20190819143841-305e1cef1ab1
+
+replace k8s.io/apimachinery => k8s.io/apimachinery v0.16.5
+
+replace k8s.io/client-go => k8s.io/client-go v0.16.5
+
+replace k8s.io/apiextensions-apiserver => k8s.io/apiextensions-apiserver v0.0.0-20190819143637-0dbe462fe92d
