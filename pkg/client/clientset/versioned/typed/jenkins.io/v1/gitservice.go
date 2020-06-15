@@ -6,7 +6,7 @@ import (
 	"time"
 
 	v1 "github.com/jenkins-x/jx-api/pkg/apis/jenkins.io/v1"
-	scheme "github.com/jenkins-x/jx-api/v1/pkg/client/clientset/versioned/scheme"
+	scheme "github.com/jenkins-x/jx-api/pkg/client/clientset/versioned/scheme"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
