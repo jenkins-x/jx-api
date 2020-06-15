@@ -2,10 +2,11 @@ package config
 
 import (
 	"fmt"
-	"github.com/jenkins-x/jx-client/pkg/util"
 	"io/ioutil"
 	"path/filepath"
 	"strings"
+
+	"github.com/jenkins-x/jx-client/pkg/util"
 
 	"github.com/ghodss/yaml"
 	"github.com/pkg/errors"

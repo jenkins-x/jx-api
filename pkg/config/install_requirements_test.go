@@ -11,10 +11,10 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/ghodss/yaml"
-	"github.com/jenkins-x/jx-client/pkg/config"
-	"github.com/jenkins-x/jx-logging/pkg/log"
-	"github.com/jenkins-x/jx-client/pkg/util"
 	"github.com/jenkins-x/jx-client/pkg/cloud"
+	"github.com/jenkins-x/jx-client/pkg/config"
+	"github.com/jenkins-x/jx-client/pkg/util"
+	"github.com/jenkins-x/jx-logging/pkg/log"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -120,6 +120,7 @@ func TestRequirementsConfigMarshalInEmptyDir(t *testing.T) {
 	t.Parallel()
 
 	dir, err := ioutil.TempDir("", "test-requirements-config-empty-")
+	assert.NoError(t, err)
 
 	requirements, fileName, err := config.LoadRequirementsConfig(dir, config.DefaultFailOnValidationError)
 	assert.Error(t, err)
@@ -148,6 +149,7 @@ func Test_unmarshalling_requirements_config_with_build_pack_configuration_succee
 	requirements := config.NewRequirementsConfig()
 
 	content, err := ioutil.ReadFile(path.Join(testDataDir, "build_pack_library.yaml"))
+	assert.NoError(t, err)
 
 	err = yaml.Unmarshal(content, requirements)
 	assert.NoError(t, err)
@@ -363,7 +365,12 @@ func TestMergeSave(t *testing.T) {
 	}
 	f, err := ioutil.TempFile("", "")
 	assert.NoError(t, err)
-	defer util.DeleteFile(f.Name())
+	defer func() {
+		err := util.DeleteFile(f.Name())
+		if err != nil {
+			t.Logf("unable to clean up, %s", err)
+		}
+	}()
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
@@ -400,6 +407,7 @@ func TestHelmfileRequirementValues(t *testing.T) {
 	valuesFile := filepath.Join(dir, config.RequirementsValuesFileName)
 
 	valuesFileExists, err := util.FileExists(valuesFile)
+	assert.NoError(t, err)
 	assert.False(t, valuesFileExists, "file %s should not exist", valuesFile)
 
 	requirements.Helmfile = true
@@ -440,7 +448,7 @@ func Test_LoadRequirementsConfig(t *testing.T) {
 			if testCase.createRequirements {
 				expectedRequirementsFile = filepath.Join(testPath, config.RequirementsConfigFileName)
 				dummyRequirementsData := []byte("webhook: prow\n")
-				err := ioutil.WriteFile(expectedRequirementsFile, dummyRequirementsData, 0644)
+				err := ioutil.WriteFile(expectedRequirementsFile, dummyRequirementsData, 0600)
 				require.NoError(t, err, "unable to write requirements file %s", expectedRequirementsFile)
 			}
 
@@ -448,7 +456,7 @@ func Test_LoadRequirementsConfig(t *testing.T) {
 			if testCase.createRequirements {
 				require.NoError(t, err)
 				assert.Equal(t, expectedRequirementsFile, requirementsFile)
-				assert.Equal(t, fmt.Sprintf("%s", requirements.Webhook), "prow")
+				assert.Equal(t, string(requirements.Webhook), "prow")
 			} else {
 				require.Error(t, err)
 				assert.Equal(t, "", requirementsFile)

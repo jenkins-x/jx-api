@@ -1,28 +1,28 @@
 package util
 
 import (
-"fmt"
-"io"
-"os"
-"os/exec"
-"strings"
-"time"
+	"fmt"
+	"io"
+	"os"
+	"os/exec"
+	"strings"
+	"time"
 
-"github.com/pkg/errors"
+	"github.com/pkg/errors"
 )
 
 // Command is a struct containing the details of an external command to be executed
 type Command struct {
-	attempts           int
-	Errors             []error
-	Dir                string
-	Name               string
-	Args               []string
-	Timeout            time.Duration
-	Out                io.Writer
-	Err                io.Writer
-	In                 io.Reader
-	Env                map[string]string
+	attempts int
+	Errors   []error
+	Dir      string
+	Name     string
+	Args     []string
+	Timeout  time.Duration
+	Out      io.Writer
+	Err      io.Writer
+	In       io.Reader
+	Env      map[string]string
 }
 
 // CommandError is the error object encapsulating an error from a Command
@@ -112,18 +112,12 @@ func (c *Command) Attempts() int {
 
 // DidError returns a boolean if any error occurred in any execution of the command
 func (c *Command) DidError() bool {
-	if len(c.Errors) > 0 {
-		return true
-	}
-	return false
+	return len(c.Errors) > 0
 }
 
 // DidFail returns a boolean if the command could not complete (errored on every attempt)
 func (c *Command) DidFail() bool {
-	if len(c.Errors) == c.attempts {
-		return true
-	}
-	return false
+	return len(c.Errors) == c.attempts
 }
 
 // Error returns the last error
@@ -246,4 +240,3 @@ func PathWithBinary(customPaths ...string) string {
 	// return jxBinDir + string(os.PathListSeparator) + existingEnvironmentPath + extraPaths
 	return existingEnvironmentPath + extraPaths
 }
-

@@ -2,9 +2,9 @@ package util
 
 import (
 	schemagen "github.com/alecthomas/jsonschema"
+	"github.com/ghodss/yaml"
 	"github.com/xeipuuv/gojsonschema"
 	corev1 "k8s.io/api/core/v1"
-	"github.com/ghodss/yaml"
 )
 
 // GenerateSchema generates a JSON schema for the given struct type and returns it.

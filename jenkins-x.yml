@@ -13,6 +13,8 @@ pipelineConfig:
             args:
             - test
             dir: /workspace/source
+          - name: lint
+            command: ./hack/linter.sh
     release:
       pipeline:
         agent:
