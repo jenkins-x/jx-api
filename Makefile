@@ -31,3 +31,6 @@ modtidy:
 
 coverage:
 	$(GO) tool cover -html=coverage.out
+
+cover:
+	$(GO) tool cover -func coverage.out | grep total
