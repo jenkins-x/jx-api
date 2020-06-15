@@ -8,7 +8,7 @@ require (
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-logr/logr v0.2.0
 	github.com/go-openapi/spec v0.19.7
-	github.com/imdario/mergo v0.3.8
+	github.com/imdario/mergo v0.3.9
 	github.com/jenkins-x/jx-logging v0.0.8
 	github.com/petergtz/pegomock v2.7.0+incompatible // indirect
 	github.com/pkg/errors v0.9.1
