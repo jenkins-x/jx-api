@@ -22,8 +22,8 @@ pipelineConfig:
             dir: /workspace/source
           - name: lint
             command: ./hack/linter.sh
-          - name: verify-codegen
-            command: ./hack/generate.sh
+            #          - name: verify-codegen
+            #command: ./hack/generate.sh
     release:
       pipeline:
         agent:
