@@ -60,7 +60,7 @@ func (in *App) DeepCopyObject() runtime.Object {
 func (in *AppList) DeepCopyInto(out *AppList) {
 	*out = *in
 	out.TypeMeta = in.TypeMeta
-	out.ListMeta = in.ListMeta
+	in.ListMeta.DeepCopyInto(&out.ListMeta)
 	if in.Items != nil {
 		in, out := &in.Items, &out.Items
 		*out = make([]App, len(*in))
@@ -297,7 +297,7 @@ func (in *BuildPack) DeepCopyObject() runtime.Object {
 func (in *BuildPackList) DeepCopyInto(out *BuildPackList) {
 	*out = *in
 	out.TypeMeta = in.TypeMeta
-	out.ListMeta = in.ListMeta
+	in.ListMeta.DeepCopyInto(&out.ListMeta)
 	if in.Items != nil {
 		in, out := &in.Items, &out.Items
 		*out = make([]BuildPack, len(*in))
@@ -451,7 +451,7 @@ func (in *CommitStatusItem) DeepCopy() *CommitStatusItem {
 func (in *CommitStatusList) DeepCopyInto(out *CommitStatusList) {
 	*out = *in
 	out.TypeMeta = in.TypeMeta
-	out.ListMeta = in.ListMeta
+	in.ListMeta.DeepCopyInto(&out.ListMeta)
 	if in.Items != nil {
 		in, out := &in.Items, &out.Items
 		*out = make([]CommitStatus, len(*in))
@@ -787,7 +787,7 @@ func (in *EnvironmentFilter) DeepCopy() *EnvironmentFilter {
 func (in *EnvironmentList) DeepCopyInto(out *EnvironmentList) {
 	*out = *in
 	out.TypeMeta = in.TypeMeta
-	out.ListMeta = in.ListMeta
+	in.ListMeta.DeepCopyInto(&out.ListMeta)
 	if in.Items != nil {
 		in, out := &in.Items, &out.Items
 		*out = make([]Environment, len(*in))
@@ -864,7 +864,7 @@ func (in *EnvironmentRoleBinding) DeepCopyObject() runtime.Object {
 func (in *EnvironmentRoleBindingList) DeepCopyInto(out *EnvironmentRoleBindingList) {
 	*out = *in
 	out.TypeMeta = in.TypeMeta
-	out.ListMeta = in.ListMeta
+	in.ListMeta.DeepCopyInto(&out.ListMeta)
 	if in.Items != nil {
 		in, out := &in.Items, &out.Items
 		*out = make([]EnvironmentRoleBinding, len(*in))
@@ -1192,7 +1192,7 @@ func (in *ExtensionExecution) DeepCopy() *ExtensionExecution {
 func (in *ExtensionList) DeepCopyInto(out *ExtensionList) {
 	*out = *in
 	out.TypeMeta = in.TypeMeta
-	out.ListMeta = in.ListMeta
+	in.ListMeta.DeepCopyInto(&out.ListMeta)
 	if in.Items != nil {
 		in, out := &in.Items, &out.Items
 		*out = make([]Extension, len(*in))
@@ -1408,7 +1408,7 @@ func (in *Fact) DeepCopyObject() runtime.Object {
 func (in *FactList) DeepCopyInto(out *FactList) {
 	*out = *in
 	out.TypeMeta = in.TypeMeta
-	out.ListMeta = in.ListMeta
+	in.ListMeta.DeepCopyInto(&out.ListMeta)
 	if in.Items != nil {
 		in, out := &in.Items, &out.Items
 		*out = make([]Fact, len(*in))
@@ -1521,7 +1521,7 @@ func (in *GitService) DeepCopyObject() runtime.Object {
 func (in *GitServiceList) DeepCopyInto(out *GitServiceList) {
 	*out = *in
 	out.TypeMeta = in.TypeMeta
-	out.ListMeta = in.ListMeta
+	in.ListMeta.DeepCopyInto(&out.ListMeta)
 	if in.Items != nil {
 		in, out := &in.Items, &out.Items
 		*out = make([]GitService, len(*in))
@@ -1946,7 +1946,7 @@ func (in *PipelineActivity) DeepCopyObject() runtime.Object {
 func (in *PipelineActivityList) DeepCopyInto(out *PipelineActivityList) {
 	*out = *in
 	out.TypeMeta = in.TypeMeta
-	out.ListMeta = in.ListMeta
+	in.ListMeta.DeepCopyInto(&out.ListMeta)
 	if in.Items != nil {
 		in, out := &in.Items, &out.Items
 		*out = make([]PipelineActivity, len(*in))
@@ -2167,7 +2167,7 @@ func (in *PipelineStructure) DeepCopyObject() runtime.Object {
 func (in *PipelineStructureList) DeepCopyInto(out *PipelineStructureList) {
 	*out = *in
 	out.TypeMeta = in.TypeMeta
-	out.ListMeta = in.ListMeta
+	in.ListMeta.DeepCopyInto(&out.ListMeta)
 	if in.Items != nil {
 		in, out := &in.Items, &out.Items
 		*out = make([]PipelineStructure, len(*in))
@@ -2278,7 +2278,7 @@ func (in *Plugin) DeepCopyObject() runtime.Object {
 func (in *PluginList) DeepCopyInto(out *PluginList) {
 	*out = *in
 	out.TypeMeta = in.TypeMeta
-	out.ListMeta = in.ListMeta
+	in.ListMeta.DeepCopyInto(&out.ListMeta)
 	if in.Items != nil {
 		in, out := &in.Items, &out.Items
 		*out = make([]Plugin, len(*in))
@@ -2844,7 +2844,7 @@ func (in *Release) DeepCopyObject() runtime.Object {
 func (in *ReleaseList) DeepCopyInto(out *ReleaseList) {
 	*out = *in
 	out.TypeMeta = in.TypeMeta
-	out.ListMeta = in.ListMeta
+	in.ListMeta.DeepCopyInto(&out.ListMeta)
 	if in.Items != nil {
 		in, out := &in.Items, &out.Items
 		*out = make([]Release, len(*in))
@@ -3191,7 +3191,7 @@ func (in *SchedulerAgent) DeepCopy() *SchedulerAgent {
 func (in *SchedulerList) DeepCopyInto(out *SchedulerList) {
 	*out = *in
 	out.TypeMeta = in.TypeMeta
-	out.ListMeta = in.ListMeta
+	in.ListMeta.DeepCopyInto(&out.ListMeta)
 	if in.Items != nil {
 		in, out := &in.Items, &out.Items
 		*out = make([]Scheduler, len(*in))
@@ -3376,7 +3376,7 @@ func (in *SourceRepositoryGroup) DeepCopyObject() runtime.Object {
 func (in *SourceRepositoryGroupList) DeepCopyInto(out *SourceRepositoryGroupList) {
 	*out = *in
 	out.TypeMeta = in.TypeMeta
-	out.ListMeta = in.ListMeta
+	in.ListMeta.DeepCopyInto(&out.ListMeta)
 	if in.Items != nil {
 		in, out := &in.Items, &out.Items
 		*out = make([]SourceRepositoryGroup, len(*in))
@@ -3433,7 +3433,7 @@ func (in *SourceRepositoryGroupSpec) DeepCopy() *SourceRepositoryGroupSpec {
 func (in *SourceRepositoryList) DeepCopyInto(out *SourceRepositoryList) {
 	*out = *in
 	out.TypeMeta = in.TypeMeta
-	out.ListMeta = in.ListMeta
+	in.ListMeta.DeepCopyInto(&out.ListMeta)
 	if in.Items != nil {
 		in, out := &in.Items, &out.Items
 		*out = make([]SourceRepository, len(*in))
@@ -3572,7 +3572,7 @@ func (in *Team) DeepCopyObject() runtime.Object {
 func (in *TeamList) DeepCopyInto(out *TeamList) {
 	*out = *in
 	out.TypeMeta = in.TypeMeta
-	out.ListMeta = in.ListMeta
+	in.ListMeta.DeepCopyInto(&out.ListMeta)
 	if in.Items != nil {
 		in, out := &in.Items, &out.Items
 		*out = make([]Team, len(*in))
@@ -3777,7 +3777,7 @@ func (in *UserDetails) DeepCopy() *UserDetails {
 func (in *UserList) DeepCopyInto(out *UserList) {
 	*out = *in
 	out.TypeMeta = in.TypeMeta
-	out.ListMeta = in.ListMeta
+	in.ListMeta.DeepCopyInto(&out.ListMeta)
 	if in.Items != nil {
 		in, out := &in.Items, &out.Items
 		*out = make([]User, len(*in))
@@ -3875,7 +3875,7 @@ func (in *Workflow) DeepCopyObject() runtime.Object {
 func (in *WorkflowList) DeepCopyInto(out *WorkflowList) {
 	*out = *in
 	out.TypeMeta = in.TypeMeta
-	out.ListMeta = in.ListMeta
+	in.ListMeta.DeepCopyInto(&out.ListMeta)
 	if in.Items != nil {
 		in, out := &in.Items, &out.Items
 		*out = make([]Workflow, len(*in))
