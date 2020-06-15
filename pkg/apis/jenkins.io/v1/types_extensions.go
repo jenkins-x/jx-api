@@ -2,10 +2,11 @@ package v1
 
 import (
 	"fmt"
-	"github.com/jenkins-x/jx-client/pkg/util"
-	"github.com/jenkins-x/jx-logging/pkg/log"
 	"io/ioutil"
 	"path/filepath"
+
+	"github.com/jenkins-x/jx-client/pkg/util"
+	"github.com/jenkins-x/jx-logging/pkg/log"
 
 	v1 "k8s.io/api/rbac/v1"
 
@@ -219,7 +220,7 @@ func (e *ExtensionExecution) Execute() (err error) {
 	}
 	log.Logger().Debugf("Environment Variables:\n %s", e.EnvironmentVariables)
 	log.Logger().Debugf("Script:\n %s", e.Script)
-	envVars := make(map[string]string, 0)
+	envVars := make(map[string]string)
 	for _, v := range e.EnvironmentVariables {
 		envVars[v.Name] = v.Value
 	}

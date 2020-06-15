@@ -3,9 +3,10 @@ package config
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/jenkins-x/jx-logging/pkg/log"
-	"github.com/jenkins-x/jx-client/pkg/util"
+
 	"github.com/jenkins-x/jx-client/pkg/cloud"
+	"github.com/jenkins-x/jx-client/pkg/util"
+	"github.com/jenkins-x/jx-logging/pkg/log"
 
 	"io/ioutil"
 	"os"
@@ -138,7 +139,7 @@ const (
 )
 
 // SecretStorageTypeValues the string values for the secret storage
-var SecretStorageTypeValues = []string{"local", "vault"}
+var SecretStorageTypeValues = []string{string(SecretStorageTypeLocal), string(SecretStorageTypeVault)}
 
 // WebhookType is the type of a webhook strategy
 type WebhookType string
@@ -157,7 +158,7 @@ const (
 )
 
 // WebhookTypeValues the string values for the webhook types
-var WebhookTypeValues = []string{"jenkins", "lighthouse", "prow"}
+var WebhookTypeValues = []string{string(WebhookTypeJenkins), string(WebhookTypeLighthouse), string(WebhookTypeProw)}
 
 // RepositoryType is the type of a repository we use to store artifacts (jars, tarballs, npm packages etc)
 type RepositoryType string
@@ -176,7 +177,7 @@ const (
 )
 
 // RepositoryTypeValues the string values for the repository types
-var RepositoryTypeValues = []string{"none", "bucketrepo", "nexus", "artifactory"}
+var RepositoryTypeValues = []string{string(RepositoryTypeNone), string(RepositoryTypeBucketRepo), string(RepositoryTypeNexus), string(RepositoryTypeArtifactory)}
 
 const (
 	// DefaultProfileFile location of profle config
@@ -702,7 +703,8 @@ func (t environmentsSliceTransformer) Transformer(typ reflect.Type) func(dst, sr
 					if i > len(d)-1 {
 						d = append(d, v)
 					} else {
-						err := mergo.Merge(&d[i], &v, mergo.WithOverride)
+						nv := v
+						err := mergo.Merge(&d[i], &nv, mergo.WithOverride)
 						if err != nil {
 							return errors.Wrap(err, "error merging EnvironmentConfig slices")
 						}
@@ -743,12 +745,13 @@ func (c *RequirementsConfig) EnvironmentMap() map[string]interface{} {
 			log.Logger().Warnf("missing 'key' for Environment requirements %#v", env)
 			continue
 		}
-		m, err := util.ToObjectMap(&env)
+		e := env
+		m, err := util.ToObjectMap(&e)
 		if err == nil {
 			ensureHasFields(m, "owner", "repository", "gitServer", "gitKind")
 			answer[k] = m
 		} else {
-			log.Logger().Warnf("failed to turn environment %s with value %#v into a map: %s\n", k, env, err.Error())
+			log.Logger().Warnf("failed to turn environment %s with value %#v into a map: %s\n", k, e, err.Error())
 		}
 	}
 	return answer
@@ -796,19 +799,18 @@ func MissingRequirement(property string, fileName string) error {
 // IsLazyCreateSecrets returns a boolean whether secrets should be lazily created
 func (c *RequirementsConfig) IsLazyCreateSecrets(flag string) (bool, error) {
 	if flag != "" {
-		if flag == "true" {
+		switch flag {
+		case "true":
 			return true, nil
-		} else if flag == "false" {
+		case "false":
 			return false, nil
-		} else {
+		default:
 			return false, errors.Errorf("invalid option for lazy-create: %s", flag)
 		}
-	} else {
-		// lets default from the requirements
-		if !c.Terraform {
-			return true, nil
-		}
+	} else if !c.Terraform {
+		return true, nil
 	}
+
 	// default to false
 	return false, nil
 }
@@ -834,8 +836,7 @@ func (c *RequirementsConfig) addDefaults() {
 		if c.Cluster.GitServer == "https://github.com" || c.Cluster.GitServer == "https://github.com/" {
 			c.Webhook = WebhookTypeProw
 		} else {
-			// TODO when lighthouse is GA lets default to it
-			// c.Webhook = WebhookTypeLighthouse
+			c.Webhook = WebhookTypeLighthouse
 		}
 	}
 	if c.Repository == "" {
