@@ -10,5 +10,5 @@ const (
 	GroupAndVersion = GroupName + "/" + Version
 
 	// Package is the Go package in which the apis live
-	Package = "github.com/jenkins-x/jx-config/pkg/apis"
+	Package = "github.com/jenkins-x/jx-api/pkg/apis"
 )
