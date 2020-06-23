@@ -6,10 +6,10 @@ import (
 )
 
 // SanitizeURL sanitizes by stripping the user and password
-func SanitizeURL(unsanitizedUrl string) string {
-	u, err := url.Parse(unsanitizedUrl)
+func SanitizeURL(unsanitizedURL string) string {
+	u, err := url.Parse(unsanitizedURL)
 	if err != nil {
-		return unsanitizedUrl
+		return unsanitizedURL
 	}
 	return stripCredentialsFromURL(u)
 }
