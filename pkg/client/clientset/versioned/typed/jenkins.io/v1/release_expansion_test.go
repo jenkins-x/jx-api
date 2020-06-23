@@ -1,3 +1,4 @@
+//nolint:dupl
 package v1
 
 import (
@@ -46,9 +47,8 @@ func TestPatchUpdateReleaseNoModification(t *testing.T) {
 }
 
 func TestPatchUpdateReleaseWithChange(t *testing.T) {
-	name := "susfu"
 	clonedRelease := testRelease.DeepCopy()
-	clonedRelease.Spec.Name = name
+	clonedRelease.Spec.Name = FactNameUpdate
 
 	get := func(*http.Request) (*http.Response, error) {
 		json, err := json.Marshal(testRelease)
@@ -76,13 +76,12 @@ func TestPatchUpdateReleaseWithChange(t *testing.T) {
 	updated, err := releases.PatchUpdate(clonedRelease)
 	assert.NoError(t, err)
 	assert.NotEqual(t, testRelease, updated)
-	assert.Equal(t, name, updated.Spec.Name)
+	assert.Equal(t, FactNameUpdate, updated.Spec.Name)
 }
 
 func TestPatchUpdateReleaseWithErrorInGet(t *testing.T) {
-	errorMessage := "error during GET"
 	get := func(*http.Request) (*http.Response, error) {
-		return nil, errors.New(errorMessage)
+		return nil, errors.New(errorDuringGETMessage)
 	}
 
 	fakeClient := newClientForTest(get, nil)
@@ -94,12 +93,11 @@ func TestPatchUpdateReleaseWithErrorInGet(t *testing.T) {
 
 	updated, err := releases.PatchUpdate(testRelease)
 	assert.Error(t, err)
-	assert.Contains(t, err.Error(), errorMessage)
+	assert.Contains(t, err.Error(), errorDuringGETMessage)
 	assert.Nil(t, updated)
 }
 
 func TestPatchUpdateReleaseWithErrorInPatch(t *testing.T) {
-	errorMessage := "error during PATCH"
 	get := func(*http.Request) (*http.Response, error) {
 		json, err := json.Marshal(testRelease)
 		if err != nil {
@@ -109,7 +107,7 @@ func TestPatchUpdateReleaseWithErrorInPatch(t *testing.T) {
 	}
 
 	patch := func(*http.Request) (*http.Response, error) {
-		return nil, errors.New(errorMessage)
+		return nil, errors.New(errorDuringPATCHMessage)
 	}
 
 	fakeClient := newClientForTest(get, patch)
@@ -123,6 +121,6 @@ func TestPatchUpdateReleaseWithErrorInPatch(t *testing.T) {
 	clonedRelease.Spec.Name = name
 	updated, err := releases.PatchUpdate(clonedRelease)
 	assert.Error(t, err)
-	assert.Contains(t, err.Error(), errorMessage)
+	assert.Contains(t, err.Error(), errorDuringPATCHMessage)
 	assert.Nil(t, updated)
 }

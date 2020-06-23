@@ -10,7 +10,7 @@ import (
 
 func TestCreatePatch(t *testing.T) {
 	t.Parallel()
-	orig, clone := setUp(t)
+	orig, clone := setUp()
 
 	clone.Spec.Name = "foo"
 	patch, err := CreatePatch(orig, clone)
@@ -22,7 +22,7 @@ func TestCreatePatch(t *testing.T) {
 
 func TestCreatePatchNil(t *testing.T) {
 	t.Parallel()
-	orig, clone := setUp(t)
+	orig, clone := setUp()
 
 	_, err := CreatePatch(nil, clone)
 	assert.Error(t, err, "nil should not be allowed")
@@ -35,7 +35,7 @@ func TestCreatePatchNil(t *testing.T) {
 
 func TestCreatePatchNoDiff(t *testing.T) {
 	t.Parallel()
-	orig, clone := setUp(t)
+	orig, clone := setUp()
 
 	patch, err := CreatePatch(orig, clone)
 
@@ -43,7 +43,7 @@ func TestCreatePatchNoDiff(t *testing.T) {
 	assert.Equal(t, "[]", string(patch), "the patch should have been empty")
 }
 
-func setUp(t *testing.T) (*jenkinsv1.Plugin, *jenkinsv1.Plugin) {
+func setUp() (*jenkinsv1.Plugin, *jenkinsv1.Plugin) {
 	orig := &jenkinsv1.Plugin{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: "test-plugin",

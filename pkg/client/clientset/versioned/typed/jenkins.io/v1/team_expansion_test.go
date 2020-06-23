@@ -1,3 +1,4 @@
+//nolint:dupl
 package v1
 
 import (
@@ -80,9 +81,8 @@ func TestPatchUpdateTeamWithChange(t *testing.T) {
 }
 
 func TestPatchUpdateTeamWithErrorInGet(t *testing.T) {
-	errorMessage := "error during GET"
 	get := func(*http.Request) (*http.Response, error) {
-		return nil, errors.New(errorMessage)
+		return nil, errors.New(errorDuringGETMessage)
 	}
 
 	fakeClient := newClientForTest(get, nil)
@@ -94,12 +94,11 @@ func TestPatchUpdateTeamWithErrorInGet(t *testing.T) {
 
 	updated, err := teams.PatchUpdate(testTeam)
 	assert.Error(t, err)
-	assert.Contains(t, err.Error(), errorMessage)
+	assert.Contains(t, err.Error(), errorDuringGETMessage)
 	assert.Nil(t, updated)
 }
 
 func TestPatchUpdateTeamWithErrorInPatch(t *testing.T) {
-	errorMessage := "error during PATCH"
 	get := func(*http.Request) (*http.Response, error) {
 		json, err := json.Marshal(testTeam)
 		if err != nil {
@@ -109,7 +108,7 @@ func TestPatchUpdateTeamWithErrorInPatch(t *testing.T) {
 	}
 
 	patch := func(*http.Request) (*http.Response, error) {
-		return nil, errors.New(errorMessage)
+		return nil, errors.New(errorDuringPATCHMessage)
 	}
 
 	fakeClient := newClientForTest(get, patch)
@@ -123,6 +122,6 @@ func TestPatchUpdateTeamWithErrorInPatch(t *testing.T) {
 	clonedTeam.Spec.Label = label
 	updated, err := teams.PatchUpdate(clonedTeam)
 	assert.Error(t, err)
-	assert.Contains(t, err.Error(), errorMessage)
+	assert.Contains(t, err.Error(), errorDuringPATCHMessage)
 	assert.Nil(t, updated)
 }

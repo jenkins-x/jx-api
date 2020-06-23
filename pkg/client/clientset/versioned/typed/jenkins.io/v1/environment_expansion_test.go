@@ -1,3 +1,4 @@
+//nolint:dupl
 package v1
 
 import (
@@ -80,9 +81,8 @@ func TestPatchUpdateEnvironmentWithChange(t *testing.T) {
 }
 
 func TestPatchUpdateEnvironmentWithErrorInGet(t *testing.T) {
-	errorMessage := "error during GET"
 	get := func(*http.Request) (*http.Response, error) {
-		return nil, errors.New(errorMessage)
+		return nil, errors.New(errorDuringGETMessage)
 	}
 
 	fakeClient := newClientForTest(get, nil)
@@ -94,12 +94,11 @@ func TestPatchUpdateEnvironmentWithErrorInGet(t *testing.T) {
 
 	updated, err := environments.PatchUpdate(testEnvironment)
 	assert.Error(t, err)
-	assert.Contains(t, err.Error(), errorMessage)
+	assert.Contains(t, err.Error(), errorDuringGETMessage)
 	assert.Nil(t, updated)
 }
 
 func TestPatchUpdateEnvironmentWithErrorInPatch(t *testing.T) {
-	errorMessage := "error during PATCH"
 	get := func(*http.Request) (*http.Response, error) {
 		json, err := json.Marshal(testEnvironment)
 		if err != nil {
@@ -109,7 +108,7 @@ func TestPatchUpdateEnvironmentWithErrorInPatch(t *testing.T) {
 	}
 
 	patch := func(*http.Request) (*http.Response, error) {
-		return nil, errors.New(errorMessage)
+		return nil, errors.New(errorDuringPATCHMessage)
 	}
 
 	fakeClient := newClientForTest(get, patch)
@@ -123,6 +122,6 @@ func TestPatchUpdateEnvironmentWithErrorInPatch(t *testing.T) {
 	clonedEnvironment.Spec.Namespace = namespace
 	updated, err := environments.PatchUpdate(clonedEnvironment)
 	assert.Error(t, err)
-	assert.Contains(t, err.Error(), errorMessage)
+	assert.Contains(t, err.Error(), errorDuringPATCHMessage)
 	assert.Nil(t, updated)
 }

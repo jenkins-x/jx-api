@@ -1,3 +1,4 @@
+//nolint:dupl
 package v1
 
 import (
@@ -80,9 +81,8 @@ func TestPatchUpdateWorkflowWithChange(t *testing.T) {
 }
 
 func TestPatchUpdateWorkflowWithErrorInGet(t *testing.T) {
-	errorMessage := "error during GET"
 	get := func(*http.Request) (*http.Response, error) {
-		return nil, errors.New(errorMessage)
+		return nil, errors.New(errorDuringGETMessage)
 	}
 
 	fakeClient := newClientForTest(get, nil)
@@ -94,12 +94,11 @@ func TestPatchUpdateWorkflowWithErrorInGet(t *testing.T) {
 
 	updated, err := workflows.PatchUpdate(testWorkflow)
 	assert.Error(t, err)
-	assert.Contains(t, err.Error(), errorMessage)
+	assert.Contains(t, err.Error(), errorDuringGETMessage)
 	assert.Nil(t, updated)
 }
 
 func TestPatchUpdateWorkflowWithErrorInPatch(t *testing.T) {
-	errorMessage := "error during PATCH"
 	get := func(*http.Request) (*http.Response, error) {
 		json, err := json.Marshal(testWorkflow)
 		if err != nil {
@@ -109,7 +108,7 @@ func TestPatchUpdateWorkflowWithErrorInPatch(t *testing.T) {
 	}
 
 	patch := func(*http.Request) (*http.Response, error) {
-		return nil, errors.New(errorMessage)
+		return nil, errors.New(errorDuringPATCHMessage)
 	}
 
 	fakeClient := newClientForTest(get, patch)
@@ -123,6 +122,6 @@ func TestPatchUpdateWorkflowWithErrorInPatch(t *testing.T) {
 	clonedWorkflow.Spec.PipelineName = pipelineName
 	updated, err := workflows.PatchUpdate(clonedWorkflow)
 	assert.Error(t, err)
-	assert.Contains(t, err.Error(), errorMessage)
+	assert.Contains(t, err.Error(), errorDuringPATCHMessage)
 	assert.Nil(t, updated)
 }
