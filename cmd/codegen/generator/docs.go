@@ -4,6 +4,8 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/jenkins-x/jx-logging/pkg/log"
+
 	"github.com/jenkins-x/jx-api/cmd/codegen/util"
 	"github.com/pkg/errors"
 )
@@ -15,12 +17,12 @@ const (
 
 // InstallGenAPIDocs installs the gen-apidocs tool from the kubernetes-incubator/reference-docs repository.
 func InstallGenAPIDocs(version string, gopath string) error {
-	util.AppLogger().Infof("installing %s in version %s via 'go get'", genAPIDocsRepo, version)
+	log.Logger().Infof("installing %s in version %s via 'go get'", genAPIDocsRepo, version)
 	err := util.GoGet(genAPIDocsRepo, version, gopath, true, false, true)
 	if err != nil {
 		return err
 	}
-	util.AppLogger().Infof("installing %s in version %s via 'go get'", genAPIDocsBin, version)
+	log.Logger().Infof("installing %s in version %s via 'go get'", genAPIDocsBin, version)
 	err = util.GoGet(genAPIDocsBin, version, gopath, true, false, true)
 	if err != nil {
 		return err
@@ -66,8 +68,8 @@ func GenerateAPIDocs(configDir string, gopath string) error {
 	if err != nil {
 		return errors.Wrapf(err, "running %s, output %s", cmd.String(), out)
 	}
-	util.AppLogger().Debugf("running %s\n", cmd.String())
-	util.AppLogger().Debug(out)
+	log.Logger().Debugf("running %s\n", cmd.String())
+	log.Logger().Debug(out)
 	return nil
 }
 
@@ -76,7 +78,7 @@ func GenerateAPIDocs(configDir string, gopath string) error {
 func AssembleAPIDocsStatic(referenceDocsRepo string, outputDir string) error {
 	srcDir := filepath.Join(referenceDocsRepo, "gen-apidocs", "generators", "static")
 	outDir := filepath.Join(outputDir, "static")
-	util.AppLogger().Infof("copying static files from %s to %s\n", srcDir, outDir)
+	log.Logger().Infof("copying static files from %s to %s\n", srcDir, outDir)
 	err := util.CopyDirPreserve(srcDir, outDir)
 	if err != nil {
 		return errors.Wrapf(err, "copying %s to %s", srcDir, outDir)

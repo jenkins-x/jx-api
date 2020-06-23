@@ -1,12 +1,7 @@
 package app
 
 import (
-	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-)
-
-const (
-	optionLogLevel = "log-level"
 )
 
 var (
@@ -40,10 +35,8 @@ func Run() error {
 		CommonOptions: commonOpts,
 	}
 
-	rootCommand.PersistentFlags().StringVarP(&commonOpts.LogLevel, optionLogLevel, "", logrus.InfoLevel.String(), "Sets the logging level (panic, fatal, error, warning, info, debug)")
 	rootCommand.PersistentFlags().StringVarP(&commonOpts.GeneratorVersion, "generator-version", "", "master",
 		"Version (really a commit-ish) of the generator tool to use. Allows to pin version using Go modules. Default is master.")
-	rootCommand.PersistentFlags().BoolVarP(&commonOpts.Verbose, optionVerbose, "", false, "Enable verbose logging (sets the logging level to debug)")
 
 	rootCommand.AddCommand(NewGenerateClientSetCmd(genOpts))
 	rootCommand.AddCommand(NewCmdCreateClientOpenAPI(genOpts))

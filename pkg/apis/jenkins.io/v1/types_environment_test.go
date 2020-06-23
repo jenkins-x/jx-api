@@ -1,10 +1,12 @@
-package v1
+package v1_test
 
 import (
 	"encoding/json"
 	"io/ioutil"
 	"path"
 	"testing"
+
+	v1 "github.com/jenkins-x/jx-api/pkg/apis/jenkins.io/v1"
 
 	"github.com/jenkins-x/jx-logging/pkg/log"
 	"github.com/stretchr/testify/assert"
@@ -30,7 +32,7 @@ func TestGitPublic(t *testing.T) {
 			content, err := ioutil.ReadFile(path.Join(testDataDir, testCase.jsonFile))
 			assert.NoError(t, err)
 
-			env := Environment{}
+			env := v1.Environment{}
 
 			_ = log.CaptureOutput(func() {
 				err = json.Unmarshal(content, &env)
@@ -45,7 +47,7 @@ func Test_GitPublic_and_GitPrivate_specified_throws_error(t *testing.T) {
 	content, err := ioutil.ReadFile(path.Join(testDataDir, "git_public_true_git_private_true.json"))
 	assert.NoError(t, err)
 
-	env := Environment{}
+	env := v1.Environment{}
 	err = json.Unmarshal(content, &env)
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "only GitPublic should be used")
