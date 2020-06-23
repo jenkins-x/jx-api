@@ -10,6 +10,7 @@ require (
 	github.com/go-openapi/spec v0.19.7
 	github.com/imdario/mergo v0.3.9
 	github.com/jenkins-x/jx-logging v0.0.8
+	github.com/mattbaird/jsonpatch v0.0.0-20171005235357-81af80346b1a
 	github.com/petergtz/pegomock v2.7.0+incompatible // indirect
 	github.com/pkg/errors v0.9.1
 	github.com/satori/go.uuid v1.2.1-0.20180103174451-36e9d2ebbde5
