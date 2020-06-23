@@ -35,6 +35,9 @@ var (
 const (
 	// DefaultFailOnValidationError by default fail if validation fails when reading jx-requirements
 	DefaultFailOnValidationError = true
+
+	constTrue  = "true"
+	constFalse = "false"
 )
 
 const (
@@ -459,7 +462,7 @@ func (t *ClusterConfig) UnmarshalJSON(data []byte) error {
 	if gitPrivateSet {
 		log.Logger().Warn("EnvironmentGitPrivate specified in Cluster EnvironmentGitPrivate is deprecated use EnvironmentGitPublic instead.")
 		privateString := string(private)
-		if privateString == "true" {
+		if privateString == constTrue {
 			t.EnvironmentGitPublic = false
 		} else {
 			t.EnvironmentGitPublic = true
@@ -800,9 +803,9 @@ func MissingRequirement(property string, fileName string) error {
 func (c *RequirementsConfig) IsLazyCreateSecrets(flag string) (bool, error) {
 	if flag != "" {
 		switch flag {
-		case "true":
+		case constTrue:
 			return true, nil
-		case "false":
+		case constFalse:
 			return false, nil
 		default:
 			return false, errors.Errorf("invalid option for lazy-create: %s", flag)
@@ -1068,5 +1071,5 @@ func (c *RequirementsConfig) OverrideRequirementsFromEnvironment(gkeProjectNumbe
 }
 
 func envVarBoolean(value string) bool {
-	return value == "true" || value == "yes"
+	return value == constTrue || value == "yes"
 }

@@ -468,8 +468,8 @@ type SourceRepositoryGroupSpec struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
 
-	SourceRepositorySpec []ResourceReference `json:"repositories" protobuf:"bytes,2,opt,name=repositories`
-	Scheduler            ResourceReference   `json:"scheduler" protobuf:"bytes,3,opt,name=scheduler`
+	SourceRepositorySpec []ResourceReference `json:"repositories" protobuf:"bytes,2,opt,name=repositories"`
+	Scheduler            ResourceReference   `json:"scheduler" protobuf:"bytes,3,opt,name=scheduler"`
 }
 
 // +genclient
