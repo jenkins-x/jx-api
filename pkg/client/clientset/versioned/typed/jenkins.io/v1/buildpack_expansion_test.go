@@ -1,5 +1,4 @@
-// +build unit
-
+//nolint:dupl
 package v1
 
 import (
@@ -82,9 +81,9 @@ func TestPatchUpdateBuildPackWithChange(t *testing.T) {
 }
 
 func TestPatchUpdateBuildPackWithErrorInGet(t *testing.T) {
-	errorMessage := "error during GET"
+
 	get := func(*http.Request) (*http.Response, error) {
-		return nil, errors.New(errorMessage)
+		return nil, errors.New(errorDuringGETMessage)
 	}
 
 	fakeClient := newClientForTest(get, nil)
@@ -96,12 +95,11 @@ func TestPatchUpdateBuildPackWithErrorInGet(t *testing.T) {
 
 	updated, err := buildPacks.PatchUpdate(testBuildPack)
 	assert.Error(t, err)
-	assert.Contains(t, err.Error(), errorMessage)
+	assert.Contains(t, err.Error(), errorDuringGETMessage)
 	assert.Nil(t, updated)
 }
 
 func TestPatchUpdateBuildPackWithErrorInPatch(t *testing.T) {
-	errorMessage := "error during PATCH"
 	get := func(*http.Request) (*http.Response, error) {
 		json, err := json.Marshal(testBuildPack)
 		if err != nil {
@@ -111,7 +109,7 @@ func TestPatchUpdateBuildPackWithErrorInPatch(t *testing.T) {
 	}
 
 	patch := func(*http.Request) (*http.Response, error) {
-		return nil, errors.New(errorMessage)
+		return nil, errors.New(errorDuringPATCHMessage)
 	}
 
 	fakeClient := newClientForTest(get, patch)
@@ -125,6 +123,6 @@ func TestPatchUpdateBuildPackWithErrorInPatch(t *testing.T) {
 	clonedBuildPack.Spec.GitURL = url
 	updated, err := buildPacks.PatchUpdate(clonedBuildPack)
 	assert.Error(t, err)
-	assert.Contains(t, err.Error(), errorMessage)
+	assert.Contains(t, err.Error(), errorDuringPATCHMessage)
 	assert.Nil(t, updated)
 }

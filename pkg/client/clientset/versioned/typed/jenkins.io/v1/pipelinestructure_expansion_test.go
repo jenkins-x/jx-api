@@ -1,5 +1,4 @@
-// +build unit
-
+//nolint:dupl
 package v1
 
 import (
@@ -47,7 +46,7 @@ func TestPatchUpdatePipelineStructureNoModification(t *testing.T) {
 }
 
 func TestPatchUpdatePipelineStructureWithChange(t *testing.T) {
-	ref := "susfu"
+	ref := FactNameUpdate
 	clonedPipelineStructure := testPipelineStructure.DeepCopy()
 	clonedPipelineStructure.PipelineRef = &ref
 
@@ -81,9 +80,8 @@ func TestPatchUpdatePipelineStructureWithChange(t *testing.T) {
 }
 
 func TestPatchUpdatePipelineStructureWithErrorInGet(t *testing.T) {
-	errorMessage := "error during GET"
 	get := func(*http.Request) (*http.Response, error) {
-		return nil, errors.New(errorMessage)
+		return nil, errors.New(errorDuringGETMessage)
 	}
 
 	fakeClient := newClientForTest(get, nil)
@@ -95,12 +93,11 @@ func TestPatchUpdatePipelineStructureWithErrorInGet(t *testing.T) {
 
 	updated, err := pipelineStructures.PatchUpdate(testPipelineStructure)
 	assert.Error(t, err)
-	assert.Contains(t, err.Error(), errorMessage)
+	assert.Contains(t, err.Error(), errorDuringGETMessage)
 	assert.Nil(t, updated)
 }
 
 func TestPatchUpdatePipelineStructureWithErrorInPatch(t *testing.T) {
-	errorMessage := "error during PATCH"
 	get := func(*http.Request) (*http.Response, error) {
 		json, err := json.Marshal(testPipelineStructure)
 		if err != nil {
@@ -110,7 +107,7 @@ func TestPatchUpdatePipelineStructureWithErrorInPatch(t *testing.T) {
 	}
 
 	patch := func(*http.Request) (*http.Response, error) {
-		return nil, errors.New(errorMessage)
+		return nil, errors.New(errorDuringPATCHMessage)
 	}
 
 	fakeClient := newClientForTest(get, patch)
@@ -119,11 +116,11 @@ func TestPatchUpdatePipelineStructureWithErrorInPatch(t *testing.T) {
 		client: fakeClient,
 		ns:     "default",
 	}
-	ref := "susfu"
+	ref := FactNameUpdate
 	clonedPipelineStructure := testPipelineStructure.DeepCopy()
 	clonedPipelineStructure.PipelineRef = &ref
 	updated, err := pipelineStructures.PatchUpdate(clonedPipelineStructure)
 	assert.Error(t, err)
-	assert.Contains(t, err.Error(), errorMessage)
+	assert.Contains(t, err.Error(), errorDuringPATCHMessage)
 	assert.Nil(t, updated)
 }
