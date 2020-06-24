@@ -15,6 +15,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/jenkins-x/jx-logging/pkg/log"
+
 	"github.com/jenkins-x/jx-api/cmd/codegen/util"
 
 	"github.com/ghodss/yaml"
@@ -165,7 +167,7 @@ type schemaWriterTemplateData struct {
 
 // InstallOpenApiGen installs the openapi-gen tool from the github.com/kubernetes/kube-openapi repository.
 func InstallOpenApiGen(version string, gopath string) error {
-	util.AppLogger().Infof("installing %s with version %s via 'go get' to %s", openApiGen, version, gopath)
+	log.Logger().Infof("installing %s with version %s via 'go get' to %s", openApiGen, version, gopath)
 	err := util.GoGet(openApiGen, version, gopath, true, false, false)
 	if err != nil {
 		return err
@@ -244,7 +246,7 @@ func writeOpenApiAll(baseDir string, outputPackage string, path string, dependen
 	defer func() {
 		err := outFile.Close()
 		if err != nil {
-			util.AppLogger().Errorf("error closing %s %v\n", outFilePath, err)
+			log.Logger().Errorf("error closing %s %v\n", outFilePath, err)
 		}
 	}()
 	if err != nil {
@@ -283,7 +285,7 @@ func writeSchemaWriterToDisk(baseDir string, outputPackage string, allImportPath
 	defer func() {
 		err := outFile.Close()
 		if err != nil {
-			util.AppLogger().Errorf("error closing %s %v\n", outFilePath, err)
+			log.Logger().Errorf("error closing %s %v\n", outFilePath, err)
 		}
 	}()
 	if err != nil {
@@ -370,7 +372,7 @@ func GenerateSchema(outputDir string, inputPackage string, inputBase string, tit
 	defer func() {
 		err := util.DeleteFile(schemaWriterBinary.Name())
 		if err != nil {
-			util.AppLogger().Warnf("error cleaning up tempfile %s created to compile %s to %v",
+			log.Logger().Warnf("error cleaning up tempfile %s created to compile %s to %v",
 				schemaWriterBinary.Name(), SchemaWriterSrcFileName, err)
 		}
 	}()
@@ -485,11 +487,11 @@ func generate(d string, outputPackage string, relativePackage string, outputBase
 
 	dependencyVersion := "master"
 	if moduleRequirement, ok := modulesRequirements[moduleName]; !ok {
-		util.AppLogger().Warnf("unable to find module requirement for %s, please add it to your go.mod, "+
+		log.Logger().Warnf("unable to find module requirement for %s, please add it to your go.mod, "+
 			"for now using HEAD of the master branch", moduleName)
 	} else {
 		if requirementVersion, ok := moduleRequirement[path]; !ok {
-			util.AppLogger().Warnf("unable to find module requirement version for %s (module %s), "+
+			log.Logger().Warnf("unable to find module requirement version for %s (module %s), "+
 				"please add it to your go.mod, "+
 				"for now using HEAD of the master branch", path, moduleName)
 		} else {

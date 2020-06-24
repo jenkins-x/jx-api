@@ -9,6 +9,8 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/jenkins-x/jx-logging/pkg/log"
+
 	"github.com/pkg/errors"
 )
 
@@ -49,15 +51,15 @@ func BackupGoModAndGoSum() (func(), error) {
 		return func() {
 			err := CopyFile(tmpMod, origMod)
 			if err != nil {
-				AppLogger().WithError(err).Errorf("restoring backup go.mod from %s", tmpMod)
+				log.Logger().WithError(err).Errorf("restoring backup go.mod from %s", tmpMod)
 			}
 			err = CopyFile(tmpSum, origSum)
 			if err != nil {
-				AppLogger().WithError(err).Errorf("restoring backup go.sum from %s", tmpSum)
+				log.Logger().WithError(err).Errorf("restoring backup go.sum from %s", tmpSum)
 			}
 			err = os.RemoveAll(tmpDir)
 			if err != nil {
-				AppLogger().WithError(err).Errorf("removing go mod backup directory %s", tmpDir)
+				log.Logger().WithError(err).Errorf("removing go mod backup directory %s", tmpDir)
 			}
 		}, nil
 	}
@@ -165,7 +167,7 @@ func CopyFile(src, dst string) (err error) {
 		return
 	}
 
-	return
+	return nil
 }
 
 // CopyDirPreserve copies from the src dir to the dst dir if the file does NOT already exist in dst

@@ -8,6 +8,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/jenkins-x/jx-logging/pkg/log"
+
 	"github.com/cenkalti/backoff"
 )
 
@@ -162,7 +164,7 @@ func (c *Command) RunWithoutRetry() (string, error) {
 	var r string
 	var e error
 
-	AppLogger().Debugf("Running %s %s %s", JoinMap(c.Env, " ", "="), c.Name, strings.Join(c.Args, " "))
+	log.Logger().Debugf("Running %s %s %s", JoinMap(c.Env, " ", "="), c.Name, strings.Join(c.Args, " "))
 
 	r, e = c.run()
 	c.attempts++

@@ -4,6 +4,8 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/jenkins-x/jx-logging/pkg/log"
+
 	"github.com/jenkins-x/jx-api/cmd/codegen/generator"
 	"github.com/jenkins-x/jx-api/cmd/codegen/util"
 	"github.com/pkg/errors"
@@ -58,7 +60,7 @@ func NewCreateDocsCmd(genOpts GenerateOptions) *cobra.Command {
 
 	wd, err := os.Getwd()
 	if err != nil {
-		util.AppLogger().Warnf("error getting working directory for %v\n", err)
+		log.Logger().Warnf("error getting working directory for %v\n", err)
 	}
 
 	cobraCmd.Flags().StringVarP(&o.InputBase, optionInputBase, "", wd,
@@ -74,7 +76,7 @@ func run(o *GenerateDocsOptions) error {
 	if o.OutputBase == "" {
 		return util.MissingOption(optionOutputBase)
 	}
-	util.AppLogger().Infof("generating docs to %s\n", o.OutputBase)
+	log.Logger().Infof("generating docs to %s\n", o.OutputBase)
 
 	cleanupFunc := func() {}
 	gopath := util.GoPath()

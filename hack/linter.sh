@@ -16,27 +16,6 @@ fi
 
 export GOGC=10 GO111MODULE=on
 golangci-lint run \
-	--no-config \
-  -E gofmt \
-  -E goimports \
-  -E gosec \
-  -E interfacer \
-	-E misspell \
-	-E unconvert \
-  -E unparam \
-  -E bodyclose \
-  -E dupl \
-  -E asciicheck \
-  -E dogsled \
-  -E goconst \
   --timeout 15m \
   --verbose \
   --build-tags build
-
-# -E gocyclo \
-# -E nestif \
-# -E gocritic \
-# -E golint \
-# -E godox \
-# -E funlen \
-# -E goerr113 \

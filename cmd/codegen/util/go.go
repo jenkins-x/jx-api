@@ -6,6 +6,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/jenkins-x/jx-logging/pkg/log"
+
 	uuid "github.com/satori/go.uuid"
 
 	"github.com/pkg/errors"
@@ -53,7 +55,7 @@ func EnsureGoPath() error {
 	pathElements := strings.Split(goPath, string(os.PathListSeparator))
 	path := pathElements[0]
 	if len(pathElements) > 1 {
-		AppLogger().Debugf("GOPATH contains more than one element using %s", path)
+		log.Logger().Debugf("GOPATH contains more than one element using %s", path)
 	}
 
 	if _, err := os.Stat(path); err == nil {
@@ -127,7 +129,7 @@ func GoGet(path string, version string, gopath string, goModules bool, sourceOnl
 		defer func() {
 			err := checkout(dir, oldBranchName)
 			if err != nil {
-				AppLogger().Errorf("Error checking out original branch %s: %v", oldBranchName, err)
+				log.Logger().Errorf("Error checking out original branch %s: %v", oldBranchName, err)
 			}
 		}()
 		if err != nil {

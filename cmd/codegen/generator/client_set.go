@@ -12,6 +12,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/jenkins-x/jx-logging/pkg/log"
+
 	"github.com/jenkins-x/jx-api/cmd/codegen/util"
 	"github.com/pkg/errors"
 	"golang.org/x/tools/go/ast/astutil"
@@ -39,7 +41,7 @@ func InstallCodeGenerators(version string, gopath string) error {
 		version = defaultVersion
 	}
 	path := fmt.Sprintf("%s/...", basePath)
-	util.AppLogger().Infof("installing %s version %s into %s", path, version, gopath)
+	log.Logger().Infof("installing %s version %s into %s", path, version, gopath)
 	err := util.GoGet(path, version, gopath, true, false, false)
 	if err != nil {
 		return err
@@ -176,7 +178,7 @@ func GetBoilerplateFile(fileName string) (string, error) {
 			if err == nil {
 				fileName = abs
 			} else {
-				util.AppLogger().Errorf("error converting %s to absolute path so leaving as is %v", fileName, err)
+				log.Logger().Errorf("error converting %s to absolute path so leaving as is %v", fileName, err)
 			}
 		}
 	}

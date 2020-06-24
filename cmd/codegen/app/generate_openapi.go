@@ -6,6 +6,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/jenkins-x/jx-logging/pkg/log"
+
 	"github.com/jenkins-x/jx-api/cmd/codegen/generator"
 	"github.com/jenkins-x/jx-api/cmd/codegen/util"
 
@@ -75,7 +77,7 @@ func NewCmdCreateClientOpenAPI(genOpts GenerateOptions) *cobra.Command {
 
 	wd, err := os.Getwd()
 	if err != nil {
-		util.AppLogger().Warnf("Error getting working directory for %v\n", err)
+		log.Logger().Warnf("Error getting working directory for %v\n", err)
 	}
 
 	openAPIDependencies := []string{
@@ -163,14 +165,14 @@ func (o *CreateClientOpenAPIOptions) Run() error {
 		o.OpenAPIOutputDir = filepath.Join(o.OutputBase, o.OpenAPIOutputDir)
 	}
 
-	util.AppLogger().Infof("generating Go code to %s in package %s from package %s\n", o.OutputBase, o.GoPathOutputPackage, o.InputPackage)
+	log.Logger().Infof("generating Go code to %s in package %s from package %s\n", o.OutputBase, o.GoPathOutputPackage, o.InputPackage)
 	err = generator.GenerateOpenApi(o.GroupsWithVersions, o.InputPackage, o.GoPathOutputPackage, o.OutputPackage,
 		filepath.Join(build.Default.GOPATH, "src"), o.OpenAPIDependencies, o.InputBase, o.ModuleName, o.BoilerplateFile, gopath, o.SemVer)
 	if err != nil {
 		return errors.Wrapf(err, "generating openapi structs to %s", o.GoPathOutputPackage)
 	}
 
-	util.AppLogger().Infof("generating OpenAPI spec files to %s from package %s\n", o.OpenAPIOutputDir, filepath.Join(o.InputBase,
+	log.Logger().Infof("generating OpenAPI spec files to %s from package %s\n", o.OpenAPIOutputDir, filepath.Join(o.InputBase,
 		o.InputPackage))
 	err = generator.GenerateSchema(o.OpenAPIOutputDir, o.OutputPackage, o.InputBase, o.Title, o.Version, gopath)
 	if err != nil {

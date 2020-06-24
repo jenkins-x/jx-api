@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
 	"github.com/jenkins-x/jx-api/cmd/codegen/util"
@@ -23,7 +22,6 @@ const (
 	optionBoilerplateFile = "boilerplate-file"
 	optionModuleName      = "module-name"
 	global                = "global"
-	optionVerbose         = "verbose"
 	optionSemVer          = "semver"
 )
 
@@ -33,7 +31,6 @@ type CommonOptions struct {
 	Cmd              *cobra.Command
 	LogLevel         string
 	GeneratorVersion string
-	Verbose          bool
 }
 
 // GenerateOptions contain common code generation options
@@ -53,19 +50,7 @@ type GenerateOptions struct {
 }
 
 func (o *GenerateOptions) configure() error {
-	err := util.SetLevel(o.LogLevel)
-	if err != nil {
-		return errors.Wrapf(err, "setting log level to %s", o.LogLevel)
-	}
-
-	if o.Verbose {
-		err := util.SetLevel(logrus.DebugLevel.String())
-		if err != nil {
-			return errors.Wrapf(err, "setting log level to %s", o.LogLevel)
-		}
-		util.AppLogger().Debugf("debug logging enabled")
-	}
-	err = util.EnsureGoPath()
+	err := util.EnsureGoPath()
 	if err != nil {
 		return err
 	}

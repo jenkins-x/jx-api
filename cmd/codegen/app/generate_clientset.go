@@ -5,6 +5,8 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/jenkins-x/jx-logging/pkg/log"
+
 	"github.com/jenkins-x/jx-api/cmd/codegen/generator"
 	"github.com/jenkins-x/jx-api/cmd/codegen/util"
 
@@ -70,7 +72,7 @@ func NewGenerateClientSetCmd(genOpts GenerateOptions) *cobra.Command {
 
 	wd, err := os.Getwd()
 	if err != nil {
-		util.AppLogger().Warnf("Error getting working directory for %v\n", err)
+		log.Logger().Warnf("Error getting working directory for %v\n", err)
 	}
 
 	cobraCmd.Flags().StringArrayVarP(&o.Generators, "generator", "", availableGenerators, "Enable a generator")
@@ -128,7 +130,7 @@ func (o *ClientSetGenerationOptions) Run() error {
 	if err != nil {
 		return errors.Wrapf(err, "installing kubernetes code generator tools")
 	}
-	util.AppLogger().Infof("generating Go code to %s in package %s from package %s\n", o.OutputBase, o.GoPathOutputPackage, o.GoPathInputPackage)
+	log.Logger().Infof("generating Go code to %s in package %s from package %s\n", o.OutputBase, o.GoPathOutputPackage, o.GoPathInputPackage)
 	return generator.GenerateClient(o.Generators, o.GroupsWithVersions, o.GoPathInputPackage, o.GoPathOutputPackage, o.OutputPackage,
 		filepath.Join(build.Default.GOPATH, "src"), o.BoilerplateFile, gopath, o.SemVer)
 }
