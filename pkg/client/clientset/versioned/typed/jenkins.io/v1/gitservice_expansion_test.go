@@ -1,5 +1,4 @@
-// +build unit
-
+//nolint:dupl
 package v1
 
 import (
@@ -48,9 +47,8 @@ func TestPatchUpdateGitServiceNoModification(t *testing.T) {
 }
 
 func TestPatchUpdateGitServiceWithChange(t *testing.T) {
-	name := "susfu"
 	clonedGitService := testGitService.DeepCopy()
-	clonedGitService.Spec.Name = name
+	clonedGitService.Spec.Name = FactNameUpdate
 
 	get := func(*http.Request) (*http.Response, error) {
 		json, err := json.Marshal(testGitService)
@@ -78,7 +76,7 @@ func TestPatchUpdateGitServiceWithChange(t *testing.T) {
 	updated, err := gitServices.PatchUpdate(clonedGitService)
 	assert.NoError(t, err)
 	assert.NotEqual(t, testGitService, updated)
-	assert.Equal(t, name, updated.Spec.Name)
+	assert.Equal(t, FactNameUpdate, updated.Spec.Name)
 }
 
 func TestPatchUpdateGitServiceWithErrorInGet(t *testing.T) {
@@ -120,9 +118,8 @@ func TestPatchUpdateGitServiceWithErrorInPatch(t *testing.T) {
 		client: fakeClient,
 		ns:     "default",
 	}
-	name := "susfu"
 	clonedGitService := testGitService.DeepCopy()
-	clonedGitService.Spec.Name = name
+	clonedGitService.Spec.Name = FactNameUpdate
 	updated, err := gitServices.PatchUpdate(clonedGitService)
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), errorMessage)

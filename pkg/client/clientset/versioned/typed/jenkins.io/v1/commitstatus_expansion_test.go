@@ -1,5 +1,4 @@
-// +build unit
-
+//nolint:dupl
 package v1
 
 import (
@@ -86,9 +85,8 @@ func TestPatchUpdateCommitStatusWithChange(t *testing.T) {
 }
 
 func TestPatchUpdateCommitStatusWithErrorInGet(t *testing.T) {
-	errorMessage := "error during GET"
 	get := func(*http.Request) (*http.Response, error) {
-		return nil, errors.New(errorMessage)
+		return nil, errors.New(errorDuringGETMessage)
 	}
 
 	fakeClient := newClientForTest(get, nil)
@@ -100,12 +98,11 @@ func TestPatchUpdateCommitStatusWithErrorInGet(t *testing.T) {
 
 	updated, err := commitStatuses.PatchUpdate(testCommitStatus)
 	assert.Error(t, err)
-	assert.Contains(t, err.Error(), errorMessage)
+	assert.Contains(t, err.Error(), errorDuringGETMessage)
 	assert.Nil(t, updated)
 }
 
 func TestPatchUpdateCommitStatusWithErrorInPatch(t *testing.T) {
-	errorMessage := "error during PATCH"
 	get := func(*http.Request) (*http.Response, error) {
 		json, err := json.Marshal(testCommitStatus)
 		if err != nil {
@@ -115,7 +112,7 @@ func TestPatchUpdateCommitStatusWithErrorInPatch(t *testing.T) {
 	}
 
 	patch := func(*http.Request) (*http.Response, error) {
-		return nil, errors.New(errorMessage)
+		return nil, errors.New(errorDuringPATCHMessage)
 	}
 
 	fakeClient := newClientForTest(get, patch)
@@ -133,6 +130,6 @@ func TestPatchUpdateCommitStatusWithErrorInPatch(t *testing.T) {
 	}
 	updated, err := commitStatuses.PatchUpdate(clonedCommitStatus)
 	assert.Error(t, err)
-	assert.Contains(t, err.Error(), errorMessage)
+	assert.Contains(t, err.Error(), errorDuringPATCHMessage)
 	assert.Nil(t, updated)
 }

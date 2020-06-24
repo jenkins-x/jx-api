@@ -1,5 +1,4 @@
-// +build unit
-
+//nolint:dupl
 package v1
 
 import (
@@ -82,9 +81,8 @@ func TestPatchUpdateSourceRepositoryWithChange(t *testing.T) {
 }
 
 func TestPatchUpdateSourceRepositoryWithErrorInGet(t *testing.T) {
-	errorMessage := "error during GET"
 	get := func(*http.Request) (*http.Response, error) {
-		return nil, errors.New(errorMessage)
+		return nil, errors.New(errorDuringGETMessage)
 	}
 
 	fakeClient := newClientForTest(get, nil)
@@ -96,12 +94,11 @@ func TestPatchUpdateSourceRepositoryWithErrorInGet(t *testing.T) {
 
 	updated, err := sourceRepositories.PatchUpdate(testSourceRepository)
 	assert.Error(t, err)
-	assert.Contains(t, err.Error(), errorMessage)
+	assert.Contains(t, err.Error(), errorDuringGETMessage)
 	assert.Nil(t, updated)
 }
 
 func TestPatchUpdateSourceRepositoryWithErrorInPatch(t *testing.T) {
-	errorMessage := "error during PATCH"
 	get := func(*http.Request) (*http.Response, error) {
 		json, err := json.Marshal(testSourceRepository)
 		if err != nil {
@@ -111,7 +108,7 @@ func TestPatchUpdateSourceRepositoryWithErrorInPatch(t *testing.T) {
 	}
 
 	patch := func(*http.Request) (*http.Response, error) {
-		return nil, errors.New(errorMessage)
+		return nil, errors.New(errorDuringPATCHMessage)
 	}
 
 	fakeClient := newClientForTest(get, patch)
@@ -125,6 +122,6 @@ func TestPatchUpdateSourceRepositoryWithErrorInPatch(t *testing.T) {
 	clonedSourceRepository.Spec.Description = description
 	updated, err := sourceRepositories.PatchUpdate(clonedSourceRepository)
 	assert.Error(t, err)
-	assert.Contains(t, err.Error(), errorMessage)
+	assert.Contains(t, err.Error(), errorDuringPATCHMessage)
 	assert.Nil(t, updated)
 }

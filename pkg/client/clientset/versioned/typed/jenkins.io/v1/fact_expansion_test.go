@@ -1,5 +1,4 @@
-// +build unit
-
+//nolint:dupl
 package v1
 
 import (
@@ -48,9 +47,8 @@ func TestPatchUpdateFactNoModification(t *testing.T) {
 }
 
 func TestPatchUpdateFactWithChange(t *testing.T) {
-	name := "susfu"
 	clonedFact := testFact.DeepCopy()
-	clonedFact.Spec.Name = name
+	clonedFact.Spec.Name = FactNameUpdate
 
 	get := func(*http.Request) (*http.Response, error) {
 		json, err := json.Marshal(testFact)
@@ -78,13 +76,12 @@ func TestPatchUpdateFactWithChange(t *testing.T) {
 	updated, err := facts.PatchUpdate(clonedFact)
 	assert.NoError(t, err)
 	assert.NotEqual(t, testFact, updated)
-	assert.Equal(t, name, updated.Spec.Name)
+	assert.Equal(t, FactNameUpdate, updated.Spec.Name)
 }
 
 func TestPatchUpdateFactWithErrorInGet(t *testing.T) {
-	errorMessage := "error during GET"
 	get := func(*http.Request) (*http.Response, error) {
-		return nil, errors.New(errorMessage)
+		return nil, errors.New(errorDuringGETMessage)
 	}
 
 	fakeClient := newClientForTest(get, nil)
@@ -96,12 +93,11 @@ func TestPatchUpdateFactWithErrorInGet(t *testing.T) {
 
 	updated, err := facts.PatchUpdate(testFact)
 	assert.Error(t, err)
-	assert.Contains(t, err.Error(), errorMessage)
+	assert.Contains(t, err.Error(), errorDuringGETMessage)
 	assert.Nil(t, updated)
 }
 
 func TestPatchUpdateFactWithErrorInPatch(t *testing.T) {
-	errorMessage := "error during PATCH"
 	get := func(*http.Request) (*http.Response, error) {
 		json, err := json.Marshal(testFact)
 		if err != nil {
@@ -111,7 +107,7 @@ func TestPatchUpdateFactWithErrorInPatch(t *testing.T) {
 	}
 
 	patch := func(*http.Request) (*http.Response, error) {
-		return nil, errors.New(errorMessage)
+		return nil, errors.New(errorDuringPATCHMessage)
 	}
 
 	fakeClient := newClientForTest(get, patch)
@@ -120,11 +116,10 @@ func TestPatchUpdateFactWithErrorInPatch(t *testing.T) {
 		client: fakeClient,
 		ns:     "default",
 	}
-	name := "susfu"
 	clonedFact := testFact.DeepCopy()
-	clonedFact.Spec.Name = name
+	clonedFact.Spec.Name = FactNameUpdate
 	updated, err := facts.PatchUpdate(clonedFact)
 	assert.Error(t, err)
-	assert.Contains(t, err.Error(), errorMessage)
+	assert.Contains(t, err.Error(), errorDuringPATCHMessage)
 	assert.Nil(t, updated)
 }
