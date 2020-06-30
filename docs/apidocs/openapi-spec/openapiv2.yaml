@@ -426,6 +426,7 @@ definitions:
     - host
     - owner
     - repo
+    - component
     - url
     - fromVersion
     - fromReleaseHTMLURL
@@ -463,6 +464,7 @@ definitions:
     - host
     - owner
     - repo
+    - component
     - url
     - fromVersion
     - fromReleaseHTMLURL

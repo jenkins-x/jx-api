@@ -1228,7 +1228,7 @@ func schema_pkg_apis_jenkinsio_v1_DependencyUpdate(ref common.ReferenceCallback)
 						},
 					},
 				},
-				Required: []string{"host", "owner", "repo", "url", "fromVersion", "fromReleaseHTMLURL", "fromReleaseName", "toVersion", "toReleaseHTMLURL", "toReleaseName"},
+				Required: []string{"host", "owner", "repo", "component", "url", "fromVersion", "fromReleaseHTMLURL", "fromReleaseName", "toVersion", "toReleaseHTMLURL", "toReleaseName"},
 			},
 		},
 		Dependencies: []string{
@@ -1310,7 +1310,7 @@ func schema_pkg_apis_jenkinsio_v1_DependencyUpdateDetails(ref common.ReferenceCa
 						},
 					},
 				},
-				Required: []string{"host", "owner", "repo", "url", "fromVersion", "fromReleaseHTMLURL", "fromReleaseName", "toVersion", "toReleaseHTMLURL", "toReleaseName"},
+				Required: []string{"host", "owner", "repo", "component", "url", "fromVersion", "fromReleaseHTMLURL", "fromReleaseName", "toVersion", "toReleaseHTMLURL", "toReleaseName"},
 			},
 		},
 		Dependencies: []string{},
