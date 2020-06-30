@@ -3,7 +3,7 @@ module github.com/jenkins-x/jx-api
 go 1.13
 
 require (
-	github.com/alecthomas/jsonschema v0.0.0-20200530073317-71f438968921
+	github.com/alecthomas/jsonschema v0.0.0-20190504002508-159cbd5dba26
 	github.com/cenkalti/backoff v2.2.1+incompatible
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-logr/logr v0.2.0
