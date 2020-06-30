@@ -24,13 +24,13 @@ pipelineConfig:
           - name: lint
             command: ./hack/linter.sh
             image: golang:1.13.10
-          - name: mk-jx-project-dir
+          - name: mk-jxapi-project-dir
             image: bash
             command: mkdir
             args:
             - -p
             - /workspace/go/src/github.com/jenkins-x/jx-api
-          - name: copy-jx-project-to-gopath
+          - name: copy-jxapi-project-to-gopath
             image: bash
             command: cp
             args:
