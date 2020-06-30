@@ -153,7 +153,7 @@ type DependencyUpdateDetails struct {
 	Host               string `json:"host"`
 	Owner              string `json:"owner"`
 	Repo               string `json:"repo"`
-	Component          string `json:"component,omitempty"`
+	Component          string `json:"component"`
 	URL                string `json:"url"`
 	FromVersion        string `json:"fromVersion"`
 	FromReleaseHTMLURL string `json:"fromReleaseHTMLURL"`
