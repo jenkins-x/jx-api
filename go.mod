@@ -22,7 +22,7 @@ require (
 	github.com/xeipuuv/gojsonschema v1.2.0
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d // indirect
 	golang.org/x/tools v0.0.0-20200415034506-5d8e1897c761
-	k8s.io/api v0.16.5
+	k8s.io/api v0.18.6
 	k8s.io/apimachinery v0.16.5
 	k8s.io/client-go v0.16.5
 	k8s.io/kube-openapi v0.0.0-20190816220812-743ec37842bf
