@@ -24,7 +24,7 @@ require (
 	golang.org/x/tools v0.0.0-20200415034506-5d8e1897c761
 	k8s.io/api v0.16.5
 	k8s.io/apimachinery v0.16.5
-	k8s.io/client-go v0.16.5
+	k8s.io/client-go v0.19.1
 	k8s.io/kube-openapi v0.0.0-20190816220812-743ec37842bf
 )
 
