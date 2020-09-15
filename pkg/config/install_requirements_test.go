@@ -33,7 +33,9 @@ func TestRequirementsConfigMarshalExistingFile(t *testing.T) {
 	assert.NoError(t, err, "should create a temporary config dir")
 
 	expectedClusterName := "my-cluster"
-	expectedSecretStorage := config.SecretStorageTypeVault
+	expectedSecretStorage := config.SecretStorageConfig{
+		Provider: config.SecretStorageTypeVault,
+	}
 	expectedDomain := "cheese.co.uk"
 	expectedPipelineUserName := "someone"
 	expectedPipelineUserEmail := "someone@acme.com"
@@ -112,7 +114,6 @@ func Test_OverrideRequirementsFromEnvironment_populate_requirements_from_environ
 		expectedRequirements config.RequirementsConfig
 	}{
 		// RequirementsConfig
-		{config.RequirementSecretStorageType, "vault", config.RequirementsConfig{SecretStorage: "vault"}},
 		{config.RequirementKaniko, "true", config.RequirementsConfig{Kaniko: true}},
 		{config.RequirementKaniko, "false", config.RequirementsConfig{Kaniko: false}},
 		{config.RequirementKaniko, "", config.RequirementsConfig{Kaniko: false}},
