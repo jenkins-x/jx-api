@@ -539,17 +539,6 @@ type UserNameEmailConfig struct {
 	Email string `json:"email,omitempty"`
 }
 
-type AzureSecretStorageConfigType struct {
-	TenantId     string `json:"tenantId,omitempty"`
-	ClientId     string `json:"clientId,omitempty"`
-	KeyVaultName string `json:"keyVaultName,omitempty"`
-}
-
-type SecretStorageConfig struct {
-	Provider                 SecretStorageType            `json:"provider,omitempty"`
-	AzureSecretStorageConfig AzureSecretStorageConfigType `json:"azure,omitempty"`
-}
-
 // RequirementsConfig contains the logical installation requirements in the `jx-requirements.yml` file when
 // installing, configuring or upgrading Jenkins X via `jx boot`
 type RequirementsConfig struct {
@@ -580,7 +569,7 @@ type RequirementsConfig struct {
 	// Repository specifies what kind of artifact repository you wish to use for storing artifacts (jars, tarballs, npm modules etc)
 	Repository RepositoryType `json:"repository,omitempty" envconfig:"JX_REQUIREMENT_REPOSITORY"`
 	// SecretStorage how should we store secrets for the cluster
-	SecretStorage SecretStorageConfig `json:"secretStorage,omitempty"`
+	SecretStorage SecretStorageType `json:"secretStorage,omitempty" envconfig:"JX_REQUIREMENT_SECRET_STORAGE_TYPE"`
 	// Storage contains storage requirements
 	Storage StorageConfig `json:"storage"`
 	// Terraform specifies if  we are managing the kubernetes cluster and cloud resources with Terraform
@@ -598,10 +587,8 @@ type RequirementsConfig struct {
 // NewRequirementsConfig creates a default configuration file
 func NewRequirementsConfig() *RequirementsConfig {
 	return &RequirementsConfig{
-		SecretStorage: SecretStorageConfig{
-			Provider: SecretStorageTypeLocal,
-		},
-		Webhook: WebhookTypeProw,
+		SecretStorage: SecretStorageTypeLocal,
+		Webhook:       WebhookTypeProw,
 	}
 }
 
