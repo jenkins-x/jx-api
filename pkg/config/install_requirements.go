@@ -546,8 +546,8 @@ type AzureSecretStorageConfigType struct {
 }
 
 type SecretStorageConfig struct {
-	Provider                 SecretStorageType            `json:"provider,omitempty"`
-	AzureSecretStorageConfig AzureSecretStorageConfigType `json:"azure,omitempty"`
+	Provider                 SecretStorageType             `json:"provider,omitempty"`
+	AzureSecretStorageConfig *AzureSecretStorageConfigType `json:"azure,omitempty"`
 }
 
 // RequirementsConfig contains the logical installation requirements in the `jx-requirements.yml` file when
