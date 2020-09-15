@@ -29,7 +29,8 @@ githubApp:
 gitops: true
 kaniko: true
 repository: nexus
-secretStorage: vault
+secretStorage:
+  provider: vault
 velero:
   namespace: velero
 webhook: lighthouse
