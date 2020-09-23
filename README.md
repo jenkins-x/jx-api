@@ -28,4 +28,4 @@ func main() {
 ```
 
 
-Part of Jenkins X shared libraries.
+See the [other modules available](https://github.com/jenkins-x/jx-cli#plugins)
