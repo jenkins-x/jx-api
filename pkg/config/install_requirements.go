@@ -581,7 +581,7 @@ type RequirementsConfig struct {
 	// SecretStorage how should we store secrets for the cluster
 	SecretStorage SecretStorageType `json:"secretStorage,omitempty" envconfig:"JX_REQUIREMENT_SECRET_STORAGE_TYPE"`
 	// SecretStorageConfig provide configuration to configure secret storage for the cluster
-	SecretStorageConfig SecretStorageConfig `json:"secretStorageConfig,omitempty"`
+	SecretStorageConfig *SecretStorageConfig `json:"secretStorageConfig,omitempty"`
 	// Storage contains storage requirements
 	Storage StorageConfig `json:"storage"`
 	// Terraform specifies if  we are managing the kubernetes cluster and cloud resources with Terraform
