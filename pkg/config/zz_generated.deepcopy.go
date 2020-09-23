@@ -265,7 +265,11 @@ func (in *RequirementsConfig) DeepCopyInto(out *RequirementsConfig) {
 		*out = new(UserNameEmailConfig)
 		**out = **in
 	}
-	in.SecretStorageConfig.DeepCopyInto(&out.SecretStorageConfig)
+	if in.SecretStorageConfig != nil {
+		in, out := &in.SecretStorageConfig, &out.SecretStorageConfig
+		*out = new(SecretStorageConfig)
+		(*in).DeepCopyInto(*out)
+	}
 	out.Storage = in.Storage
 	in.Vault.DeepCopyInto(&out.Vault)
 	out.Velero = in.Velero
