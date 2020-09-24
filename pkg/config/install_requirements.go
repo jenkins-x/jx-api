@@ -540,9 +540,7 @@ type UserNameEmailConfig struct {
 }
 
 type AzureSecretStorageConfig struct {
-	TenantId     string `json:"tenantId,omitempty"`
-	ClientId     string `json:"clientId,omitempty"`
-	KeyVaultName string `json:"keyVaultName,omitempty"`
+	SecretName string `json:"secretName,omitempty"`
 }
 
 type SecretStorageConfig struct {
