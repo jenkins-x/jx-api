@@ -10,8 +10,10 @@ import (
 )
 
 // EnvironmentLister helps list Environments.
+// All objects returned here must be treated as read-only.
 type EnvironmentLister interface {
 	// List lists all Environments in the indexer.
+	// Objects returned here must be treated as read-only.
 	List(selector labels.Selector) (ret []*v1.Environment, err error)
 	// Environments returns an object that can list and get Environments.
 	Environments(namespace string) EnvironmentNamespaceLister
@@ -42,10 +44,13 @@ func (s *environmentLister) Environments(namespace string) EnvironmentNamespaceL
 }
 
 // EnvironmentNamespaceLister helps list and get Environments.
+// All objects returned here must be treated as read-only.
 type EnvironmentNamespaceLister interface {
 	// List lists all Environments in the indexer for a given namespace.
+	// Objects returned here must be treated as read-only.
 	List(selector labels.Selector) (ret []*v1.Environment, err error)
 	// Get retrieves the Environment from the indexer for a given namespace and name.
+	// Objects returned here must be treated as read-only.
 	Get(name string) (*v1.Environment, error)
 	EnvironmentNamespaceListerExpansion
 }

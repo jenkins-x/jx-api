@@ -3,6 +3,8 @@
 package fake
 
 import (
+	"context"
+
 	jenkinsiov1 "github.com/jenkins-x/jx-api/pkg/apis/jenkins.io/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
@@ -23,7 +25,7 @@ var factsResource = schema.GroupVersionResource{Group: "jenkins.io", Version: "v
 var factsKind = schema.GroupVersionKind{Group: "jenkins.io", Version: "v1", Kind: "Fact"}
 
 // Get takes name of the fact, and returns the corresponding fact object, and an error if there is any.
-func (c *FakeFacts) Get(name string, options v1.GetOptions) (result *jenkinsiov1.Fact, err error) {
+func (c *FakeFacts) Get(ctx context.Context, name string, options v1.GetOptions) (result *jenkinsiov1.Fact, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewGetAction(factsResource, c.ns, name), &jenkinsiov1.Fact{})
 
@@ -34,7 +36,7 @@ func (c *FakeFacts) Get(name string, options v1.GetOptions) (result *jenkinsiov1
 }
 
 // List takes label and field selectors, and returns the list of Facts that match those selectors.
-func (c *FakeFacts) List(opts v1.ListOptions) (result *jenkinsiov1.FactList, err error) {
+func (c *FakeFacts) List(ctx context.Context, opts v1.ListOptions) (result *jenkinsiov1.FactList, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewListAction(factsResource, factsKind, c.ns, opts), &jenkinsiov1.FactList{})
 
@@ -56,14 +58,14 @@ func (c *FakeFacts) List(opts v1.ListOptions) (result *jenkinsiov1.FactList, err
 }
 
 // Watch returns a watch.Interface that watches the requested facts.
-func (c *FakeFacts) Watch(opts v1.ListOptions) (watch.Interface, error) {
+func (c *FakeFacts) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
 	return c.Fake.
 		InvokesWatch(testing.NewWatchAction(factsResource, c.ns, opts))
 
 }
 
 // Create takes the representation of a fact and creates it.  Returns the server's representation of the fact, and an error, if there is any.
-func (c *FakeFacts) Create(fact *jenkinsiov1.Fact) (result *jenkinsiov1.Fact, err error) {
+func (c *FakeFacts) Create(ctx context.Context, fact *jenkinsiov1.Fact, opts v1.CreateOptions) (result *jenkinsiov1.Fact, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewCreateAction(factsResource, c.ns, fact), &jenkinsiov1.Fact{})
 
@@ -74,7 +76,7 @@ func (c *FakeFacts) Create(fact *jenkinsiov1.Fact) (result *jenkinsiov1.Fact, er
 }
 
 // Update takes the representation of a fact and updates it. Returns the server's representation of the fact, and an error, if there is any.
-func (c *FakeFacts) Update(fact *jenkinsiov1.Fact) (result *jenkinsiov1.Fact, err error) {
+func (c *FakeFacts) Update(ctx context.Context, fact *jenkinsiov1.Fact, opts v1.UpdateOptions) (result *jenkinsiov1.Fact, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewUpdateAction(factsResource, c.ns, fact), &jenkinsiov1.Fact{})
 
@@ -85,7 +87,7 @@ func (c *FakeFacts) Update(fact *jenkinsiov1.Fact) (result *jenkinsiov1.Fact, er
 }
 
 // Delete takes name of the fact and deletes it. Returns an error if one occurs.
-func (c *FakeFacts) Delete(name string, options *v1.DeleteOptions) error {
+func (c *FakeFacts) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
 		Invokes(testing.NewDeleteAction(factsResource, c.ns, name), &jenkinsiov1.Fact{})
 
@@ -93,15 +95,15 @@ func (c *FakeFacts) Delete(name string, options *v1.DeleteOptions) error {
 }
 
 // DeleteCollection deletes a collection of objects.
-func (c *FakeFacts) DeleteCollection(options *v1.DeleteOptions, listOptions v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(factsResource, c.ns, listOptions)
+func (c *FakeFacts) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(factsResource, c.ns, listOpts)
 
 	_, err := c.Fake.Invokes(action, &jenkinsiov1.FactList{})
 	return err
 }
 
 // Patch applies the patch and returns the patched fact.
-func (c *FakeFacts) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *jenkinsiov1.Fact, err error) {
+func (c *FakeFacts) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *jenkinsiov1.Fact, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewPatchSubresourceAction(factsResource, c.ns, name, pt, data, subresources...), &jenkinsiov1.Fact{})
 

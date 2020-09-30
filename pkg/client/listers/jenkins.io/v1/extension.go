@@ -10,8 +10,10 @@ import (
 )
 
 // ExtensionLister helps list Extensions.
+// All objects returned here must be treated as read-only.
 type ExtensionLister interface {
 	// List lists all Extensions in the indexer.
+	// Objects returned here must be treated as read-only.
 	List(selector labels.Selector) (ret []*v1.Extension, err error)
 	// Extensions returns an object that can list and get Extensions.
 	Extensions(namespace string) ExtensionNamespaceLister
@@ -42,10 +44,13 @@ func (s *extensionLister) Extensions(namespace string) ExtensionNamespaceLister 
 }
 
 // ExtensionNamespaceLister helps list and get Extensions.
+// All objects returned here must be treated as read-only.
 type ExtensionNamespaceLister interface {
 	// List lists all Extensions in the indexer for a given namespace.
+	// Objects returned here must be treated as read-only.
 	List(selector labels.Selector) (ret []*v1.Extension, err error)
 	// Get retrieves the Extension from the indexer for a given namespace and name.
+	// Objects returned here must be treated as read-only.
 	Get(name string) (*v1.Extension, error)
 	ExtensionNamespaceListerExpansion
 }

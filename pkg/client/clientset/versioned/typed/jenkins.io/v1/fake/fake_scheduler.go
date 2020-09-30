@@ -3,6 +3,8 @@
 package fake
 
 import (
+	"context"
+
 	jenkinsiov1 "github.com/jenkins-x/jx-api/pkg/apis/jenkins.io/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
@@ -23,7 +25,7 @@ var schedulersResource = schema.GroupVersionResource{Group: "jenkins.io", Versio
 var schedulersKind = schema.GroupVersionKind{Group: "jenkins.io", Version: "v1", Kind: "Scheduler"}
 
 // Get takes name of the scheduler, and returns the corresponding scheduler object, and an error if there is any.
-func (c *FakeSchedulers) Get(name string, options v1.GetOptions) (result *jenkinsiov1.Scheduler, err error) {
+func (c *FakeSchedulers) Get(ctx context.Context, name string, options v1.GetOptions) (result *jenkinsiov1.Scheduler, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewGetAction(schedulersResource, c.ns, name), &jenkinsiov1.Scheduler{})
 
@@ -34,7 +36,7 @@ func (c *FakeSchedulers) Get(name string, options v1.GetOptions) (result *jenkin
 }
 
 // List takes label and field selectors, and returns the list of Schedulers that match those selectors.
-func (c *FakeSchedulers) List(opts v1.ListOptions) (result *jenkinsiov1.SchedulerList, err error) {
+func (c *FakeSchedulers) List(ctx context.Context, opts v1.ListOptions) (result *jenkinsiov1.SchedulerList, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewListAction(schedulersResource, schedulersKind, c.ns, opts), &jenkinsiov1.SchedulerList{})
 
@@ -56,14 +58,14 @@ func (c *FakeSchedulers) List(opts v1.ListOptions) (result *jenkinsiov1.Schedule
 }
 
 // Watch returns a watch.Interface that watches the requested schedulers.
-func (c *FakeSchedulers) Watch(opts v1.ListOptions) (watch.Interface, error) {
+func (c *FakeSchedulers) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
 	return c.Fake.
 		InvokesWatch(testing.NewWatchAction(schedulersResource, c.ns, opts))
 
 }
 
 // Create takes the representation of a scheduler and creates it.  Returns the server's representation of the scheduler, and an error, if there is any.
-func (c *FakeSchedulers) Create(scheduler *jenkinsiov1.Scheduler) (result *jenkinsiov1.Scheduler, err error) {
+func (c *FakeSchedulers) Create(ctx context.Context, scheduler *jenkinsiov1.Scheduler, opts v1.CreateOptions) (result *jenkinsiov1.Scheduler, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewCreateAction(schedulersResource, c.ns, scheduler), &jenkinsiov1.Scheduler{})
 
@@ -74,7 +76,7 @@ func (c *FakeSchedulers) Create(scheduler *jenkinsiov1.Scheduler) (result *jenki
 }
 
 // Update takes the representation of a scheduler and updates it. Returns the server's representation of the scheduler, and an error, if there is any.
-func (c *FakeSchedulers) Update(scheduler *jenkinsiov1.Scheduler) (result *jenkinsiov1.Scheduler, err error) {
+func (c *FakeSchedulers) Update(ctx context.Context, scheduler *jenkinsiov1.Scheduler, opts v1.UpdateOptions) (result *jenkinsiov1.Scheduler, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewUpdateAction(schedulersResource, c.ns, scheduler), &jenkinsiov1.Scheduler{})
 
@@ -85,7 +87,7 @@ func (c *FakeSchedulers) Update(scheduler *jenkinsiov1.Scheduler) (result *jenki
 }
 
 // Delete takes name of the scheduler and deletes it. Returns an error if one occurs.
-func (c *FakeSchedulers) Delete(name string, options *v1.DeleteOptions) error {
+func (c *FakeSchedulers) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
 		Invokes(testing.NewDeleteAction(schedulersResource, c.ns, name), &jenkinsiov1.Scheduler{})
 
@@ -93,15 +95,15 @@ func (c *FakeSchedulers) Delete(name string, options *v1.DeleteOptions) error {
 }
 
 // DeleteCollection deletes a collection of objects.
-func (c *FakeSchedulers) DeleteCollection(options *v1.DeleteOptions, listOptions v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(schedulersResource, c.ns, listOptions)
+func (c *FakeSchedulers) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(schedulersResource, c.ns, listOpts)
 
 	_, err := c.Fake.Invokes(action, &jenkinsiov1.SchedulerList{})
 	return err
 }
 
 // Patch applies the patch and returns the patched scheduler.
-func (c *FakeSchedulers) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *jenkinsiov1.Scheduler, err error) {
+func (c *FakeSchedulers) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *jenkinsiov1.Scheduler, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewPatchSubresourceAction(schedulersResource, c.ns, name, pt, data, subresources...), &jenkinsiov1.Scheduler{})
 

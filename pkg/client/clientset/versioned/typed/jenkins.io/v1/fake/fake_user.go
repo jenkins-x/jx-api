@@ -3,6 +3,8 @@
 package fake
 
 import (
+	"context"
+
 	jenkinsiov1 "github.com/jenkins-x/jx-api/pkg/apis/jenkins.io/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
@@ -23,7 +25,7 @@ var usersResource = schema.GroupVersionResource{Group: "jenkins.io", Version: "v
 var usersKind = schema.GroupVersionKind{Group: "jenkins.io", Version: "v1", Kind: "User"}
 
 // Get takes name of the user, and returns the corresponding user object, and an error if there is any.
-func (c *FakeUsers) Get(name string, options v1.GetOptions) (result *jenkinsiov1.User, err error) {
+func (c *FakeUsers) Get(ctx context.Context, name string, options v1.GetOptions) (result *jenkinsiov1.User, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewGetAction(usersResource, c.ns, name), &jenkinsiov1.User{})
 
@@ -34,7 +36,7 @@ func (c *FakeUsers) Get(name string, options v1.GetOptions) (result *jenkinsiov1
 }
 
 // List takes label and field selectors, and returns the list of Users that match those selectors.
-func (c *FakeUsers) List(opts v1.ListOptions) (result *jenkinsiov1.UserList, err error) {
+func (c *FakeUsers) List(ctx context.Context, opts v1.ListOptions) (result *jenkinsiov1.UserList, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewListAction(usersResource, usersKind, c.ns, opts), &jenkinsiov1.UserList{})
 
@@ -56,14 +58,14 @@ func (c *FakeUsers) List(opts v1.ListOptions) (result *jenkinsiov1.UserList, err
 }
 
 // Watch returns a watch.Interface that watches the requested users.
-func (c *FakeUsers) Watch(opts v1.ListOptions) (watch.Interface, error) {
+func (c *FakeUsers) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
 	return c.Fake.
 		InvokesWatch(testing.NewWatchAction(usersResource, c.ns, opts))
 
 }
 
 // Create takes the representation of a user and creates it.  Returns the server's representation of the user, and an error, if there is any.
-func (c *FakeUsers) Create(user *jenkinsiov1.User) (result *jenkinsiov1.User, err error) {
+func (c *FakeUsers) Create(ctx context.Context, user *jenkinsiov1.User, opts v1.CreateOptions) (result *jenkinsiov1.User, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewCreateAction(usersResource, c.ns, user), &jenkinsiov1.User{})
 
@@ -74,7 +76,7 @@ func (c *FakeUsers) Create(user *jenkinsiov1.User) (result *jenkinsiov1.User, er
 }
 
 // Update takes the representation of a user and updates it. Returns the server's representation of the user, and an error, if there is any.
-func (c *FakeUsers) Update(user *jenkinsiov1.User) (result *jenkinsiov1.User, err error) {
+func (c *FakeUsers) Update(ctx context.Context, user *jenkinsiov1.User, opts v1.UpdateOptions) (result *jenkinsiov1.User, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewUpdateAction(usersResource, c.ns, user), &jenkinsiov1.User{})
 
@@ -85,7 +87,7 @@ func (c *FakeUsers) Update(user *jenkinsiov1.User) (result *jenkinsiov1.User, er
 }
 
 // Delete takes name of the user and deletes it. Returns an error if one occurs.
-func (c *FakeUsers) Delete(name string, options *v1.DeleteOptions) error {
+func (c *FakeUsers) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
 		Invokes(testing.NewDeleteAction(usersResource, c.ns, name), &jenkinsiov1.User{})
 
@@ -93,15 +95,15 @@ func (c *FakeUsers) Delete(name string, options *v1.DeleteOptions) error {
 }
 
 // DeleteCollection deletes a collection of objects.
-func (c *FakeUsers) DeleteCollection(options *v1.DeleteOptions, listOptions v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(usersResource, c.ns, listOptions)
+func (c *FakeUsers) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(usersResource, c.ns, listOpts)
 
 	_, err := c.Fake.Invokes(action, &jenkinsiov1.UserList{})
 	return err
 }
 
 // Patch applies the patch and returns the patched user.
-func (c *FakeUsers) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *jenkinsiov1.User, err error) {
+func (c *FakeUsers) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *jenkinsiov1.User, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewPatchSubresourceAction(usersResource, c.ns, name, pt, data, subresources...), &jenkinsiov1.User{})
 

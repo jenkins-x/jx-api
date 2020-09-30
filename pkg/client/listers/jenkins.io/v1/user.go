@@ -10,8 +10,10 @@ import (
 )
 
 // UserLister helps list Users.
+// All objects returned here must be treated as read-only.
 type UserLister interface {
 	// List lists all Users in the indexer.
+	// Objects returned here must be treated as read-only.
 	List(selector labels.Selector) (ret []*v1.User, err error)
 	// Users returns an object that can list and get Users.
 	Users(namespace string) UserNamespaceLister
@@ -42,10 +44,13 @@ func (s *userLister) Users(namespace string) UserNamespaceLister {
 }
 
 // UserNamespaceLister helps list and get Users.
+// All objects returned here must be treated as read-only.
 type UserNamespaceLister interface {
 	// List lists all Users in the indexer for a given namespace.
+	// Objects returned here must be treated as read-only.
 	List(selector labels.Selector) (ret []*v1.User, err error)
 	// Get retrieves the User from the indexer for a given namespace and name.
+	// Objects returned here must be treated as read-only.
 	Get(name string) (*v1.User, error)
 	UserNamespaceListerExpansion
 }

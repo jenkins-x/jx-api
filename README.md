@@ -7,8 +7,8 @@ Here's an example which also uses [Jenkins X logging](https://github.com/jenkins
 
 ```go
 import (
-    "github.com/jenkins-x/jx-kube-client/pkg/kubeclient"
-    "github.com/jenkins-x/jx-logging/pkg/log"
+    "github.com/jenkins-x/jx-kube-client/v3/pkg/kubeclient"
+    "github.com/jenkins-x/jx-logging/v3/pkg/log"
     "github.com/jenkins-x/jx-api/pkg/client/clientset/versioned"
 )
 

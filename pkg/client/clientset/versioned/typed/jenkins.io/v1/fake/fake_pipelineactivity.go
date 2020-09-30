@@ -3,6 +3,8 @@
 package fake
 
 import (
+	"context"
+
 	jenkinsiov1 "github.com/jenkins-x/jx-api/pkg/apis/jenkins.io/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
@@ -23,7 +25,7 @@ var pipelineactivitiesResource = schema.GroupVersionResource{Group: "jenkins.io"
 var pipelineactivitiesKind = schema.GroupVersionKind{Group: "jenkins.io", Version: "v1", Kind: "PipelineActivity"}
 
 // Get takes name of the pipelineActivity, and returns the corresponding pipelineActivity object, and an error if there is any.
-func (c *FakePipelineActivities) Get(name string, options v1.GetOptions) (result *jenkinsiov1.PipelineActivity, err error) {
+func (c *FakePipelineActivities) Get(ctx context.Context, name string, options v1.GetOptions) (result *jenkinsiov1.PipelineActivity, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewGetAction(pipelineactivitiesResource, c.ns, name), &jenkinsiov1.PipelineActivity{})
 
@@ -34,7 +36,7 @@ func (c *FakePipelineActivities) Get(name string, options v1.GetOptions) (result
 }
 
 // List takes label and field selectors, and returns the list of PipelineActivities that match those selectors.
-func (c *FakePipelineActivities) List(opts v1.ListOptions) (result *jenkinsiov1.PipelineActivityList, err error) {
+func (c *FakePipelineActivities) List(ctx context.Context, opts v1.ListOptions) (result *jenkinsiov1.PipelineActivityList, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewListAction(pipelineactivitiesResource, pipelineactivitiesKind, c.ns, opts), &jenkinsiov1.PipelineActivityList{})
 
@@ -56,14 +58,14 @@ func (c *FakePipelineActivities) List(opts v1.ListOptions) (result *jenkinsiov1.
 }
 
 // Watch returns a watch.Interface that watches the requested pipelineActivities.
-func (c *FakePipelineActivities) Watch(opts v1.ListOptions) (watch.Interface, error) {
+func (c *FakePipelineActivities) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
 	return c.Fake.
 		InvokesWatch(testing.NewWatchAction(pipelineactivitiesResource, c.ns, opts))
 
 }
 
 // Create takes the representation of a pipelineActivity and creates it.  Returns the server's representation of the pipelineActivity, and an error, if there is any.
-func (c *FakePipelineActivities) Create(pipelineActivity *jenkinsiov1.PipelineActivity) (result *jenkinsiov1.PipelineActivity, err error) {
+func (c *FakePipelineActivities) Create(ctx context.Context, pipelineActivity *jenkinsiov1.PipelineActivity, opts v1.CreateOptions) (result *jenkinsiov1.PipelineActivity, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewCreateAction(pipelineactivitiesResource, c.ns, pipelineActivity), &jenkinsiov1.PipelineActivity{})
 
@@ -74,7 +76,7 @@ func (c *FakePipelineActivities) Create(pipelineActivity *jenkinsiov1.PipelineAc
 }
 
 // Update takes the representation of a pipelineActivity and updates it. Returns the server's representation of the pipelineActivity, and an error, if there is any.
-func (c *FakePipelineActivities) Update(pipelineActivity *jenkinsiov1.PipelineActivity) (result *jenkinsiov1.PipelineActivity, err error) {
+func (c *FakePipelineActivities) Update(ctx context.Context, pipelineActivity *jenkinsiov1.PipelineActivity, opts v1.UpdateOptions) (result *jenkinsiov1.PipelineActivity, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewUpdateAction(pipelineactivitiesResource, c.ns, pipelineActivity), &jenkinsiov1.PipelineActivity{})
 
@@ -85,7 +87,7 @@ func (c *FakePipelineActivities) Update(pipelineActivity *jenkinsiov1.PipelineAc
 }
 
 // Delete takes name of the pipelineActivity and deletes it. Returns an error if one occurs.
-func (c *FakePipelineActivities) Delete(name string, options *v1.DeleteOptions) error {
+func (c *FakePipelineActivities) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
 		Invokes(testing.NewDeleteAction(pipelineactivitiesResource, c.ns, name), &jenkinsiov1.PipelineActivity{})
 
@@ -93,15 +95,15 @@ func (c *FakePipelineActivities) Delete(name string, options *v1.DeleteOptions) 
 }
 
 // DeleteCollection deletes a collection of objects.
-func (c *FakePipelineActivities) DeleteCollection(options *v1.DeleteOptions, listOptions v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(pipelineactivitiesResource, c.ns, listOptions)
+func (c *FakePipelineActivities) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(pipelineactivitiesResource, c.ns, listOpts)
 
 	_, err := c.Fake.Invokes(action, &jenkinsiov1.PipelineActivityList{})
 	return err
 }
 
 // Patch applies the patch and returns the patched pipelineActivity.
-func (c *FakePipelineActivities) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *jenkinsiov1.PipelineActivity, err error) {
+func (c *FakePipelineActivities) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *jenkinsiov1.PipelineActivity, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewPatchSubresourceAction(pipelineactivitiesResource, c.ns, name, pt, data, subresources...), &jenkinsiov1.PipelineActivity{})
 

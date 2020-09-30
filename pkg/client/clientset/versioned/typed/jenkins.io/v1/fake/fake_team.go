@@ -3,6 +3,8 @@
 package fake
 
 import (
+	"context"
+
 	jenkinsiov1 "github.com/jenkins-x/jx-api/pkg/apis/jenkins.io/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
@@ -23,7 +25,7 @@ var teamsResource = schema.GroupVersionResource{Group: "jenkins.io", Version: "v
 var teamsKind = schema.GroupVersionKind{Group: "jenkins.io", Version: "v1", Kind: "Team"}
 
 // Get takes name of the team, and returns the corresponding team object, and an error if there is any.
-func (c *FakeTeams) Get(name string, options v1.GetOptions) (result *jenkinsiov1.Team, err error) {
+func (c *FakeTeams) Get(ctx context.Context, name string, options v1.GetOptions) (result *jenkinsiov1.Team, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewGetAction(teamsResource, c.ns, name), &jenkinsiov1.Team{})
 
@@ -34,7 +36,7 @@ func (c *FakeTeams) Get(name string, options v1.GetOptions) (result *jenkinsiov1
 }
 
 // List takes label and field selectors, and returns the list of Teams that match those selectors.
-func (c *FakeTeams) List(opts v1.ListOptions) (result *jenkinsiov1.TeamList, err error) {
+func (c *FakeTeams) List(ctx context.Context, opts v1.ListOptions) (result *jenkinsiov1.TeamList, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewListAction(teamsResource, teamsKind, c.ns, opts), &jenkinsiov1.TeamList{})
 
@@ -56,14 +58,14 @@ func (c *FakeTeams) List(opts v1.ListOptions) (result *jenkinsiov1.TeamList, err
 }
 
 // Watch returns a watch.Interface that watches the requested teams.
-func (c *FakeTeams) Watch(opts v1.ListOptions) (watch.Interface, error) {
+func (c *FakeTeams) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
 	return c.Fake.
 		InvokesWatch(testing.NewWatchAction(teamsResource, c.ns, opts))
 
 }
 
 // Create takes the representation of a team and creates it.  Returns the server's representation of the team, and an error, if there is any.
-func (c *FakeTeams) Create(team *jenkinsiov1.Team) (result *jenkinsiov1.Team, err error) {
+func (c *FakeTeams) Create(ctx context.Context, team *jenkinsiov1.Team, opts v1.CreateOptions) (result *jenkinsiov1.Team, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewCreateAction(teamsResource, c.ns, team), &jenkinsiov1.Team{})
 
@@ -74,7 +76,7 @@ func (c *FakeTeams) Create(team *jenkinsiov1.Team) (result *jenkinsiov1.Team, er
 }
 
 // Update takes the representation of a team and updates it. Returns the server's representation of the team, and an error, if there is any.
-func (c *FakeTeams) Update(team *jenkinsiov1.Team) (result *jenkinsiov1.Team, err error) {
+func (c *FakeTeams) Update(ctx context.Context, team *jenkinsiov1.Team, opts v1.UpdateOptions) (result *jenkinsiov1.Team, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewUpdateAction(teamsResource, c.ns, team), &jenkinsiov1.Team{})
 
@@ -85,7 +87,7 @@ func (c *FakeTeams) Update(team *jenkinsiov1.Team) (result *jenkinsiov1.Team, er
 }
 
 // Delete takes name of the team and deletes it. Returns an error if one occurs.
-func (c *FakeTeams) Delete(name string, options *v1.DeleteOptions) error {
+func (c *FakeTeams) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
 		Invokes(testing.NewDeleteAction(teamsResource, c.ns, name), &jenkinsiov1.Team{})
 
@@ -93,15 +95,15 @@ func (c *FakeTeams) Delete(name string, options *v1.DeleteOptions) error {
 }
 
 // DeleteCollection deletes a collection of objects.
-func (c *FakeTeams) DeleteCollection(options *v1.DeleteOptions, listOptions v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(teamsResource, c.ns, listOptions)
+func (c *FakeTeams) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(teamsResource, c.ns, listOpts)
 
 	_, err := c.Fake.Invokes(action, &jenkinsiov1.TeamList{})
 	return err
 }
 
 // Patch applies the patch and returns the patched team.
-func (c *FakeTeams) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *jenkinsiov1.Team, err error) {
+func (c *FakeTeams) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *jenkinsiov1.Team, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewPatchSubresourceAction(teamsResource, c.ns, name, pt, data, subresources...), &jenkinsiov1.Team{})
 

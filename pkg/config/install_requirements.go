@@ -6,7 +6,7 @@ import (
 
 	"github.com/jenkins-x/jx-api/pkg/cloud"
 	"github.com/jenkins-x/jx-api/pkg/util"
-	"github.com/jenkins-x/jx-logging/pkg/log"
+	"github.com/jenkins-x/jx-logging/v3/pkg/log"
 
 	"io/ioutil"
 	"os"

@@ -3,6 +3,7 @@
 package v1
 
 import (
+	"context"
 	"time"
 
 	v1 "github.com/jenkins-x/jx-api/pkg/apis/jenkins.io/v1"
@@ -21,14 +22,14 @@ type CommitStatusesGetter interface {
 
 // CommitStatusInterface has methods to work with CommitStatus resources.
 type CommitStatusInterface interface {
-	Create(*v1.CommitStatus) (*v1.CommitStatus, error)
-	Update(*v1.CommitStatus) (*v1.CommitStatus, error)
-	Delete(name string, options *metav1.DeleteOptions) error
-	DeleteCollection(options *metav1.DeleteOptions, listOptions metav1.ListOptions) error
-	Get(name string, options metav1.GetOptions) (*v1.CommitStatus, error)
-	List(opts metav1.ListOptions) (*v1.CommitStatusList, error)
-	Watch(opts metav1.ListOptions) (watch.Interface, error)
-	Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1.CommitStatus, err error)
+	Create(ctx context.Context, commitStatus *v1.CommitStatus, opts metav1.CreateOptions) (*v1.CommitStatus, error)
+	Update(ctx context.Context, commitStatus *v1.CommitStatus, opts metav1.UpdateOptions) (*v1.CommitStatus, error)
+	Delete(ctx context.Context, name string, opts metav1.DeleteOptions) error
+	DeleteCollection(ctx context.Context, opts metav1.DeleteOptions, listOpts metav1.ListOptions) error
+	Get(ctx context.Context, name string, opts metav1.GetOptions) (*v1.CommitStatus, error)
+	List(ctx context.Context, opts metav1.ListOptions) (*v1.CommitStatusList, error)
+	Watch(ctx context.Context, opts metav1.ListOptions) (watch.Interface, error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts metav1.PatchOptions, subresources ...string) (result *v1.CommitStatus, err error)
 	CommitStatusExpansion
 }
 
@@ -47,20 +48,20 @@ func newCommitStatuses(c *JenkinsV1Client, namespace string) *commitStatuses {
 }
 
 // Get takes name of the commitStatus, and returns the corresponding commitStatus object, and an error if there is any.
-func (c *commitStatuses) Get(name string, options metav1.GetOptions) (result *v1.CommitStatus, err error) {
+func (c *commitStatuses) Get(ctx context.Context, name string, options metav1.GetOptions) (result *v1.CommitStatus, err error) {
 	result = &v1.CommitStatus{}
 	err = c.client.Get().
 		Namespace(c.ns).
 		Resource("commitstatuses").
 		Name(name).
 		VersionedParams(&options, scheme.ParameterCodec).
-		Do().
+		Do(ctx).
 		Into(result)
 	return
 }
 
 // List takes label and field selectors, and returns the list of CommitStatuses that match those selectors.
-func (c *commitStatuses) List(opts metav1.ListOptions) (result *v1.CommitStatusList, err error) {
+func (c *commitStatuses) List(ctx context.Context, opts metav1.ListOptions) (result *v1.CommitStatusList, err error) {
 	var timeout time.Duration
 	if opts.TimeoutSeconds != nil {
 		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
@@ -71,13 +72,13 @@ func (c *commitStatuses) List(opts metav1.ListOptions) (result *v1.CommitStatusL
 		Resource("commitstatuses").
 		VersionedParams(&opts, scheme.ParameterCodec).
 		Timeout(timeout).
-		Do().
+		Do(ctx).
 		Into(result)
 	return
 }
 
 // Watch returns a watch.Interface that watches the requested commitStatuses.
-func (c *commitStatuses) Watch(opts metav1.ListOptions) (watch.Interface, error) {
+func (c *commitStatuses) Watch(ctx context.Context, opts metav1.ListOptions) (watch.Interface, error) {
 	var timeout time.Duration
 	if opts.TimeoutSeconds != nil {
 		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
@@ -88,71 +89,74 @@ func (c *commitStatuses) Watch(opts metav1.ListOptions) (watch.Interface, error)
 		Resource("commitstatuses").
 		VersionedParams(&opts, scheme.ParameterCodec).
 		Timeout(timeout).
-		Watch()
+		Watch(ctx)
 }
 
 // Create takes the representation of a commitStatus and creates it.  Returns the server's representation of the commitStatus, and an error, if there is any.
-func (c *commitStatuses) Create(commitStatus *v1.CommitStatus) (result *v1.CommitStatus, err error) {
+func (c *commitStatuses) Create(ctx context.Context, commitStatus *v1.CommitStatus, opts metav1.CreateOptions) (result *v1.CommitStatus, err error) {
 	result = &v1.CommitStatus{}
 	err = c.client.Post().
 		Namespace(c.ns).
 		Resource("commitstatuses").
+		VersionedParams(&opts, scheme.ParameterCodec).
 		Body(commitStatus).
-		Do().
+		Do(ctx).
 		Into(result)
 	return
 }
 
 // Update takes the representation of a commitStatus and updates it. Returns the server's representation of the commitStatus, and an error, if there is any.
-func (c *commitStatuses) Update(commitStatus *v1.CommitStatus) (result *v1.CommitStatus, err error) {
+func (c *commitStatuses) Update(ctx context.Context, commitStatus *v1.CommitStatus, opts metav1.UpdateOptions) (result *v1.CommitStatus, err error) {
 	result = &v1.CommitStatus{}
 	err = c.client.Put().
 		Namespace(c.ns).
 		Resource("commitstatuses").
 		Name(commitStatus.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
 		Body(commitStatus).
-		Do().
+		Do(ctx).
 		Into(result)
 	return
 }
 
 // Delete takes name of the commitStatus and deletes it. Returns an error if one occurs.
-func (c *commitStatuses) Delete(name string, options *metav1.DeleteOptions) error {
+func (c *commitStatuses) Delete(ctx context.Context, name string, opts metav1.DeleteOptions) error {
 	return c.client.Delete().
 		Namespace(c.ns).
 		Resource("commitstatuses").
 		Name(name).
-		Body(options).
-		Do().
+		Body(&opts).
+		Do(ctx).
 		Error()
 }
 
 // DeleteCollection deletes a collection of objects.
-func (c *commitStatuses) DeleteCollection(options *metav1.DeleteOptions, listOptions metav1.ListOptions) error {
+func (c *commitStatuses) DeleteCollection(ctx context.Context, opts metav1.DeleteOptions, listOpts metav1.ListOptions) error {
 	var timeout time.Duration
-	if listOptions.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOptions.TimeoutSeconds) * time.Second
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
 	}
 	return c.client.Delete().
 		Namespace(c.ns).
 		Resource("commitstatuses").
-		VersionedParams(&listOptions, scheme.ParameterCodec).
+		VersionedParams(&listOpts, scheme.ParameterCodec).
 		Timeout(timeout).
-		Body(options).
-		Do().
+		Body(&opts).
+		Do(ctx).
 		Error()
 }
 
 // Patch applies the patch and returns the patched commitStatus.
-func (c *commitStatuses) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1.CommitStatus, err error) {
+func (c *commitStatuses) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts metav1.PatchOptions, subresources ...string) (result *v1.CommitStatus, err error) {
 	result = &v1.CommitStatus{}
 	err = c.client.Patch(pt).
 		Namespace(c.ns).
 		Resource("commitstatuses").
-		SubResource(subresources...).
 		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
 		Body(data).
-		Do().
+		Do(ctx).
 		Into(result)
 	return
 }

@@ -3,6 +3,7 @@
 package v1
 
 import (
+	"context"
 	time "time"
 
 	jenkinsiov1 "github.com/jenkins-x/jx-api/pkg/apis/jenkins.io/v1"
@@ -45,13 +46,13 @@ func NewFilteredPluginInformer(client versioned.Interface, namespace string, res
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.JenkinsV1().Plugins(namespace).List(options)
+				return client.JenkinsV1().Plugins(namespace).List(context.TODO(), options)
 			},
 			WatchFunc: func(options metav1.ListOptions) (watch.Interface, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.JenkinsV1().Plugins(namespace).Watch(options)
+				return client.JenkinsV1().Plugins(namespace).Watch(context.TODO(), options)
 			},
 		},
 		&jenkinsiov1.Plugin{},

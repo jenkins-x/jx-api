@@ -10,8 +10,10 @@ import (
 )
 
 // EnvironmentRoleBindingLister helps list EnvironmentRoleBindings.
+// All objects returned here must be treated as read-only.
 type EnvironmentRoleBindingLister interface {
 	// List lists all EnvironmentRoleBindings in the indexer.
+	// Objects returned here must be treated as read-only.
 	List(selector labels.Selector) (ret []*v1.EnvironmentRoleBinding, err error)
 	// EnvironmentRoleBindings returns an object that can list and get EnvironmentRoleBindings.
 	EnvironmentRoleBindings(namespace string) EnvironmentRoleBindingNamespaceLister
@@ -42,10 +44,13 @@ func (s *environmentRoleBindingLister) EnvironmentRoleBindings(namespace string)
 }
 
 // EnvironmentRoleBindingNamespaceLister helps list and get EnvironmentRoleBindings.
+// All objects returned here must be treated as read-only.
 type EnvironmentRoleBindingNamespaceLister interface {
 	// List lists all EnvironmentRoleBindings in the indexer for a given namespace.
+	// Objects returned here must be treated as read-only.
 	List(selector labels.Selector) (ret []*v1.EnvironmentRoleBinding, err error)
 	// Get retrieves the EnvironmentRoleBinding from the indexer for a given namespace and name.
+	// Objects returned here must be treated as read-only.
 	Get(name string) (*v1.EnvironmentRoleBinding, error)
 	EnvironmentRoleBindingNamespaceListerExpansion
 }

@@ -3,6 +3,7 @@
 package v1
 
 import (
+	"context"
 	time "time"
 
 	jenkinsiov1 "github.com/jenkins-x/jx-api/pkg/apis/jenkins.io/v1"
@@ -45,13 +46,13 @@ func NewFilteredEnvironmentRoleBindingInformer(client versioned.Interface, names
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.JenkinsV1().EnvironmentRoleBindings(namespace).List(options)
+				return client.JenkinsV1().EnvironmentRoleBindings(namespace).List(context.TODO(), options)
 			},
 			WatchFunc: func(options metav1.ListOptions) (watch.Interface, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.JenkinsV1().EnvironmentRoleBindings(namespace).Watch(options)
+				return client.JenkinsV1().EnvironmentRoleBindings(namespace).Watch(context.TODO(), options)
 			},
 		},
 		&jenkinsiov1.EnvironmentRoleBinding{},

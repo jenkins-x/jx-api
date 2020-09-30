@@ -10,8 +10,10 @@ import (
 )
 
 // TeamLister helps list Teams.
+// All objects returned here must be treated as read-only.
 type TeamLister interface {
 	// List lists all Teams in the indexer.
+	// Objects returned here must be treated as read-only.
 	List(selector labels.Selector) (ret []*v1.Team, err error)
 	// Teams returns an object that can list and get Teams.
 	Teams(namespace string) TeamNamespaceLister
@@ -42,10 +44,13 @@ func (s *teamLister) Teams(namespace string) TeamNamespaceLister {
 }
 
 // TeamNamespaceLister helps list and get Teams.
+// All objects returned here must be treated as read-only.
 type TeamNamespaceLister interface {
 	// List lists all Teams in the indexer for a given namespace.
+	// Objects returned here must be treated as read-only.
 	List(selector labels.Selector) (ret []*v1.Team, err error)
 	// Get retrieves the Team from the indexer for a given namespace and name.
+	// Objects returned here must be treated as read-only.
 	Get(name string) (*v1.Team, error)
 	TeamNamespaceListerExpansion
 }

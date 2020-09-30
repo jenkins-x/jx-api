@@ -10,8 +10,10 @@ import (
 )
 
 // SourceRepositoryGroupLister helps list SourceRepositoryGroups.
+// All objects returned here must be treated as read-only.
 type SourceRepositoryGroupLister interface {
 	// List lists all SourceRepositoryGroups in the indexer.
+	// Objects returned here must be treated as read-only.
 	List(selector labels.Selector) (ret []*v1.SourceRepositoryGroup, err error)
 	// SourceRepositoryGroups returns an object that can list and get SourceRepositoryGroups.
 	SourceRepositoryGroups(namespace string) SourceRepositoryGroupNamespaceLister
@@ -42,10 +44,13 @@ func (s *sourceRepositoryGroupLister) SourceRepositoryGroups(namespace string) S
 }
 
 // SourceRepositoryGroupNamespaceLister helps list and get SourceRepositoryGroups.
+// All objects returned here must be treated as read-only.
 type SourceRepositoryGroupNamespaceLister interface {
 	// List lists all SourceRepositoryGroups in the indexer for a given namespace.
+	// Objects returned here must be treated as read-only.
 	List(selector labels.Selector) (ret []*v1.SourceRepositoryGroup, err error)
 	// Get retrieves the SourceRepositoryGroup from the indexer for a given namespace and name.
+	// Objects returned here must be treated as read-only.
 	Get(name string) (*v1.SourceRepositoryGroup, error)
 	SourceRepositoryGroupNamespaceListerExpansion
 }

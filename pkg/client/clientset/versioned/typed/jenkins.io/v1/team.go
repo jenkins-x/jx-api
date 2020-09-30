@@ -3,6 +3,7 @@
 package v1
 
 import (
+	"context"
 	"time"
 
 	v1 "github.com/jenkins-x/jx-api/pkg/apis/jenkins.io/v1"
@@ -21,14 +22,14 @@ type TeamsGetter interface {
 
 // TeamInterface has methods to work with Team resources.
 type TeamInterface interface {
-	Create(*v1.Team) (*v1.Team, error)
-	Update(*v1.Team) (*v1.Team, error)
-	Delete(name string, options *metav1.DeleteOptions) error
-	DeleteCollection(options *metav1.DeleteOptions, listOptions metav1.ListOptions) error
-	Get(name string, options metav1.GetOptions) (*v1.Team, error)
-	List(opts metav1.ListOptions) (*v1.TeamList, error)
-	Watch(opts metav1.ListOptions) (watch.Interface, error)
-	Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1.Team, err error)
+	Create(ctx context.Context, team *v1.Team, opts metav1.CreateOptions) (*v1.Team, error)
+	Update(ctx context.Context, team *v1.Team, opts metav1.UpdateOptions) (*v1.Team, error)
+	Delete(ctx context.Context, name string, opts metav1.DeleteOptions) error
+	DeleteCollection(ctx context.Context, opts metav1.DeleteOptions, listOpts metav1.ListOptions) error
+	Get(ctx context.Context, name string, opts metav1.GetOptions) (*v1.Team, error)
+	List(ctx context.Context, opts metav1.ListOptions) (*v1.TeamList, error)
+	Watch(ctx context.Context, opts metav1.ListOptions) (watch.Interface, error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts metav1.PatchOptions, subresources ...string) (result *v1.Team, err error)
 	TeamExpansion
 }
 
@@ -47,20 +48,20 @@ func newTeams(c *JenkinsV1Client, namespace string) *teams {
 }
 
 // Get takes name of the team, and returns the corresponding team object, and an error if there is any.
-func (c *teams) Get(name string, options metav1.GetOptions) (result *v1.Team, err error) {
+func (c *teams) Get(ctx context.Context, name string, options metav1.GetOptions) (result *v1.Team, err error) {
 	result = &v1.Team{}
 	err = c.client.Get().
 		Namespace(c.ns).
 		Resource("teams").
 		Name(name).
 		VersionedParams(&options, scheme.ParameterCodec).
-		Do().
+		Do(ctx).
 		Into(result)
 	return
 }
 
 // List takes label and field selectors, and returns the list of Teams that match those selectors.
-func (c *teams) List(opts metav1.ListOptions) (result *v1.TeamList, err error) {
+func (c *teams) List(ctx context.Context, opts metav1.ListOptions) (result *v1.TeamList, err error) {
 	var timeout time.Duration
 	if opts.TimeoutSeconds != nil {
 		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
@@ -71,13 +72,13 @@ func (c *teams) List(opts metav1.ListOptions) (result *v1.TeamList, err error) {
 		Resource("teams").
 		VersionedParams(&opts, scheme.ParameterCodec).
 		Timeout(timeout).
-		Do().
+		Do(ctx).
 		Into(result)
 	return
 }
 
 // Watch returns a watch.Interface that watches the requested teams.
-func (c *teams) Watch(opts metav1.ListOptions) (watch.Interface, error) {
+func (c *teams) Watch(ctx context.Context, opts metav1.ListOptions) (watch.Interface, error) {
 	var timeout time.Duration
 	if opts.TimeoutSeconds != nil {
 		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
@@ -88,71 +89,74 @@ func (c *teams) Watch(opts metav1.ListOptions) (watch.Interface, error) {
 		Resource("teams").
 		VersionedParams(&opts, scheme.ParameterCodec).
 		Timeout(timeout).
-		Watch()
+		Watch(ctx)
 }
 
 // Create takes the representation of a team and creates it.  Returns the server's representation of the team, and an error, if there is any.
-func (c *teams) Create(team *v1.Team) (result *v1.Team, err error) {
+func (c *teams) Create(ctx context.Context, team *v1.Team, opts metav1.CreateOptions) (result *v1.Team, err error) {
 	result = &v1.Team{}
 	err = c.client.Post().
 		Namespace(c.ns).
 		Resource("teams").
+		VersionedParams(&opts, scheme.ParameterCodec).
 		Body(team).
-		Do().
+		Do(ctx).
 		Into(result)
 	return
 }
 
 // Update takes the representation of a team and updates it. Returns the server's representation of the team, and an error, if there is any.
-func (c *teams) Update(team *v1.Team) (result *v1.Team, err error) {
+func (c *teams) Update(ctx context.Context, team *v1.Team, opts metav1.UpdateOptions) (result *v1.Team, err error) {
 	result = &v1.Team{}
 	err = c.client.Put().
 		Namespace(c.ns).
 		Resource("teams").
 		Name(team.Name).
+		VersionedParams(&opts, scheme.ParameterCodec).
 		Body(team).
-		Do().
+		Do(ctx).
 		Into(result)
 	return
 }
 
 // Delete takes name of the team and deletes it. Returns an error if one occurs.
-func (c *teams) Delete(name string, options *metav1.DeleteOptions) error {
+func (c *teams) Delete(ctx context.Context, name string, opts metav1.DeleteOptions) error {
 	return c.client.Delete().
 		Namespace(c.ns).
 		Resource("teams").
 		Name(name).
-		Body(options).
-		Do().
+		Body(&opts).
+		Do(ctx).
 		Error()
 }
 
 // DeleteCollection deletes a collection of objects.
-func (c *teams) DeleteCollection(options *metav1.DeleteOptions, listOptions metav1.ListOptions) error {
+func (c *teams) DeleteCollection(ctx context.Context, opts metav1.DeleteOptions, listOpts metav1.ListOptions) error {
 	var timeout time.Duration
-	if listOptions.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOptions.TimeoutSeconds) * time.Second
+	if listOpts.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
 	}
 	return c.client.Delete().
 		Namespace(c.ns).
 		Resource("teams").
-		VersionedParams(&listOptions, scheme.ParameterCodec).
+		VersionedParams(&listOpts, scheme.ParameterCodec).
 		Timeout(timeout).
-		Body(options).
-		Do().
+		Body(&opts).
+		Do(ctx).
 		Error()
 }
 
 // Patch applies the patch and returns the patched team.
-func (c *teams) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1.Team, err error) {
+func (c *teams) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts metav1.PatchOptions, subresources ...string) (result *v1.Team, err error) {
 	result = &v1.Team{}
 	err = c.client.Patch(pt).
 		Namespace(c.ns).
 		Resource("teams").
-		SubResource(subresources...).
 		Name(name).
+		SubResource(subresources...).
+		VersionedParams(&opts, scheme.ParameterCodec).
 		Body(data).
-		Do().
+		Do(ctx).
 		Into(result)
 	return
 }

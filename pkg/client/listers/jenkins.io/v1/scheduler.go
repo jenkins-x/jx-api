@@ -10,8 +10,10 @@ import (
 )
 
 // SchedulerLister helps list Schedulers.
+// All objects returned here must be treated as read-only.
 type SchedulerLister interface {
 	// List lists all Schedulers in the indexer.
+	// Objects returned here must be treated as read-only.
 	List(selector labels.Selector) (ret []*v1.Scheduler, err error)
 	// Schedulers returns an object that can list and get Schedulers.
 	Schedulers(namespace string) SchedulerNamespaceLister
@@ -42,10 +44,13 @@ func (s *schedulerLister) Schedulers(namespace string) SchedulerNamespaceLister 
 }
 
 // SchedulerNamespaceLister helps list and get Schedulers.
+// All objects returned here must be treated as read-only.
 type SchedulerNamespaceLister interface {
 	// List lists all Schedulers in the indexer for a given namespace.
+	// Objects returned here must be treated as read-only.
 	List(selector labels.Selector) (ret []*v1.Scheduler, err error)
 	// Get retrieves the Scheduler from the indexer for a given namespace and name.
+	// Objects returned here must be treated as read-only.
 	Get(name string) (*v1.Scheduler, error)
 	SchedulerNamespaceListerExpansion
 }

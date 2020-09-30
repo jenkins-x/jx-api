@@ -10,8 +10,10 @@ import (
 )
 
 // FactLister helps list Facts.
+// All objects returned here must be treated as read-only.
 type FactLister interface {
 	// List lists all Facts in the indexer.
+	// Objects returned here must be treated as read-only.
 	List(selector labels.Selector) (ret []*v1.Fact, err error)
 	// Facts returns an object that can list and get Facts.
 	Facts(namespace string) FactNamespaceLister
@@ -42,10 +44,13 @@ func (s *factLister) Facts(namespace string) FactNamespaceLister {
 }
 
 // FactNamespaceLister helps list and get Facts.
+// All objects returned here must be treated as read-only.
 type FactNamespaceLister interface {
 	// List lists all Facts in the indexer for a given namespace.
+	// Objects returned here must be treated as read-only.
 	List(selector labels.Selector) (ret []*v1.Fact, err error)
 	// Get retrieves the Fact from the indexer for a given namespace and name.
+	// Objects returned here must be treated as read-only.
 	Get(name string) (*v1.Fact, error)
 	FactNamespaceListerExpansion
 }
