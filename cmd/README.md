@@ -1,3 +1,3 @@
-The code-generator dir in this folder is a clone from https://github.com/kubernetes/code-generator 
+The code-generator dir in this folder is a copy from https://github.com/kubernetes/code-generator
 
-Then removed the git details from that repo `git rm --cached cmd/code-generator`
+Note code-generator is not a clone as we couldn't get gitsubmodules playing nice with the ./hack/generate.sh step in CI 

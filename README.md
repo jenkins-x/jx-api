@@ -1,5 +1,11 @@
 # jx-api
 
+[![Documentation](https://godoc.org/github.com/jenkins-x/jx-api?status.svg)](https://pkg.go.dev/mod/github.com/jenkins-x/jx-api)
+[![Go Report Card](https://goreportcard.com/badge/github.com/jenkins-x/jx-api)](https://goreportcard.com/report/github.com/jenkins-x/jx-api)
+[![Releases](https://img.shields.io/github/release-pre/jenkins-x/jx-api.svg)](https://github.com/jenkins-x/jx-api/releases)
+[![LICENSE](https://img.shields.io/github/license/jenkins-x/jx-api.svg)](https://github.com/jenkins-x/jx-api/blob/master/LICENSE)
+[![Slack Status](https://img.shields.io/badge/slack-join_chat-white.svg?logo=slack&style=social)](https://slack.k8s.io/)
+
 Provides an API for JX, can be used with [Jenkins X Kube Client](https://github.com/jenkins-x/jx-kube-client) to create
 a programatic interface
 
