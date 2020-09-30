@@ -17,13 +17,13 @@ pipelineConfig:
           steps:
           - name: test
             command: make
-            image: golang:1.13.10
+            image: golang:1.15
             args:
             - test
             dir: /workspace/source
           - name: lint
             command: ./hack/linter.sh
-            image: golang:1.13.10
+            image: golang:1.15
           - name: mk-jxapi-project-dir
             image: bash
             command: mkdir
@@ -40,7 +40,7 @@ pipelineConfig:
             dir: /workspace/source
           - name: verify-codegen
             command: ./hack/generate.sh
-            image: golang:1.13.10
+            image: golang:1.15
             dir: /workspace/go/src/github.com/jenkins-x/jx-api
     release:
       pipeline:
