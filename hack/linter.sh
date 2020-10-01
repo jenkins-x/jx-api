@@ -11,11 +11,13 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if ! [ -x "$(command -v golangci-lint)" ]; then
 	echo "Installing GolangCI-Lint"
-	${DIR}/install_golint.sh -b $GOPATH/bin v1.27.0
+	${DIR}/install_golint.sh -b $GOPATH/bin v1.31.0
 fi
 
 export GOGC=10 GO111MODULE=on
 golangci-lint run \
   --timeout 15m \
   --verbose \
-  --build-tags build
+  --build-tags build \
+  --skip-dirs pkg/client \
+  --skip-files pkg/apis/jenkins.io/v1/zz_generated.deepcopy.go
