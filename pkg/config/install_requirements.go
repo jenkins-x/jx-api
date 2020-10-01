@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/jenkins-x/jx-api/pkg/cloud"
-	"github.com/jenkins-x/jx-api/pkg/util"
+	"github.com/jenkins-x/jx-api/v3/pkg/cloud"
+	"github.com/jenkins-x/jx-api/v3/pkg/util"
 	"github.com/jenkins-x/jx-logging/v3/pkg/log"
 
 	"io/ioutil"
@@ -20,7 +20,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/vrischmann/envconfig"
 
-	v1 "github.com/jenkins-x/jx-api/pkg/apis/jenkins.io/v1"
+	v1 "github.com/jenkins-x/jx-api/v3/pkg/apis/jenkins.io/v1"
 )
 
 var (

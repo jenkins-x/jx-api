@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/jenkins-x/jx-api/pkg/config"
+	"github.com/jenkins-x/jx-api/v3/pkg/config"
 
 	"github.com/stretchr/testify/assert"
 )

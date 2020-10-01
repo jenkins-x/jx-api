@@ -18,8 +18,8 @@ limitations under the License.
 package jenkins
 
 import (
-	internalinterfaces "github.com/jenkins-x/jx-api/pkg/client/informers/externalversions/internalinterfaces"
-	v1 "github.com/jenkins-x/jx-api/pkg/client/informers/externalversions/jenkins.io/v1"
+	internalinterfaces "github.com/jenkins-x/jx-api/v3/pkg/client/informers/externalversions/internalinterfaces"
+	v1 "github.com/jenkins-x/jx-api/v3/pkg/client/informers/externalversions/jenkins.io/v1"
 )
 
 // Interface provides access to each of this group's versions.
