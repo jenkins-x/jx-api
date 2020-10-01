@@ -1,4 +1,4 @@
-module github.com/jenkins-x/jx-api
+module github.com/jenkins-x/jx-api/v3
 
 go 1.15
 
