@@ -1,12 +1,13 @@
 package v1
 
 import (
+	"context"
 	"fmt"
 	"io/ioutil"
 	"path/filepath"
 
-	"github.com/jenkins-x/jx-api/pkg/util"
-	"github.com/jenkins-x/jx-logging/pkg/log"
+	"github.com/jenkins-x/jx-api/v3/pkg/util"
+	"github.com/jenkins-x/jx-logging/v3/pkg/log"
 
 	v1 "k8s.io/api/rbac/v1"
 
@@ -325,14 +326,15 @@ func (extensionsConfig *ExtensionConfigList) LoadFromFile(inputFile string) (cfg
 }
 
 func (extensionsConfig *ExtensionConfigList) LoadFromConfigMap(configMapName string, client kubernetes.Interface, namespace string) (cfg *ExtensionConfigList, err error) {
-	cm, err := client.CoreV1().ConfigMaps(namespace).Get(configMapName, metav1.GetOptions{})
+	ctx := context.Background()
+	cm, err := client.CoreV1().ConfigMaps(namespace).Get(ctx, configMapName, metav1.GetOptions{})
 	if err != nil {
 		// CM doesn't exist, create it
-		cm, err = client.CoreV1().ConfigMaps(namespace).Create(&corev1.ConfigMap{
+		cm, err = client.CoreV1().ConfigMaps(namespace).Create(ctx, &corev1.ConfigMap{
 			ObjectMeta: metav1.ObjectMeta{
 				Name: configMapName,
 			},
-		})
+		}, metav1.CreateOptions{})
 		if err != nil {
 			return nil, err
 		}

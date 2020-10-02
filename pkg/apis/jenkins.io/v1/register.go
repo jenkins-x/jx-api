@@ -1,7 +1,7 @@
 package v1
 
 import (
-	jenkinsio "github.com/jenkins-x/jx-api/pkg/apis/jenkins.io"
+	jenkinsio "github.com/jenkins-x/jx-api/v3/pkg/apis/jenkins.io"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
@@ -51,18 +51,12 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&EnvironmentRoleBindingList{},
 		&Extension{},
 		&ExtensionList{},
-		&Fact{},
-		&FactList{},
 		&GitService{},
 		&GitServiceList{},
 		&PluginList{},
 		&Plugin{},
 		&PipelineActivity{},
 		&PipelineActivityList{},
-		&Scheduler{},
-		&SchedulerList{},
-		&PipelineStructure{},
-		&PipelineStructureList{},
 		&Release{},
 		&ReleaseList{},
 		&SourceRepository{},
@@ -73,8 +67,6 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&TeamList{},
 		&User{},
 		&UserList{},
-		&Workflow{},
-		&WorkflowList{},
 	)
 	metav1.AddToGroupVersion(scheme, SchemeGroupVersion)
 	return nil
