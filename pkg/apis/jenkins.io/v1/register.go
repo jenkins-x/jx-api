@@ -51,18 +51,12 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&EnvironmentRoleBindingList{},
 		&Extension{},
 		&ExtensionList{},
-		&Fact{},
-		&FactList{},
 		&GitService{},
 		&GitServiceList{},
 		&PluginList{},
 		&Plugin{},
 		&PipelineActivity{},
 		&PipelineActivityList{},
-		&Scheduler{},
-		&SchedulerList{},
-		&PipelineStructure{},
-		&PipelineStructureList{},
 		&Release{},
 		&ReleaseList{},
 		&SourceRepository{},
@@ -73,8 +67,6 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&TeamList{},
 		&User{},
 		&UserList{},
-		&Workflow{},
-		&WorkflowList{},
 	)
 	metav1.AddToGroupVersion(scheme, SchemeGroupVersion)
 	return nil

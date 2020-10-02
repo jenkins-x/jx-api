@@ -51,10 +51,6 @@ func (c *FakeJenkinsV1) Extensions(namespace string) v1.ExtensionInterface {
 	return &FakeExtensions{c, namespace}
 }
 
-func (c *FakeJenkinsV1) Facts(namespace string) v1.FactInterface {
-	return &FakeFacts{c, namespace}
-}
-
 func (c *FakeJenkinsV1) GitServices(namespace string) v1.GitServiceInterface {
 	return &FakeGitServices{c, namespace}
 }
@@ -63,20 +59,12 @@ func (c *FakeJenkinsV1) PipelineActivities(namespace string) v1.PipelineActivity
 	return &FakePipelineActivities{c, namespace}
 }
 
-func (c *FakeJenkinsV1) PipelineStructures(namespace string) v1.PipelineStructureInterface {
-	return &FakePipelineStructures{c, namespace}
-}
-
 func (c *FakeJenkinsV1) Plugins(namespace string) v1.PluginInterface {
 	return &FakePlugins{c, namespace}
 }
 
 func (c *FakeJenkinsV1) Releases(namespace string) v1.ReleaseInterface {
 	return &FakeReleases{c, namespace}
-}
-
-func (c *FakeJenkinsV1) Schedulers(namespace string) v1.SchedulerInterface {
-	return &FakeSchedulers{c, namespace}
 }
 
 func (c *FakeJenkinsV1) SourceRepositories(namespace string) v1.SourceRepositoryInterface {
@@ -93,10 +81,6 @@ func (c *FakeJenkinsV1) Teams(namespace string) v1.TeamInterface {
 
 func (c *FakeJenkinsV1) Users(namespace string) v1.UserInterface {
 	return &FakeUsers{c, namespace}
-}
-
-func (c *FakeJenkinsV1) Workflows(namespace string) v1.WorkflowInterface {
-	return &FakeWorkflows{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

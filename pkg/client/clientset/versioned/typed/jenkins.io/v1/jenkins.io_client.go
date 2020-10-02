@@ -31,18 +31,14 @@ type JenkinsV1Interface interface {
 	EnvironmentsGetter
 	EnvironmentRoleBindingsGetter
 	ExtensionsGetter
-	FactsGetter
 	GitServicesGetter
 	PipelineActivitiesGetter
-	PipelineStructuresGetter
 	PluginsGetter
 	ReleasesGetter
-	SchedulersGetter
 	SourceRepositoriesGetter
 	SourceRepositoryGroupsGetter
 	TeamsGetter
 	UsersGetter
-	WorkflowsGetter
 }
 
 // JenkinsV1Client is used to interact with features provided by the jenkins.io group.
@@ -74,10 +70,6 @@ func (c *JenkinsV1Client) Extensions(namespace string) ExtensionInterface {
 	return newExtensions(c, namespace)
 }
 
-func (c *JenkinsV1Client) Facts(namespace string) FactInterface {
-	return newFacts(c, namespace)
-}
-
 func (c *JenkinsV1Client) GitServices(namespace string) GitServiceInterface {
 	return newGitServices(c, namespace)
 }
@@ -86,20 +78,12 @@ func (c *JenkinsV1Client) PipelineActivities(namespace string) PipelineActivityI
 	return newPipelineActivities(c, namespace)
 }
 
-func (c *JenkinsV1Client) PipelineStructures(namespace string) PipelineStructureInterface {
-	return newPipelineStructures(c, namespace)
-}
-
 func (c *JenkinsV1Client) Plugins(namespace string) PluginInterface {
 	return newPlugins(c, namespace)
 }
 
 func (c *JenkinsV1Client) Releases(namespace string) ReleaseInterface {
 	return newReleases(c, namespace)
-}
-
-func (c *JenkinsV1Client) Schedulers(namespace string) SchedulerInterface {
-	return newSchedulers(c, namespace)
 }
 
 func (c *JenkinsV1Client) SourceRepositories(namespace string) SourceRepositoryInterface {
@@ -116,10 +100,6 @@ func (c *JenkinsV1Client) Teams(namespace string) TeamInterface {
 
 func (c *JenkinsV1Client) Users(namespace string) UserInterface {
 	return newUsers(c, namespace)
-}
-
-func (c *JenkinsV1Client) Workflows(namespace string) WorkflowInterface {
-	return newWorkflows(c, namespace)
 }
 
 // NewForConfig creates a new JenkinsV1Client for the given config.

@@ -65,14 +65,6 @@ type ExtensionListerExpansion interface{}
 // ExtensionNamespaceLister.
 type ExtensionNamespaceListerExpansion interface{}
 
-// FactListerExpansion allows custom methods to be added to
-// FactLister.
-type FactListerExpansion interface{}
-
-// FactNamespaceListerExpansion allows custom methods to be added to
-// FactNamespaceLister.
-type FactNamespaceListerExpansion interface{}
-
 // GitServiceListerExpansion allows custom methods to be added to
 // GitServiceLister.
 type GitServiceListerExpansion interface{}
@@ -89,14 +81,6 @@ type PipelineActivityListerExpansion interface{}
 // PipelineActivityNamespaceLister.
 type PipelineActivityNamespaceListerExpansion interface{}
 
-// PipelineStructureListerExpansion allows custom methods to be added to
-// PipelineStructureLister.
-type PipelineStructureListerExpansion interface{}
-
-// PipelineStructureNamespaceListerExpansion allows custom methods to be added to
-// PipelineStructureNamespaceLister.
-type PipelineStructureNamespaceListerExpansion interface{}
-
 // PluginListerExpansion allows custom methods to be added to
 // PluginLister.
 type PluginListerExpansion interface{}
@@ -112,14 +96,6 @@ type ReleaseListerExpansion interface{}
 // ReleaseNamespaceListerExpansion allows custom methods to be added to
 // ReleaseNamespaceLister.
 type ReleaseNamespaceListerExpansion interface{}
-
-// SchedulerListerExpansion allows custom methods to be added to
-// SchedulerLister.
-type SchedulerListerExpansion interface{}
-
-// SchedulerNamespaceListerExpansion allows custom methods to be added to
-// SchedulerNamespaceLister.
-type SchedulerNamespaceListerExpansion interface{}
 
 // SourceRepositoryListerExpansion allows custom methods to be added to
 // SourceRepositoryLister.
@@ -152,11 +128,3 @@ type UserListerExpansion interface{}
 // UserNamespaceListerExpansion allows custom methods to be added to
 // UserNamespaceLister.
 type UserNamespaceListerExpansion interface{}
-
-// WorkflowListerExpansion allows custom methods to be added to
-// WorkflowLister.
-type WorkflowListerExpansion interface{}
-
-// WorkflowNamespaceListerExpansion allows custom methods to be added to
-// WorkflowNamespaceLister.
-type WorkflowNamespaceListerExpansion interface{}

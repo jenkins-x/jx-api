@@ -64,20 +64,14 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Jenkins().V1().EnvironmentRoleBindings().Informer()}, nil
 	case v1.SchemeGroupVersion.WithResource("extensions"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Jenkins().V1().Extensions().Informer()}, nil
-	case v1.SchemeGroupVersion.WithResource("facts"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Jenkins().V1().Facts().Informer()}, nil
 	case v1.SchemeGroupVersion.WithResource("gitservices"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Jenkins().V1().GitServices().Informer()}, nil
 	case v1.SchemeGroupVersion.WithResource("pipelineactivities"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Jenkins().V1().PipelineActivities().Informer()}, nil
-	case v1.SchemeGroupVersion.WithResource("pipelinestructures"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Jenkins().V1().PipelineStructures().Informer()}, nil
 	case v1.SchemeGroupVersion.WithResource("plugins"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Jenkins().V1().Plugins().Informer()}, nil
 	case v1.SchemeGroupVersion.WithResource("releases"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Jenkins().V1().Releases().Informer()}, nil
-	case v1.SchemeGroupVersion.WithResource("schedulers"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Jenkins().V1().Schedulers().Informer()}, nil
 	case v1.SchemeGroupVersion.WithResource("sourcerepositories"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Jenkins().V1().SourceRepositories().Informer()}, nil
 	case v1.SchemeGroupVersion.WithResource("sourcerepositorygroups"):
@@ -86,8 +80,6 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Jenkins().V1().Teams().Informer()}, nil
 	case v1.SchemeGroupVersion.WithResource("users"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Jenkins().V1().Users().Informer()}, nil
-	case v1.SchemeGroupVersion.WithResource("workflows"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Jenkins().V1().Workflows().Informer()}, nil
 
 	}
 
