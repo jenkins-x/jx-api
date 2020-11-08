@@ -311,11 +311,18 @@ type StorageConfig struct {
 	Backup StorageEntryConfig `json:"backup"`
 }
 
+type AzureDNSConfig struct {
+	TenantID       string `json:"tenantId,omitempty"`
+	SubscriptionID string `json:"subscriptionId,omitempty"`
+	ResourceGroup  string `json:"resourceGroup,omitempty"`
+}
+
 // AzureConfig contains Azure specific requirements
 type AzureConfig struct {
 	// RegistrySubscription the registry subscription for defaulting the container registry.
 	// Not used if you specify a Registry explicitly
 	RegistrySubscription string `json:"registrySubscription,omitempty"`
+	*AzureDNSConfig      `json:"dns,omitempty"`
 }
 
 // GKEConfig contains GKE specific requirements
