@@ -13,8 +13,8 @@ require (
 	github.com/stretchr/testify v1.6.1
 	github.com/vrischmann/envconfig v1.2.0
 	github.com/xeipuuv/gojsonschema v1.2.0
-	k8s.io/api v0.19.2
-	k8s.io/apimachinery v0.19.2
+	k8s.io/api v0.19.3
+	k8s.io/apimachinery v0.19.3
 	k8s.io/client-go v0.19.2
 	k8s.io/code-generator v0.19.2
 )
