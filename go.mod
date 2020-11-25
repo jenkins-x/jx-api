@@ -1,4 +1,4 @@
-module github.com/jenkins-x/jx-api/v3
+module github.com/jenkins-x/jx-api/v4
 
 go 1.15
 
@@ -6,6 +6,8 @@ require (
 	github.com/alecthomas/jsonschema v0.0.0-20190504002508-159cbd5dba26
 	github.com/ghodss/yaml v1.0.0
 	github.com/imdario/mergo v0.3.9
+	github.com/jenkins-x/jx-api v0.0.24 // indirect
+	github.com/jenkins-x/jx-api/v3 v3.0.3
 	github.com/jenkins-x/jx-logging/v3 v3.0.0
 	github.com/mattbaird/jsonpatch v0.0.0-20171005235357-81af80346b1a
 	github.com/pkg/errors v0.9.1
