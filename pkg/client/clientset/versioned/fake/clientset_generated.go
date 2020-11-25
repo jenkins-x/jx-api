@@ -18,9 +18,9 @@ limitations under the License.
 package fake
 
 import (
-	clientset "github.com/jenkins-x/jx-api/v3/pkg/client/clientset/versioned"
-	jenkinsv1 "github.com/jenkins-x/jx-api/v3/pkg/client/clientset/versioned/typed/jenkins.io/v1"
-	fakejenkinsv1 "github.com/jenkins-x/jx-api/v3/pkg/client/clientset/versioned/typed/jenkins.io/v1/fake"
+	clientset "github.com/jenkins-x/jx-api/v4/pkg/client/clientset/versioned"
+	jenkinsv4beta1 "github.com/jenkins-x/jx-api/v4/pkg/client/clientset/versioned/typed/jenkins.io/v4beta1"
+	fakejenkinsv4beta1 "github.com/jenkins-x/jx-api/v4/pkg/client/clientset/versioned/typed/jenkins.io/v4beta1/fake"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/discovery"
@@ -75,7 +75,7 @@ func (c *Clientset) Tracker() testing.ObjectTracker {
 
 var _ clientset.Interface = &Clientset{}
 
-// JenkinsV1 retrieves the JenkinsV1Client
-func (c *Clientset) JenkinsV1() jenkinsv1.JenkinsV1Interface {
-	return &fakejenkinsv1.FakeJenkinsV1{Fake: &c.Fake}
+// JenkinsV4beta1 retrieves the JenkinsV4beta1Client
+func (c *Clientset) JenkinsV4beta1() jenkinsv4beta1.JenkinsV4beta1Interface {
+	return &fakejenkinsv4beta1.FakeJenkinsV4beta1{Fake: &c.Fake}
 }

@@ -18,14 +18,14 @@ limitations under the License.
 package jenkins
 
 import (
-	internalinterfaces "github.com/jenkins-x/jx-api/v3/pkg/client/informers/externalversions/internalinterfaces"
-	v1 "github.com/jenkins-x/jx-api/v3/pkg/client/informers/externalversions/jenkins.io/v1"
+	internalinterfaces "github.com/jenkins-x/jx-api/v4/pkg/client/informers/externalversions/internalinterfaces"
+	v4beta1 "github.com/jenkins-x/jx-api/v4/pkg/client/informers/externalversions/jenkins.io/v4beta1"
 )
 
 // Interface provides access to each of this group's versions.
 type Interface interface {
-	// V1 provides access to shared informers for resources in V1.
-	V1() v1.Interface
+	// V4beta1 provides access to shared informers for resources in V4beta1.
+	V4beta1() v4beta1.Interface
 }
 
 type group struct {
@@ -39,7 +39,7 @@ func New(f internalinterfaces.SharedInformerFactory, namespace string, tweakList
 	return &group{factory: f, namespace: namespace, tweakListOptions: tweakListOptions}
 }
 
-// V1 returns a new v1.Interface.
-func (g *group) V1() v1.Interface {
-	return v1.New(g.factory, g.namespace, g.tweakListOptions)
+// V4beta1 returns a new v4beta1.Interface.
+func (g *group) V4beta1() v4beta1.Interface {
+	return v4beta1.New(g.factory, g.namespace, g.tweakListOptions)
 }

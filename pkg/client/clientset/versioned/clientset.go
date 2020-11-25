@@ -20,7 +20,7 @@ package versioned
 import (
 	"fmt"
 
-	jenkinsv1 "github.com/jenkins-x/jx-api/v3/pkg/client/clientset/versioned/typed/jenkins.io/v1"
+	jenkinsv4beta1 "github.com/jenkins-x/jx-api/v4/pkg/client/clientset/versioned/typed/jenkins.io/v4beta1"
 	discovery "k8s.io/client-go/discovery"
 	rest "k8s.io/client-go/rest"
 	flowcontrol "k8s.io/client-go/util/flowcontrol"
@@ -28,19 +28,19 @@ import (
 
 type Interface interface {
 	Discovery() discovery.DiscoveryInterface
-	JenkinsV1() jenkinsv1.JenkinsV1Interface
+	JenkinsV4beta1() jenkinsv4beta1.JenkinsV4beta1Interface
 }
 
 // Clientset contains the clients for groups. Each group has exactly one
 // version included in a Clientset.
 type Clientset struct {
 	*discovery.DiscoveryClient
-	jenkinsV1 *jenkinsv1.JenkinsV1Client
+	jenkinsV4beta1 *jenkinsv4beta1.JenkinsV4beta1Client
 }
 
-// JenkinsV1 retrieves the JenkinsV1Client
-func (c *Clientset) JenkinsV1() jenkinsv1.JenkinsV1Interface {
-	return c.jenkinsV1
+// JenkinsV4beta1 retrieves the JenkinsV4beta1Client
+func (c *Clientset) JenkinsV4beta1() jenkinsv4beta1.JenkinsV4beta1Interface {
+	return c.jenkinsV4beta1
 }
 
 // Discovery retrieves the DiscoveryClient
@@ -64,7 +64,7 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 	}
 	var cs Clientset
 	var err error
-	cs.jenkinsV1, err = jenkinsv1.NewForConfig(&configShallowCopy)
+	cs.jenkinsV4beta1, err = jenkinsv4beta1.NewForConfig(&configShallowCopy)
 	if err != nil {
 		return nil, err
 	}
@@ -80,7 +80,7 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 // panics if there is an error in the config.
 func NewForConfigOrDie(c *rest.Config) *Clientset {
 	var cs Clientset
-	cs.jenkinsV1 = jenkinsv1.NewForConfigOrDie(c)
+	cs.jenkinsV4beta1 = jenkinsv4beta1.NewForConfigOrDie(c)
 
 	cs.DiscoveryClient = discovery.NewDiscoveryClientForConfigOrDie(c)
 	return &cs
@@ -89,7 +89,7 @@ func NewForConfigOrDie(c *rest.Config) *Clientset {
 // New creates a new Clientset for the given RESTClient.
 func New(c rest.Interface) *Clientset {
 	var cs Clientset
-	cs.jenkinsV1 = jenkinsv1.New(c)
+	cs.jenkinsV4beta1 = jenkinsv4beta1.New(c)
 
 	cs.DiscoveryClient = discovery.NewDiscoveryClient(c)
 	return &cs
