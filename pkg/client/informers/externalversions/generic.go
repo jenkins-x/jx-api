@@ -20,7 +20,7 @@ package externalversions
 import (
 	"fmt"
 
-	v4beta1 "github.com/jenkins-x/jx-api/v4/pkg/apis/jenkins.io/v4beta1"
+	v4beta1 "github.com/jenkins-x/jx-api/v4/pkg/apis/core/v4beta1"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	cache "k8s.io/client-go/tools/cache"
 )
@@ -51,35 +51,17 @@ func (f *genericInformer) Lister() cache.GenericLister {
 // TODO extend this to unknown resources with a client pool
 func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource) (GenericInformer, error) {
 	switch resource {
-	// Group=jenkins.io, Version=v4beta1
-	case v4beta1.SchemeGroupVersion.WithResource("apps"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Jenkins().V4beta1().Apps().Informer()}, nil
-	case v4beta1.SchemeGroupVersion.WithResource("buildpacks"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Jenkins().V4beta1().BuildPacks().Informer()}, nil
-	case v4beta1.SchemeGroupVersion.WithResource("commitstatuses"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Jenkins().V4beta1().CommitStatuses().Informer()}, nil
+	// Group=core.jenkins-x.io, Version=v4beta1
 	case v4beta1.SchemeGroupVersion.WithResource("environments"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Jenkins().V4beta1().Environments().Informer()}, nil
-	case v4beta1.SchemeGroupVersion.WithResource("environmentrolebindings"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Jenkins().V4beta1().EnvironmentRoleBindings().Informer()}, nil
-	case v4beta1.SchemeGroupVersion.WithResource("extensions"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Jenkins().V4beta1().Extensions().Informer()}, nil
-	case v4beta1.SchemeGroupVersion.WithResource("gitservices"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Jenkins().V4beta1().GitServices().Informer()}, nil
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Core().V4beta1().Environments().Informer()}, nil
 	case v4beta1.SchemeGroupVersion.WithResource("pipelineactivities"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Jenkins().V4beta1().PipelineActivities().Informer()}, nil
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Core().V4beta1().PipelineActivities().Informer()}, nil
 	case v4beta1.SchemeGroupVersion.WithResource("plugins"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Jenkins().V4beta1().Plugins().Informer()}, nil
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Core().V4beta1().Plugins().Informer()}, nil
 	case v4beta1.SchemeGroupVersion.WithResource("releases"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Jenkins().V4beta1().Releases().Informer()}, nil
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Core().V4beta1().Releases().Informer()}, nil
 	case v4beta1.SchemeGroupVersion.WithResource("sourcerepositories"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Jenkins().V4beta1().SourceRepositories().Informer()}, nil
-	case v4beta1.SchemeGroupVersion.WithResource("sourcerepositorygroups"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Jenkins().V4beta1().SourceRepositoryGroups().Informer()}, nil
-	case v4beta1.SchemeGroupVersion.WithResource("teams"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Jenkins().V4beta1().Teams().Informer()}, nil
-	case v4beta1.SchemeGroupVersion.WithResource("users"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Jenkins().V4beta1().Users().Informer()}, nil
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Core().V4beta1().SourceRepositories().Informer()}, nil
 
 	}
 
