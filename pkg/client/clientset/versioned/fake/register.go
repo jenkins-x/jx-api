@@ -18,7 +18,7 @@ limitations under the License.
 package fake
 
 import (
-	jenkinsv4beta1 "github.com/jenkins-x/jx-api/v4/pkg/apis/jenkins.io/v4beta1"
+	corev4beta1 "github.com/jenkins-x/jx-api/v4/pkg/apis/core/v4beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
@@ -30,7 +30,7 @@ var scheme = runtime.NewScheme()
 var codecs = serializer.NewCodecFactory(scheme)
 
 var localSchemeBuilder = runtime.SchemeBuilder{
-	jenkinsv4beta1.AddToScheme,
+	corev4beta1.AddToScheme,
 }
 
 // AddToScheme adds all types of this clientset into the given scheme. This allows composition

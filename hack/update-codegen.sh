@@ -36,11 +36,11 @@ rm -rf "${SCRIPT_ROOT}"/pkg/client
 #                  instead of the $GOPATH directly. For normal projects this can be dropped.
 bash hack/generate-groups.sh all \
   github.com/jenkins-x/jx-api/v4/pkg/client github.com/jenkins-x/jx-api/v4/pkg/apis \
-  jenkins.io:v4beta1 \
+  core:v4beta1 \
   --output-base "$(dirname "${BASH_SOURCE[0]}")/../../../.." \
   --go-header-file "${SCRIPT_ROOT}"/hack/custom-boilerplate.go.txt
 
 cp -R "${SCRIPT_ROOT}"/v4/pkg/client/ "${SCRIPT_ROOT}"/pkg/client
-cp -R "${SCRIPT_ROOT}"/v4/pkg/apis/jenkins.io/v4beta1/zz_generated.deepcopy.go "${SCRIPT_ROOT}"/pkg/apis/jenkins.io/v4beta1/zz_generated.deepcopy.go
+cp -R "${SCRIPT_ROOT}"/v4/pkg/apis/core/v4beta1/zz_generated.deepcopy.go "${SCRIPT_ROOT}"/pkg/apis/core/v4beta1/zz_generated.deepcopy.go
 
 rm -rf "${SCRIPT_ROOT}"/v4
