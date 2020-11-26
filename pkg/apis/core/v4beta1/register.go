@@ -1,7 +1,7 @@
 package v4beta1
 
 import (
-	jenkinsio "github.com/jenkins-x/jx-api/v3/pkg/apis/jenkins.io"
+	"github.com/jenkins-x/jx-api/v4/pkg/apis/core"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
@@ -10,7 +10,7 @@ import (
 )
 
 // SchemeGroupVersion is group version used to register these objects
-var SchemeGroupVersion = schema.GroupVersion{Group: jenkinsio.GroupName, Version: jenkinsio.Version}
+var SchemeGroupVersion = schema.GroupVersion{Group: core.GroupName, Version: core.Version}
 
 // Kind takes an unqualified kind and returns back a Group qualified GroupKind
 func Kind(kind string) schema.GroupKind {
