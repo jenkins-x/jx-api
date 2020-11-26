@@ -15,7 +15,7 @@ Here's an example which also uses [Jenkins X logging](https://github.com/jenkins
 import (
     "github.com/jenkins-x/jx-kube-client/v3/pkg/kubeclient"
     "github.com/jenkins-x/jx-logging/v3/pkg/log"
-    "github.com/jenkins-x/jx-api/v3/pkg/client/clientset/versioned"
+    "github.com/jenkins-x/jx-api/v4/pkg/client/clientset/versioned"
 )
 
 func main() {
