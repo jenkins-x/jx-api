@@ -847,3 +847,30 @@ func (c *RequirementsConfig) GetStorageURL(name string) string {
 	// default to empty string if no matching storage found for name
 	return ""
 }
+
+func (c *RequirementsConfig) AddOrUpdateStorageURL(name, storageURL string) {
+	found := false
+	for i, s := range c.Storage {
+		if s.Name == name {
+			c.Storage[i].URL = storageURL
+			found = true
+		}
+	}
+	if !found {
+		c.Storage = append(c.Storage, StorageConfig{
+			Name: name,
+			URL:  storageURL,
+		})
+	}
+}
+
+func (c *RequirementsConfig) RemoveStorageURL(name string) {
+	for i, s := range c.Storage {
+		if s.Name == name {
+			c.Storage[i] = c.Storage[len(c.Storage)-1]    // Copy last element to index i.
+			c.Storage[len(c.Storage)-1] = StorageConfig{} // Erase last element (write zero value).
+			c.Storage = c.Storage[:len(c.Storage)-1]
+			break
+		}
+	}
+}
