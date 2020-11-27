@@ -549,3 +549,21 @@ func TestLoadRequirementsConfig_load_invalid_yaml(t *testing.T) {
 	requirementsConfigPath := path.Join(absolute, v4beta1.RequirementsConfigFileName)
 	assert.EqualError(t, err, fmt.Sprintf("validation failures in YAML file %s:\nenvironments.0: Additional property namespace is not allowed", requirementsConfigPath))
 }
+
+func TestBackwardsCompatibleRequirementsFile(t *testing.T) {
+	t.Parallel()
+	oldRequirementsDir := path.Join(testDataDir, "backwards_compatible_requirements_file", "old")
+	newRequirementsDir := path.Join(testDataDir, "backwards_compatible_requirements_file", "new")
+
+	validateRequirements(t, oldRequirementsDir)
+	validateRequirements(t, newRequirementsDir)
+
+}
+
+func validateRequirements(t *testing.T, oldRequirementsDir string) {
+	requirements, fileName, err := v4beta1.LoadRequirementsConfig(oldRequirementsDir, true)
+	assert.NoError(t, err, "failed to load old style jx-requirements.yml")
+	assert.NotEmpty(t, fileName, "requirements filename should not be empty")
+	assert.NotNil(t, requirements, "requirements should not be empty")
+	assert.Equal(t, v4beta1.WebhookTypeLighthouse, requirements.Webhook, "failed to find requirement")
+}

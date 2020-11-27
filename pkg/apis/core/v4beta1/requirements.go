@@ -470,6 +470,7 @@ func LoadRequirementsConfig(dir string, failOnValidationErrors bool) (*Requireme
 
 // LoadRequirementsConfigFile loads a specific project YAML configuration file
 func LoadRequirementsConfigFile(fileName string, failOnValidationErrors bool) (*RequirementsConfig, error) {
+
 	config := &RequirementsConfig{}
 	_, err := os.Stat(fileName)
 	if err != nil {
@@ -481,22 +482,46 @@ func LoadRequirementsConfigFile(fileName string, failOnValidationErrors bool) (*
 		return nil, fmt.Errorf("failed to load file %s due to %s", fileName, err)
 	}
 
-	validationErrors, err := util.ValidateYaml(config, data)
-	if err != nil {
-		return nil, fmt.Errorf("failed to validate YAML file %s due to %s", fileName, err)
-	}
-
-	if len(validationErrors) > 0 {
-		log.Logger().Warnf("validation failures in YAML file %s: %s", fileName, strings.Join(validationErrors, ", "))
-
-		if failOnValidationErrors {
-			return nil, fmt.Errorf("validation failures in YAML file %s:\n%s", fileName, strings.Join(validationErrors, "\n"))
+	s := string(data)
+	// //check whether new or old jx requirements
+	if strings.Contains(s, "apiVersion") && strings.Contains(s, "kind") && strings.Contains(s, "spec") {
+		requirements := &Requirements{}
+		validationErrors, err := util.ValidateYaml(requirements, data)
+		if err != nil {
+			return nil, fmt.Errorf("failed to validate YAML file %s due to %s", fileName, err)
 		}
-	}
 
-	err = yaml.Unmarshal(data, config)
-	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshal YAML file %s due to %s", fileName, err)
+		if len(validationErrors) > 0 {
+			log.Logger().Warnf("validation failures in YAML file %s: %s", fileName, strings.Join(validationErrors, ", "))
+			if failOnValidationErrors {
+				return nil, fmt.Errorf("validation failures in YAML file %s:\n%s", fileName, strings.Join(validationErrors, "\n"))
+			}
+		}
+
+		err = yaml.Unmarshal(data, requirements)
+		if err != nil {
+			return nil, fmt.Errorf("failed to unmarshal YAML file %s due to %s", fileName, err)
+		}
+
+		config = &requirements.Spec
+	} else {
+		validationErrors, err := util.ValidateYaml(config, data)
+		if err != nil {
+			return nil, fmt.Errorf("failed to validate YAML file %s due to %s", fileName, err)
+		}
+
+		if len(validationErrors) > 0 {
+			log.Logger().Warnf("validation failures in YAML file %s: %s", fileName, strings.Join(validationErrors, ", "))
+
+			if failOnValidationErrors {
+				return nil, fmt.Errorf("validation failures in YAML file %s:\n%s", fileName, strings.Join(validationErrors, "\n"))
+			}
+		}
+
+		err = yaml.Unmarshal(data, config)
+		if err != nil {
+			return nil, fmt.Errorf("failed to unmarshal YAML file %s due to %s", fileName, err)
+		}
 	}
 
 	config.addDefaults()
