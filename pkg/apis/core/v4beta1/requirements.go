@@ -37,6 +37,9 @@ const (
 
 	constTrue  = "true"
 	constFalse = "false"
+
+	// Replaces the optional requirement and making jx hardcoded, if folks try changing the namespace in a jx-requirements.yml file it is highly likely to fail
+	DefaultNamespace = "jx"
 )
 
 const (
