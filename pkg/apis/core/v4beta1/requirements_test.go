@@ -567,3 +567,22 @@ func validateRequirements(t *testing.T, oldRequirementsDir string) {
 	assert.NotNil(t, requirements, "requirements should not be empty")
 	assert.Equal(t, v4beta1.WebhookTypeLighthouse, requirements.Webhook, "failed to find requirement")
 }
+
+func TestStorageURLHelpers(t *testing.T) {
+	r := v4beta1.RequirementsConfig{}
+
+	r.AddOrUpdateStorageURL("beer", "wine")
+	assert.Equal(t, "wine", r.GetStorageURL("beer"))
+
+	r.AddOrUpdateStorageURL("foo", "bar")
+	assert.Equal(t, "bar", r.GetStorageURL("foo"))
+
+	r.AddOrUpdateStorageURL("foo", "cheese")
+	assert.Equal(t, "cheese", r.GetStorageURL("foo"))
+
+	r.RemoveStorageURL("beer")
+	assert.Equal(t, "", r.GetStorageURL("beer"))
+
+	r.RemoveStorageURL("foo")
+	assert.Equal(t, "", r.GetStorageURL("foo"))
+}
