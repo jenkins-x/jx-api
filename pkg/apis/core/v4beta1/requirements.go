@@ -146,11 +146,10 @@ var RepositoryTypeValues = []string{string(RepositoryTypeNone), string(Repositor
 
 // Requirements represents a collection installation requirements for Jenkins X
 //
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +k8s:openapi-gen=true
 type Requirements struct {
 	metav1.TypeMeta `json:",inline"`
-	// +optional
-	metav1.ObjectMeta `json:"metadata"`
 
 	// Spec the definition of the secret mappings
 	Spec RequirementsConfig `json:"spec"`
@@ -437,17 +436,23 @@ type RequirementsConfig struct {
 }
 
 // NewRequirementsConfig creates a default configuration file
-func NewRequirementsConfig() *RequirementsConfig {
-	return &RequirementsConfig{
-		SecretStorage: SecretStorageTypeLocal,
-		Webhook:       WebhookTypeLighthouse,
+func NewRequirementsConfig() *Requirements {
+	return &Requirements{
+		TypeMeta: metav1.TypeMeta{
+			Kind:       "Requirements", // todo not sure if this is correct but not able to find how TypeMeta gets set when type is plain file rather than incluster CRD, perhaps it's automated when in cluster?
+			APIVersion: SchemeGroupVersion.String(),
+		},
+		Spec: RequirementsConfig{
+			SecretStorage: SecretStorageTypeLocal,
+			Webhook:       WebhookTypeLighthouse,
+		},
 	}
 }
 
 // LoadRequirementsConfig loads the project configuration if there is a project configuration file
 // if there is not a file called `jx-requirements.yml` in the given dir we will scan up the parent
 // directories looking for the requirements file as we often run 'jx' steps in sub directories.
-func LoadRequirementsConfig(dir string, failOnValidationErrors bool) (*RequirementsConfig, string, error) {
+func LoadRequirementsConfig(dir string, failOnValidationErrors bool) (*Requirements, string, error) {
 	absolute, err := filepath.Abs(dir)
 	if err != nil {
 		return nil, "", errors.Wrap(err, "creating absolute path")
@@ -465,16 +470,16 @@ func LoadRequirementsConfig(dir string, failOnValidationErrors bool) (*Requireme
 			continue
 		}
 
-		config, err := LoadRequirementsConfigFile(fileName, failOnValidationErrors)
-		return config, fileName, err
+		requirements, err := LoadRequirementsConfigFile(fileName, failOnValidationErrors)
+		return requirements, fileName, err
 	}
 	return nil, "", errors.New("jx-requirements.yml file not found")
 }
 
 // LoadRequirementsConfigFile loads a specific project YAML configuration file
-func LoadRequirementsConfigFile(fileName string, failOnValidationErrors bool) (*RequirementsConfig, error) {
+func LoadRequirementsConfigFile(fileName string, failOnValidationErrors bool) (*Requirements, error) {
 
-	config := &RequirementsConfig{}
+	requirements := NewRequirementsConfig()
 	_, err := os.Stat(fileName)
 	if err != nil {
 		return nil, errors.Wrapf(err, "checking if file %s exists", fileName)
@@ -488,7 +493,7 @@ func LoadRequirementsConfigFile(fileName string, failOnValidationErrors bool) (*
 	s := string(data)
 	// //check whether new or old jx requirements
 	if strings.Contains(s, "apiVersion") && strings.Contains(s, "kind") && strings.Contains(s, "spec") {
-		requirements := &Requirements{}
+
 		validationErrors, err := util.ValidateYaml(requirements, data)
 		if err != nil {
 			return nil, fmt.Errorf("failed to validate YAML file %s due to %s", fileName, err)
@@ -506,8 +511,8 @@ func LoadRequirementsConfigFile(fileName string, failOnValidationErrors bool) (*
 			return nil, fmt.Errorf("failed to unmarshal YAML file %s due to %s", fileName, err)
 		}
 
-		config = &requirements.Spec
 	} else {
+		config := &RequirementsConfig{}
 		validationErrors, err := util.ValidateYaml(config, data)
 		if err != nil {
 			return nil, fmt.Errorf("failed to validate YAML file %s due to %s", fileName, err)
@@ -525,10 +530,12 @@ func LoadRequirementsConfigFile(fileName string, failOnValidationErrors bool) (*
 		if err != nil {
 			return nil, fmt.Errorf("failed to unmarshal YAML file %s due to %s", fileName, err)
 		}
+
+		requirements.Spec = *config
 	}
 
-	config.addDefaults()
-	return config, nil
+	requirements.Spec.addDefaults()
+	return requirements, nil
 }
 
 // GetRequirementsConfigFromTeamSettings reads the BootRequirements string from TeamSettings and unmarshals it
@@ -564,8 +571,7 @@ func (c *RequirementsConfig) IsEmpty() bool {
 	return reflect.DeepEqual(empty, c)
 }
 
-// SaveConfig saves the configuration file to the given project directory
-func (c *RequirementsConfig) SaveConfig(fileName string) error {
+func (c *Requirements) SaveConfig(fileName string) error {
 	data, err := yaml.Marshal(c)
 	if err != nil {
 		return err
@@ -628,12 +634,12 @@ func (t sliceTransformer) Transformer(typ reflect.Type) func(dst, src reflect.Va
 	return nil
 }
 
-// MergeSave attempts to merge the provided RequirementsConfig with the caller's data.
+// MergeSave attempts to merge the provided Requirements with the caller's data.
 // It does so overriding values in the source struct with non-zero values from the provided struct
 // it defines non-zero per property and not for a while embedded struct, meaning that nested properties
 // in embedded structs should also be merged correctly.
 // if a slice is added a transformer will be needed to handle correctly merging the contained values
-func (c *RequirementsConfig) MergeSave(src *RequirementsConfig, requirementsFileName string) error {
+func (c *Requirements) MergeSave(src *Requirements, requirementsFileName string) error {
 	err := mergo.Merge(c, src, mergo.WithOverride, mergo.WithTransformers(sliceTransformer{}))
 	if err != nil {
 		return errors.Wrap(err, "error merging jx-requirements.yml files")

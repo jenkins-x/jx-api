@@ -39,7 +39,8 @@ func TestRequirementsConfigMarshalExistingFile(t *testing.T) {
 	expectedPipelineUserEmail := "someone@acme.com"
 
 	file := filepath.Join(dir, v4beta1.RequirementsConfigFileName)
-	requirements := v4beta1.NewRequirementsConfig()
+	requirementResource := v4beta1.NewRequirementsConfig()
+	requirements := &requirementResource.Spec
 	requirements.SecretStorage = expectedSecretStorage
 	requirements.Cluster.ClusterName = expectedClusterName
 	requirements.Ingress.Domain = expectedDomain
@@ -48,23 +49,23 @@ func TestRequirementsConfigMarshalExistingFile(t *testing.T) {
 		Email:    expectedPipelineUserEmail,
 	}
 
-	err = requirements.SaveConfig(file)
+	err = requirementResource.SaveConfig(file)
 	assert.NoError(t, err, "failed to save file %s", file)
 
-	requirements, fileName, err := v4beta1.LoadRequirementsConfig(dir, v4beta1.DefaultFailOnValidationError)
+	requirementResource, fileName, err := v4beta1.LoadRequirementsConfig(dir, v4beta1.DefaultFailOnValidationError)
 	assert.NoError(t, err, "failed to load requirements file in dir %s", dir)
 	assert.FileExists(t, fileName)
-
+	requirements = &requirementResource.Spec
 	assert.Equal(t, expectedClusterName, requirements.Cluster.ClusterName, "requirements.ClusterName")
 	assert.Equal(t, expectedSecretStorage, requirements.SecretStorage, "requirements.SecretStorage")
 	assert.Equal(t, expectedDomain, requirements.Ingress.Domain, "requirements.Domain")
 
 	// lets check we can load the file from a sub dir
 	subDir := filepath.Join(dir, "subdir")
-	requirements, fileName, err = v4beta1.LoadRequirementsConfig(subDir, v4beta1.DefaultFailOnValidationError)
+	requirementResource, fileName, err = v4beta1.LoadRequirementsConfig(subDir, v4beta1.DefaultFailOnValidationError)
 	assert.NoError(t, err, "failed to load requirements file in subDir: %s", subDir)
 	assert.FileExists(t, fileName)
-
+	requirements = &requirementResource.Spec
 	t.Logf("generated requirements file %s\n", fileName)
 
 	assert.Equal(t, expectedClusterName, requirements.Cluster.ClusterName, "requirements.ClusterName")
@@ -78,10 +79,10 @@ func TestRequirementsConfigMarshalExistingFile(t *testing.T) {
 }
 
 func Test_OverrideRequirementsFromEnvironment_does_not_initialise_nil_structs(t *testing.T) {
-	requirements, fileName, err := v4beta1.LoadRequirementsConfig(testDataDir, v4beta1.DefaultFailOnValidationError)
+	requirementResource, fileName, err := v4beta1.LoadRequirementsConfig(testDataDir, v4beta1.DefaultFailOnValidationError)
 	assert.NoError(t, err, "failed to load requirements file in dir %s", testDataDir)
 	assert.FileExists(t, fileName)
-
+	requirements := &requirementResource.Spec
 	requirements.OverrideRequirementsFromEnvironment(func(in string) (string, error) {
 		return "", nil
 	})
@@ -92,7 +93,7 @@ func Test_OverrideRequirementsFromEnvironment_does_not_initialise_nil_structs(t 
 		_ = os.RemoveAll(tempDir)
 	}()
 
-	err = requirements.SaveConfig(filepath.Join(tempDir, v4beta1.RequirementsConfigFileName))
+	err = requirementResource.SaveConfig(filepath.Join(tempDir, v4beta1.RequirementsConfigFileName))
 	assert.NoError(t, err, "failed to save requirements file in dir %s", tempDir)
 
 	_, fileName, err = v4beta1.LoadRequirementsConfig(tempDir, v4beta1.DefaultFailOnValidationError)
@@ -211,9 +212,8 @@ func TestRequirementsConfigMarshalExistingFileKanikoFalse(t *testing.T) {
 	assert.NoError(t, err, "should create a temporary config dir")
 
 	file := filepath.Join(dir, v4beta1.RequirementsConfigFileName)
-	requirements := v4beta1.NewRequirementsConfig()
-
-	err = requirements.SaveConfig(file)
+	requirementsResource := v4beta1.NewRequirementsConfig()
+	err = requirementsResource.SaveConfig(file)
 	assert.NoError(t, err, "failed to save file %s", file)
 
 	_, fileName, err := v4beta1.LoadRequirementsConfig(dir, v4beta1.DefaultFailOnValidationError)
@@ -237,8 +237,8 @@ func TestRequirementsConfigMarshalInEmptyDir(t *testing.T) {
 func TestRequirementsConfigIngressAutoDNS(t *testing.T) {
 	t.Parallel()
 
-	requirements := v4beta1.NewRequirementsConfig()
-
+	requirementsResource := v4beta1.NewRequirementsConfig()
+	requirements := &requirementsResource.Spec
 	requirements.Ingress.Domain = "1.2.3.4.nip.io"
 	assert.Equal(t, true, requirements.Ingress.IsAutoDNSDomain(), "requirements.Ingress.IsAutoDNSDomain() for domain %s", requirements.Ingress.Domain)
 
@@ -276,7 +276,8 @@ func Test_marshalling_empty_requirements_config_creates_no_build_pack_configurat
 func Test_marshalling_vault_config(t *testing.T) {
 	t.Parallel()
 
-	requirements := v4beta1.NewRequirementsConfig()
+	requirementsResource := v4beta1.NewRequirementsConfig()
+	requirements := &requirementsResource.Spec
 	requirements.Vault = v4beta1.VaultConfig{
 		Name:                   "myVault",
 		URL:                    "http://myvault",
@@ -314,12 +315,12 @@ func Test_env_repository_visibility(t *testing.T) {
 			content, err := ioutil.ReadFile(path.Join(testDataDir, testCase.yamlFile))
 			assert.NoError(t, err)
 
-			requirementsConfig := v4beta1.NewRequirementsConfig()
-
+			requirementsResource := v4beta1.NewRequirementsConfig()
+			requirements := &requirementsResource.Spec
 			_ = log.CaptureOutput(func() {
-				err = yaml.Unmarshal(content, requirementsConfig)
+				err = yaml.Unmarshal(content, requirements)
 				assert.NoError(t, err)
-				assert.Equal(t, testCase.expectedGitPublic, requirementsConfig.Cluster.EnvironmentGitPublic, "unexpected value for repository visibility")
+				assert.Equal(t, testCase.expectedGitPublic, requirements.Cluster.EnvironmentGitPublic, "unexpected value for repository visibility")
 			})
 		})
 	}
@@ -473,9 +474,15 @@ func TestMergeSave(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
-			err = tc.Original.MergeSave(tc.Changed, f.Name())
+			r := v4beta1.Requirements{
+				Spec: *tc.Original,
+			}
+			rChanged := &v4beta1.Requirements{
+				Spec: *tc.Changed,
+			}
+			err = r.MergeSave(rChanged, f.Name())
 			assert.NoError(t, err, "the merge shouldn't fail for case %s", tc.Name)
-			tc.ValidationFunc(tc.Original, tc.Changed)
+			tc.ValidationFunc(&r.Spec, &rChanged.Spec)
 		})
 	}
 }
@@ -484,8 +491,9 @@ func Test_EnvironmentGitPublic_and_EnvironmentGitPrivate_specified_together_retu
 	content, err := ioutil.ReadFile(path.Join(testDataDir, "git_public_true_git_private_true.yaml"))
 	assert.NoError(t, err)
 
-	requirementsConfig := v4beta1.NewRequirementsConfig()
-	err = yaml.Unmarshal(content, requirementsConfig)
+	requirementsResource := v4beta1.NewRequirementsConfig()
+	requirements := &requirementsResource.Spec
+	err = yaml.Unmarshal(content, requirements)
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "only EnvironmentGitPublic should be used")
 }
@@ -525,15 +533,17 @@ func Test_LoadRequirementsConfig(t *testing.T) {
 				require.NoError(t, err, "unable to write requirements file %s", expectedRequirementsFile)
 			}
 
-			requirements, requirementsFile, err := v4beta1.LoadRequirementsConfig(testPath, v4beta1.DefaultFailOnValidationError)
+			requirementsResource, requirementsFile, err := v4beta1.LoadRequirementsConfig(testPath, v4beta1.DefaultFailOnValidationError)
+
 			if testCase.createRequirements {
+				requirements := &requirementsResource.Spec
 				require.NoError(t, err)
 				assert.Equal(t, expectedRequirementsFile, requirementsFile)
 				assert.Equal(t, string(requirements.Webhook), "prow")
 			} else {
 				require.Error(t, err)
 				assert.Equal(t, "", requirementsFile)
-				assert.Nil(t, requirements)
+				assert.Nil(t, requirementsResource)
 			}
 		})
 	}
@@ -561,7 +571,8 @@ func TestBackwardsCompatibleRequirementsFile(t *testing.T) {
 }
 
 func validateRequirements(t *testing.T, oldRequirementsDir string) {
-	requirements, fileName, err := v4beta1.LoadRequirementsConfig(oldRequirementsDir, true)
+	requirementsResource, fileName, err := v4beta1.LoadRequirementsConfig(oldRequirementsDir, true)
+	requirements := &requirementsResource.Spec
 	assert.NoError(t, err, "failed to load old style jx-requirements.yml")
 	assert.NotEmpty(t, fileName, "requirements filename should not be empty")
 	assert.NotNil(t, requirements, "requirements should not be empty")
