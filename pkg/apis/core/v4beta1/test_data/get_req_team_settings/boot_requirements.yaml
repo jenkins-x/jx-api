@@ -1,0 +1,15 @@
+apiVersion: core.jenkins-x.io/v4beta1
+kind: Requirements
+spec:
+  autoUpdate:
+    enabled: false
+    schedule: ""
+  cluster:
+    chartRepository: http://bucketrepo/bucketrepo/charts/
+  ingress:
+    domain: ""
+    externalDNS: false
+    namespaceSubDomain: ""
+  secretStorage: local
+  vault: {}
+  webhook: lighthouse

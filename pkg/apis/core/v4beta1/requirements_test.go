@@ -597,3 +597,16 @@ func TestStorageURLHelpers(t *testing.T) {
 	r.RemoveStorageURL("foo")
 	assert.Equal(t, "", r.GetStorageURL("foo"))
 }
+func TestGetRequirementsConfigFromTeamSettings(t *testing.T) {
+
+	content, err := ioutil.ReadFile(path.Join(testDataDir, "get_req_team_settings", "boot_requirements.yaml"))
+	assert.NoError(t, err)
+
+	settings := &v4beta1.TeamSettings{
+		BootRequirements: string(content),
+	}
+
+	req, err := v4beta1.GetRequirementsConfigFromTeamSettings(settings)
+	assert.NoError(t, err)
+	assert.Equal(t, "http://bucketrepo/bucketrepo/charts/", req.Cluster.ChartRepository)
+}

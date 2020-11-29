@@ -32,6 +32,8 @@ var (
 )
 
 const (
+	RequirementsName = "Requirements"
+
 	// DefaultFailOnValidationError by default fail if validation fails when reading jx-requirements
 	DefaultFailOnValidationError = true
 
@@ -439,7 +441,7 @@ type RequirementsConfig struct {
 func NewRequirementsConfig() *Requirements {
 	return &Requirements{
 		TypeMeta: metav1.TypeMeta{
-			Kind:       "Requirements", // todo not sure if this is correct but not able to find how TypeMeta gets set when type is plain file rather than incluster CRD, perhaps it's automated when in cluster?
+			Kind:       RequirementsName, // todo not sure if this is correct but not able to find how TypeMeta gets set when type is plain file rather than incluster CRD, perhaps it's automated when in cluster?
 			APIVersion: SchemeGroupVersion.String(),
 		},
 		Spec: RequirementsConfig{
@@ -476,6 +478,13 @@ func LoadRequirementsConfig(dir string, failOnValidationErrors bool) (*Requireme
 	return nil, "", errors.New("jx-requirements.yml file not found")
 }
 
+func IsNewRequirementsFile(s string) bool {
+	if strings.Contains(s, "apiVersion:") && strings.Contains(s, "kind:") && strings.Contains(s, "spec:") {
+		return true
+	}
+	return false
+}
+
 // LoadRequirementsConfigFile loads a specific project YAML configuration file
 func LoadRequirementsConfigFile(fileName string, failOnValidationErrors bool) (*Requirements, error) {
 
@@ -490,10 +499,8 @@ func LoadRequirementsConfigFile(fileName string, failOnValidationErrors bool) (*
 		return nil, fmt.Errorf("failed to load file %s due to %s", fileName, err)
 	}
 
-	s := string(data)
 	// //check whether new or old jx requirements
-	if strings.Contains(s, "apiVersion") && strings.Contains(s, "kind") && strings.Contains(s, "spec") {
-
+	if IsNewRequirementsFile(string(data)) {
 		validationErrors, err := util.ValidateYaml(requirements, data)
 		if err != nil {
 			return nil, fmt.Errorf("failed to validate YAML file %s due to %s", fileName, err)
@@ -547,6 +554,23 @@ func GetRequirementsConfigFromTeamSettings(settings *TeamSettings) (*Requirement
 	// TeamSettings does not have a real value for BootRequirements, so this is probably not a boot cluster.
 	if settings.BootRequirements == "" {
 		return nil, nil
+	}
+
+	if IsNewRequirementsFile(settings.BootRequirements) {
+		requirements := &Requirements{}
+		data := []byte(settings.BootRequirements)
+		validationErrors, err := util.ValidateYaml(requirements, data)
+		if err != nil {
+			return nil, fmt.Errorf("failed to validate requirements from team settings due to %s", err)
+		}
+		if len(validationErrors) > 0 {
+			return &requirements.Spec, fmt.Errorf("validation failures in requirements from team settings:\n%s", strings.Join(validationErrors, "\n"))
+		}
+		err = yaml.Unmarshal(data, requirements)
+		if err != nil {
+			return nil, fmt.Errorf("failed to unmarshal requirements from team settings due to %s", err)
+		}
+		return &requirements.Spec, nil
 	}
 
 	config := &RequirementsConfig{}
