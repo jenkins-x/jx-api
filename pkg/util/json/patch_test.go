@@ -3,9 +3,9 @@ package json_test
 import (
 	"testing"
 
-	"github.com/jenkins-x/jx-api/v3/pkg/util/json"
+	"github.com/jenkins-x/jx-api/v4/pkg/util/json"
 
-	jenkinsv1 "github.com/jenkins-x/jx-api/v3/pkg/apis/jenkins.io/v1"
+	jenkinsv1 "github.com/jenkins-x/jx-api/v4/pkg/apis/core/v4beta1"
 	"github.com/stretchr/testify/assert"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )

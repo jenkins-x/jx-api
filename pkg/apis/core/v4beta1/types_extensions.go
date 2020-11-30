@@ -1,7 +1,7 @@
 package v4beta1
 
 import (
-	"github.com/jenkins-x/jx-api/v3/pkg/util"
+	"github.com/jenkins-x/jx-api/v4/pkg/util"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
