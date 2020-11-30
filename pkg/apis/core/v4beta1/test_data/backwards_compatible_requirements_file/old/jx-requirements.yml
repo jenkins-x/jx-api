@@ -23,3 +23,16 @@ environments:
 repository: nexus
 secretStorage: vault
 webhook: lighthouse
+storage:
+  backup:
+    enabled: false
+    url: ""
+  logs:
+    enabled: true
+    url: gs://logs-foo
+  reports:
+    enabled: true
+    url: gs://reports-foo
+  repository:
+    enabled: true
+    url: gs://repository-foo

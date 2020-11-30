@@ -42,6 +42,11 @@ const (
 
 	// Replaces the optional requirement and making jx hardcoded, if folks try changing the namespace in a jx-requirements.yml file it is highly likely to fail
 	DefaultNamespace = "jx"
+
+	backupName     = "backup"
+	reportsName    = "reports"
+	logsName       = "logs"
+	repositoryName = "repository"
 )
 
 const (
@@ -281,6 +286,34 @@ type ClusterConfig struct {
 	DockerRegistryOrg string `json:"dockerRegistryOrg,omitempty"`
 }
 
+// Deprecated: migrate to top level Requirements object
+type legacyRequirementsConfig struct {
+	RequirementsConfig `json:",inline"`
+
+	Storage LegacyStorageConfig `json:"storage"`
+}
+
+// Deprecated: migrate to top level Requirements object
+type LegacyStorageConfig struct {
+	// Logs for storing build logs
+	Logs LegacyStorageEntryConfig `json:"logs"`
+	// Tests for storing test results, coverage + code quality reports
+	Reports LegacyStorageEntryConfig `json:"reports"`
+	// Repository for storing repository artifacts
+	Repository LegacyStorageEntryConfig `json:"repository"`
+	// Backup for backing up kubernetes resource
+	Backup LegacyStorageEntryConfig `json:"backup"`
+}
+
+// Deprecated: migrate to top level Requirements object
+type LegacyStorageEntryConfig struct {
+	// Enabled if the storage is enabled
+	Enabled bool `json:"enabled"`
+	// URL the cloud storage bucket URL such as 'gs://mybucket' or 's3://foo' or `azblob://thingy'
+	// see https://jenkins-x.io/architecture/storage/
+	URL string `json:"url"`
+}
+
 // VaultConfig contains Vault configuration for Boot
 type VaultConfig struct {
 	// Name the name of the Vault if using Jenkins X managed Vault instance.
@@ -489,6 +522,7 @@ func IsNewRequirementsFile(s string) bool {
 func LoadRequirementsConfigFile(fileName string, failOnValidationErrors bool) (*Requirements, error) {
 
 	requirements := NewRequirementsConfig()
+	requirements.Spec.addDefaults()
 	_, err := os.Stat(fileName)
 	if err != nil {
 		return nil, errors.Wrapf(err, "checking if file %s exists", fileName)
@@ -519,7 +553,7 @@ func LoadRequirementsConfigFile(fileName string, failOnValidationErrors bool) (*
 		}
 
 	} else {
-		config := &RequirementsConfig{}
+		config := &legacyRequirementsConfig{}
 		validationErrors, err := util.ValidateYaml(config, data)
 		if err != nil {
 			return nil, fmt.Errorf("failed to validate YAML file %s due to %s", fileName, err)
@@ -538,10 +572,9 @@ func LoadRequirementsConfigFile(fileName string, failOnValidationErrors bool) (*
 			return nil, fmt.Errorf("failed to unmarshal YAML file %s due to %s", fileName, err)
 		}
 
-		requirements.Spec = *config
+		requirements.migrateV3(config)
 	}
 
-	requirements.Spec.addDefaults()
 	return requirements, nil
 }
 
@@ -673,6 +706,24 @@ func (c *Requirements) MergeSave(src *Requirements, requirementsFileName string)
 		return errors.Wrapf(err, "error saving the merged jx-requirements.yml files to %s", requirementsFileName)
 	}
 	return nil
+}
+
+// lets remove this on the next major version update, currently v4
+func (c *Requirements) migrateV3(config *legacyRequirementsConfig) {
+	c.Spec = config.RequirementsConfig
+
+	if config.Storage.Backup.Enabled && config.Storage.Backup.URL != "" {
+		c.Spec.AddOrUpdateStorageURL(backupName, config.Storage.Backup.URL)
+	}
+	if config.Storage.Logs.Enabled && config.Storage.Logs.URL != "" {
+		c.Spec.AddOrUpdateStorageURL(logsName, config.Storage.Logs.URL)
+	}
+	if config.Storage.Reports.Enabled && config.Storage.Reports.URL != "" {
+		c.Spec.AddOrUpdateStorageURL(reportsName, config.Storage.Reports.URL)
+	}
+	if config.Storage.Repository.Enabled && config.Storage.Repository.URL != "" {
+		c.Spec.AddOrUpdateStorageURL(repositoryName, config.Storage.Repository.URL)
+	}
 }
 
 // EnvironmentMap creates a map of maps tree which can be used inside Go templates to access the environment
@@ -816,28 +867,28 @@ func (c *RequirementsConfig) OverrideRequirementsFromEnvironment(gkeProjectNumbe
 	// StorageConfig is reused between multiple storage configuration types and needs to be handled explicitly
 	if "" != os.Getenv(RequirementStorageBackupURL) {
 		c.Storage = append(c.Storage, StorageConfig{
-			Name: "backup",
+			Name: backupName,
 			URL:  os.Getenv(RequirementStorageBackupURL),
 		})
 	}
 
 	if "" != os.Getenv(RequirementStorageLogsURL) {
 		c.Storage = append(c.Storage, StorageConfig{
-			Name: "logs",
+			Name: logsName,
 			URL:  os.Getenv(RequirementStorageLogsURL),
 		})
 	}
 
 	if "" != os.Getenv(RequirementStorageReportsURL) {
 		c.Storage = append(c.Storage, StorageConfig{
-			Name: "reports",
+			Name: reportsName,
 			URL:  os.Getenv(RequirementStorageReportsURL),
 		})
 	}
 
 	if "" != os.Getenv(RequirementStorageRepositoryURL) {
 		c.Storage = append(c.Storage, StorageConfig{
-			Name: "repository",
+			Name: repositoryName,
 			URL:  os.Getenv(RequirementStorageRepositoryURL),
 		})
 	}
