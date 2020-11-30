@@ -1,8 +1,8 @@
 package util
 
 import (
-	schemagen "github.com/alecthomas/jsonschema"
 	"github.com/ghodss/yaml"
+	schemagen "github.com/rawlingsj/jsonschema"
 	"github.com/xeipuuv/gojsonschema"
 	corev1 "k8s.io/api/core/v1"
 )
@@ -22,7 +22,6 @@ func GenerateSchema(target interface{}) *schemagen.Schema {
 // schema, ignoring Containers and missing fields.
 func ValidateYaml(target interface{}, data []byte) ([]string, error) {
 	schema := GenerateSchema(target)
-
 	dataAsJSON, err := yaml.YAMLToJSON(data)
 	if err != nil {
 		return nil, err
