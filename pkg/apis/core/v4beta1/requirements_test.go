@@ -567,7 +567,6 @@ func TestBackwardsCompatibleRequirementsFile(t *testing.T) {
 
 	validateRequirements(t, oldRequirementsDir)
 	validateRequirements(t, newRequirementsDir)
-
 }
 
 func validateRequirements(t *testing.T, oldRequirementsDir string) {
@@ -578,6 +577,8 @@ func validateRequirements(t *testing.T, oldRequirementsDir string) {
 	assert.NotEmpty(t, fileName, "requirements filename should not be empty")
 	assert.NotNil(t, requirements, "requirements should not be empty")
 	assert.Equal(t, v4beta1.WebhookTypeLighthouse, requirements.Webhook, "failed to find requirement")
+	assert.Equal(t, "gs://logs-foo", requirementsResource.Spec.GetStorageURL("logs"), "failed to find storage logs URL")
+	assert.Equal(t, "1055835833001", requirementsResource.Spec.Cluster.GKEConfig.ProjectNumber, "failed to find project id")
 }
 
 func TestStorageURLHelpers(t *testing.T) {

@@ -18,3 +18,10 @@ spec:
   repository: nexus
   secretStorage: vault
   webhook: lighthouse
+  storage:
+  - name: logs
+    url: gs://logs-foo
+  - name: reports
+    url: gs://reports-foo
+  - name: repository
+    url: gs://repository-foo
