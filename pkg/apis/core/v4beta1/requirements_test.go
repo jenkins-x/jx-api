@@ -572,8 +572,9 @@ func TestBackwardsCompatibleRequirementsFile(t *testing.T) {
 
 func validateRequirements(t *testing.T, oldRequirementsDir string) {
 	requirementsResource, fileName, err := v4beta1.LoadRequirementsConfig(oldRequirementsDir, true)
-	requirements := &requirementsResource.Spec
+
 	assert.NoError(t, err, "failed to load old style jx-requirements.yml")
+	requirements := &requirementsResource.Spec
 	assert.NotEmpty(t, fileName, "requirements filename should not be empty")
 	assert.NotNil(t, requirements, "requirements should not be empty")
 	assert.Equal(t, v4beta1.WebhookTypeLighthouse, requirements.Webhook, "failed to find requirement")
