@@ -474,7 +474,7 @@ type RequirementsConfig struct {
 func NewRequirementsConfig() *Requirements {
 	return &Requirements{
 		TypeMeta: metav1.TypeMeta{
-			Kind:       RequirementsName, // todo not sure if this is correct but not able to find how TypeMeta gets set when type is plain file rather than incluster CRD, perhaps it's automated when in cluster?
+			Kind:       RequirementsName,
 			APIVersion: SchemeGroupVersion.String(),
 		},
 		Spec: RequirementsConfig{
@@ -519,10 +519,27 @@ func IsNewRequirementsFile(s string) bool {
 }
 
 // LoadRequirementsConfigFile loads a specific project YAML configuration file
+func LoadRequirementsConfigFileNoDefaults(fileName string, failOnValidationErrors bool) (*Requirements, error) {
+
+	return loadRequirements(fileName, failOnValidationErrors)
+}
+
+// LoadRequirementsConfigFile loads a specific project YAML configuration file
 func LoadRequirementsConfigFile(fileName string, failOnValidationErrors bool) (*Requirements, error) {
 
-	requirements := NewRequirementsConfig()
-	requirements.Spec.addDefaults()
+	requirements, err := loadRequirements(fileName, failOnValidationErrors)
+	if requirements != nil {
+		requirements.Spec.addDefaults()
+	}
+	return requirements, err
+}
+
+func loadRequirements(fileName string, failOnValidationErrors bool) (*Requirements, error) {
+	requirements := &Requirements{
+		TypeMeta: metav1.TypeMeta{
+			Kind:       RequirementsName,
+			APIVersion: SchemeGroupVersion.String(),
+		}}
 	_, err := os.Stat(fileName)
 	if err != nil {
 		return nil, errors.Wrapf(err, "checking if file %s exists", fileName)
