@@ -1,7 +1,7 @@
-package v4beta1
+package v1
 
 import (
-	"github.com/jenkins-x/jx-api/v4/pkg/apis/core"
+	v1 "github.com/jenkins-x/jx-api/v4/pkg/apis/jenkins.io"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
@@ -10,7 +10,7 @@ import (
 )
 
 // SchemeGroupVersion is group version used to register these objects
-var SchemeGroupVersion = schema.GroupVersion{Group: core.GroupName, Version: core.Version}
+var SchemeGroupVersion = schema.GroupVersion{Group: v1.GroupName, Version: v1.Version}
 
 // Kind takes an unqualified kind and returns back a Group qualified GroupKind
 func Kind(kind string) schema.GroupKind {
@@ -38,10 +38,18 @@ func init() {
 
 // Adds the list of known types to Scheme.
 func addKnownTypes(scheme *runtime.Scheme) error {
-	scheme.AddKnownTypes(SchemeGroupVersion)
-	// Clients not needed for requirements
-	//&Requirements{},
-
+	scheme.AddKnownTypes(SchemeGroupVersion,
+		&Environment{},
+		&EnvironmentList{},
+		&PluginList{},
+		&Plugin{},
+		&PipelineActivity{},
+		&PipelineActivityList{},
+		&Release{},
+		&ReleaseList{},
+		&SourceRepository{},
+		&SourceRepositoryList{},
+	)
 	metav1.AddToGroupVersion(scheme, SchemeGroupVersion)
 	return nil
 }

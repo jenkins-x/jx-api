@@ -19,8 +19,8 @@ package fake
 
 import (
 	clientset "github.com/jenkins-x/jx-api/v4/pkg/client/clientset/versioned"
-	corev4beta1 "github.com/jenkins-x/jx-api/v4/pkg/client/clientset/versioned/typed/core/v4beta1"
-	fakecorev4beta1 "github.com/jenkins-x/jx-api/v4/pkg/client/clientset/versioned/typed/core/v4beta1/fake"
+	jenkinsv1 "github.com/jenkins-x/jx-api/v4/pkg/client/clientset/versioned/typed/jenkins.io/v1"
+	fakejenkinsv1 "github.com/jenkins-x/jx-api/v4/pkg/client/clientset/versioned/typed/jenkins.io/v1/fake"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/discovery"
@@ -75,7 +75,7 @@ func (c *Clientset) Tracker() testing.ObjectTracker {
 
 var _ clientset.Interface = &Clientset{}
 
-// CoreV4beta1 retrieves the CoreV4beta1Client
-func (c *Clientset) CoreV4beta1() corev4beta1.CoreV4beta1Interface {
-	return &fakecorev4beta1.FakeCoreV4beta1{Fake: &c.Fake}
+// JenkinsV1 retrieves the JenkinsV1Client
+func (c *Clientset) JenkinsV1() jenkinsv1.JenkinsV1Interface {
+	return &fakejenkinsv1.FakeJenkinsV1{Fake: &c.Fake}
 }
