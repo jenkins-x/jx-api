@@ -20,4 +20,5 @@ golangci-lint run \
   --verbose \
   --build-tags build \
   --skip-dirs pkg/client \
-  --skip-files pkg/apis/core/v4beta1/zz_generated.deepcopy.go
+  --skip-files pkg/apis/core/v4beta1/zz_generated.deepcopy.go \
+  --skip-files pkg/apis/jenkins.io/v1/zz_generated.deepcopy.go

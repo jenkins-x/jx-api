@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 
+	v1 "github.com/jenkins-x/jx-api/v4/pkg/apis/jenkins.io/v1"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	"github.com/jenkins-x/jx-api/v4/pkg/cloud"
@@ -179,7 +181,7 @@ type EnvironmentConfig struct {
 	// RemoteCluster specifies this environment runs on a remote cluster to the development cluster
 	RemoteCluster bool `json:"remoteCluster,omitempty"`
 	// PromotionStrategy what kind of promotion strategy to use
-	PromotionStrategy PromotionStrategyType `json:"promotionStrategy,omitempty"`
+	PromotionStrategy v1.PromotionStrategyType `json:"promotionStrategy,omitempty"`
 }
 
 // IngressConfig contains dns specific requirements
@@ -596,7 +598,7 @@ func loadRequirements(fileName string, failOnValidationErrors bool) (*Requiremen
 }
 
 // GetRequirementsConfigFromTeamSettings reads the BootRequirements string from TeamSettings and unmarshals it
-func GetRequirementsConfigFromTeamSettings(settings *TeamSettings) (*RequirementsConfig, error) {
+func GetRequirementsConfigFromTeamSettings(settings *v1.TeamSettings) (*RequirementsConfig, error) {
 	if settings == nil {
 		return nil, nil
 	}

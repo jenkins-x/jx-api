@@ -8,6 +8,8 @@ import (
 	"path/filepath"
 	"testing"
 
+	v1 "github.com/jenkins-x/jx-api/v4/pkg/apis/jenkins.io/v1"
+
 	"github.com/stretchr/testify/require"
 
 	"github.com/ghodss/yaml"
@@ -604,7 +606,7 @@ func TestGetRequirementsConfigFromTeamSettings(t *testing.T) {
 	content, err := ioutil.ReadFile(path.Join(testDataDir, "get_req_team_settings", "boot_requirements.yaml"))
 	assert.NoError(t, err)
 
-	settings := &v4beta1.TeamSettings{
+	settings := &v1.TeamSettings{
 		BootRequirements: string(content),
 	}
 
