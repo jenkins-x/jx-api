@@ -597,50 +597,6 @@ func loadRequirements(fileName string, failOnValidationErrors bool) (*Requiremen
 	return requirements, nil
 }
 
-// GetRequirementsConfigFromTeamSettings reads the BootRequirements string from TeamSettings and unmarshals it
-func GetRequirementsConfigFromTeamSettings(settings *v1.TeamSettings) (*RequirementsConfig, error) {
-	if settings == nil {
-		return nil, nil
-	}
-
-	// TeamSettings does not have a real value for BootRequirements, so this is probably not a boot cluster.
-	if settings.BootRequirements == "" {
-		return nil, nil
-	}
-
-	if IsNewRequirementsFile(settings.BootRequirements) {
-		requirements := &Requirements{}
-		data := []byte(settings.BootRequirements)
-		validationErrors, err := util.ValidateYaml(requirements, data)
-		if err != nil {
-			return nil, fmt.Errorf("failed to validate requirements from team settings due to %s", err)
-		}
-		if len(validationErrors) > 0 {
-			return &requirements.Spec, fmt.Errorf("validation failures in requirements from team settings:\n%s", strings.Join(validationErrors, "\n"))
-		}
-		err = yaml.Unmarshal(data, requirements)
-		if err != nil {
-			return nil, fmt.Errorf("failed to unmarshal requirements from team settings due to %s", err)
-		}
-		return &requirements.Spec, nil
-	}
-
-	config := &RequirementsConfig{}
-	data := []byte(settings.BootRequirements)
-	validationErrors, err := util.ValidateYaml(config, data)
-	if err != nil {
-		return config, fmt.Errorf("failed to validate requirements from team settings due to %s", err)
-	}
-	if len(validationErrors) > 0 {
-		return config, fmt.Errorf("validation failures in requirements from team settings:\n%s", strings.Join(validationErrors, "\n"))
-	}
-	err = yaml.Unmarshal(data, config)
-	if err != nil {
-		return config, fmt.Errorf("failed to unmarshal requirements from team settings due to %s", err)
-	}
-	return config, nil
-}
-
 // IsEmpty returns true if this configuration is empty
 func (c *RequirementsConfig) IsEmpty() bool {
 	empty := &RequirementsConfig{}
