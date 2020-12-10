@@ -239,8 +239,8 @@ type AzureSecretConfig struct {
 type AzureConfig struct {
 	// RegistrySubscription the registry subscription for defaulting the container registry.
 	// Not used if you specify a Registry explicitly
-	RegistrySubscription     string `json:"registrySubscription,omitempty"`
-	*AzureDNSConfig          `json:"dns,omitempty"`
+	RegistrySubscription     string             `json:"registrySubscription,omitempty"`
+	AzureDNSConfig           *AzureDNSConfig    `json:"dns,omitempty"`
 	AzureSecretStorageConfig *AzureSecretConfig `json:"secretStorage,omitempty"`
 }
 
