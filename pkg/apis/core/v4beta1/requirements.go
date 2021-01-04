@@ -294,6 +294,7 @@ type ClusterConfig struct {
 }
 
 // Deprecated: migrate to top level Requirements object
+// +k8s:openapi-gen=false
 type legacyRequirementsConfig struct {
 	RequirementsConfig `json:",inline"`
 

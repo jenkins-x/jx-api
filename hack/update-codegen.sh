@@ -1,4 +1,3 @@
-
 #!/usr/bin/env bash
 
 # Copyright 2017 The Kubernetes Authors.
@@ -56,3 +55,15 @@ rm -rf "${SCRIPT_ROOT}"/v4
 #cp -R "${SCRIPT_ROOT}"/v4/pkg/apis/core/v4beta1/zz_generated.deepcopy.go "${SCRIPT_ROOT}"/pkg/apis/core/v4beta1/zz_generated.deepcopy.go
 #
 #rm -rf "${SCRIPT_ROOT}"/v4
+
+echo "Generating openapi definitions"
+rm -Rf ./${SCRIPT_ROOT}/openapi/openapi_generated.go
+#go install ./${PROJECT_ROOT}/vendor/k8s.io/kube-openapi/cmd/openapi-gen
+${GOPATH}/bin/openapi-gen "$@" \
+  --v 1 \
+  --logtostderr \
+  --input-dirs=github.com/jenkins-x/jx-api/v4/pkg/apis/core/v4beta1 \
+  --report-filename=${SCRIPT_ROOT}/pkg/openapi/api_violations.report \
+  --output-package=github.com/jenkins-x/jx-api/pkg/generated/openapi \
+  --output-file-base=zz_generated.openapi \
+  -h "${SCRIPT_ROOT}/hack/custom-boilerplate.go.txt"

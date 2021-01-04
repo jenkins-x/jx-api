@@ -4,7 +4,8 @@ go 1.15
 
 require (
 	github.com/ghodss/yaml v1.0.0
-	github.com/go-openapi/spec v0.19.7 // indirect
+	github.com/go-openapi/spec v0.20.0
+	github.com/go-openapi/validate v0.20.0 // indirect
 	github.com/imdario/mergo v0.3.9
 	github.com/jenkins-x/jx-logging/v3 v3.0.0
 	github.com/mattbaird/jsonpatch v0.0.0-20171005235357-81af80346b1a
@@ -13,11 +14,14 @@ require (
 	github.com/stretchr/testify v1.6.1
 	github.com/vrischmann/envconfig v1.2.0
 	github.com/xeipuuv/gojsonschema v1.2.0
-	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d // indirect
-	k8s.io/api v0.19.2
-	k8s.io/apimachinery v0.19.2
-	k8s.io/client-go v0.19.2
+	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776
+	k8s.io/api v0.20.1
+	k8s.io/apiextensions-apiserver v0.19.2
+	k8s.io/apimachinery v0.20.1
+	k8s.io/client-go v0.20.1
 	k8s.io/code-generator v0.19.2
+	k8s.io/gengo v0.0.0-20201113003025-83324d819ded // indirect
+	k8s.io/kube-openapi v0.0.0-20201113171705-d219536bb9fd
 )
 
 replace (

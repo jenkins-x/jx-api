@@ -1,0 +1,20 @@
+apiVersion: core.jenkins-x.io/v4beta123
+kind:
+- list
+- of
+- stuff
+spec:
+  autoUpdate:
+    enabled: true
+    schedule: 0 0 * * *
+  environments:
+    - ingress:
+        cloud_dns_secret_name: external-dns-gcp-sa
+        namespaceSubDomain: -jx.
+        tls:
+          enabled: true
+          production: false
+      key: dev
+  repository: nexus
+  secretStorage: vault
+  webhook: lighthouse
