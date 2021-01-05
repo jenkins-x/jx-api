@@ -45,14 +45,14 @@ cp -R "${SCRIPT_ROOT}"/v4/pkg/apis/jenkins.io/v1/zz_generated.deepcopy.go "${SCR
 
 rm -rf "${SCRIPT_ROOT}"/v4
 
-#bash hack/generate-groups.sh all \
-#  github.com/jenkins-x/jx-api/v4/pkg/generated/core github.com/jenkins-x/jx-api/v4/pkg/apis \
-#  core:v4beta1 \
-#  --output-base "$(dirname "${BASH_SOURCE[0]}")/../../../.." \
-#  --go-header-file "${SCRIPT_ROOT}"/hack/custom-boilerplate.go.txt
-#
-#
+bash hack/generate-groups.sh deepcopy-gen \
+  github.com/jenkins-x/jx-api/v4/pkg/generated/core github.com/jenkins-x/jx-api/v4/pkg/apis \
+  core:v4beta1 \
+  --output-base "$(dirname "${BASH_SOURCE[0]}")/../../../.." \
+  --go-header-file "${SCRIPT_ROOT}"/hack/custom-boilerplate.go.txt
+
+
 #cp -R "${SCRIPT_ROOT}"/v4/pkg/generated/ "${SCRIPT_ROOT}"/pkg/generated
-#cp -R "${SCRIPT_ROOT}"/v4/pkg/apis/core/v4beta1/zz_generated.deepcopy.go "${SCRIPT_ROOT}"/pkg/apis/core/v4beta1/zz_generated.deepcopy.go
-#
-#rm -rf "${SCRIPT_ROOT}"/v4
+cp -R "${SCRIPT_ROOT}"/v4/pkg/apis/core/v4beta1/zz_generated.deepcopy.go "${SCRIPT_ROOT}"/pkg/apis/core/v4beta1/zz_generated.deepcopy.go
+
+rm -rf "${SCRIPT_ROOT}"/v4

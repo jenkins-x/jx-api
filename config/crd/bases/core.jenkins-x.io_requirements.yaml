@@ -1,0 +1,431 @@
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.2.5
+  creationTimestamp: null
+  name: requirements.core.jenkins-x.io
+spec:
+  group: core.jenkins-x.io
+  names:
+    kind: Requirements
+    listKind: RequirementsList
+    plural: requirements
+    singular: requirements
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      description: Requirements represents a collection installation requirements
+        for Jenkins X
+      properties:
+        apiVersion:
+          description: 'APIVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'Kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          description: Spec the definition of the secret mappings
+          properties:
+            autoUpdate:
+              description: AutoUpdate contains auto update config
+              properties:
+                enabled:
+                  description: Enabled autoupdate
+                  type: boolean
+                schedule:
+                  description: Schedule cron of auto updates
+                  type: string
+              required:
+              - enabled
+              - schedule
+              type: object
+            cluster:
+              description: Cluster contains cluster specific requirements
+              properties:
+                azure:
+                  description: AzureConfig the azure specific configuration
+                  properties:
+                    dns:
+                      properties:
+                        resourceGroup:
+                          type: string
+                        subscriptionId:
+                          type: string
+                        tenantId:
+                          type: string
+                      type: object
+                    registrySubscription:
+                      description: RegistrySubscription the registry subscription
+                        for defaulting the container registry. Not used if you specify
+                        a Registry explicitly
+                      type: string
+                    secretStorage:
+                      properties:
+                        keyVaultName:
+                          type: string
+                      type: object
+                  type: object
+                chartRepository:
+                  description: ChartRepository the repository URL to deploy charts
+                    to
+                  type: string
+                clusterName:
+                  description: ClusterName the logical name of the cluster
+                  type: string
+                devEnvApprovers:
+                  description: DevEnvApprovers contains an optional list of approvers
+                    to populate the initial OWNERS file in the dev env repo
+                  items:
+                    type: string
+                  type: array
+                dockerRegistryOrg:
+                  description: DockerRegistryOrg the default organisation used for
+                    container images
+                  type: string
+                environmentGitOwner:
+                  description: EnvironmentGitOwner the default git owner for environment
+                    repositories if none is specified explicitly
+                  type: string
+                environmentGitPublic:
+                  description: EnvironmentGitPublic determines whether jx boot create
+                    public or private git repos for the environments
+                  type: boolean
+                externalDNSSAName:
+                  description: ExternalDNSSAName the service account name for external
+                    dns
+                  type: string
+                gitKind:
+                  description: GitKind is the kind of git server (github, bitbucketserver
+                    etc)
+                  type: string
+                gitName:
+                  description: GitName is the name of the default git service
+                  type: string
+                gitPublic:
+                  description: GitPublic determines whether jx boot create public
+                    or private git repos for the applications
+                  type: boolean
+                gitServer:
+                  description: GitServer is the URL of the git server
+                  type: string
+                gke:
+                  description: GKEConfig the gke specific configuration
+                  properties:
+                    projectNumber:
+                      description: ProjectNumber the unique project number GKE assigns
+                        to a project (required for workload identity).
+                      type: string
+                  type: object
+                kanikoSAName:
+                  description: VaultSAName the service account name for vault KanikoSAName
+                    the service account name for kaniko
+                  type: string
+                project:
+                  description: ProjectID the cloud project ID e.g. on GCP
+                  type: string
+                provider:
+                  description: Provider the kubernetes provider (e.g. gke)
+                  type: string
+                region:
+                  description: Region the cloud region being used
+                  type: string
+                registry:
+                  description: Registry the host name of the container registry
+                  type: string
+                zone:
+                  description: Zone the cloud zone being used
+                  type: string
+              type: object
+            environments:
+              description: Environments the requirements for the environments
+              items:
+                description: EnvironmentConfig configures the organisation and repository
+                  name of the git repositories for environments
+                properties:
+                  gitKind:
+                    description: GitKind is the kind of git server (github, bitbucketserver
+                      etc)
+                    type: string
+                  gitServer:
+                    description: GitServer is the URL of the git server
+                    type: string
+                  ingress:
+                    description: Ingress contains ingress specific requirements
+                    properties:
+                      cloud_dns_secret_name:
+                        description: CloudDNSSecretName secret name which contains
+                          the service account for external-dns and cert-manager issuer
+                          to access the Cloud DNS service to resolve a DNS challenge
+                        type: string
+                      domain:
+                        description: Domain to expose ingress endpoints
+                        type: string
+                      externalDNS:
+                        description: DNS is enabled
+                        type: boolean
+                      ignoreLoadBalancer:
+                        description: IgnoreLoadBalancer if the nginx-controller LoadBalancer
+                          service should not be used to detect and update the domain
+                          if you are using a dynamic domain resolver like `.nip.io`
+                          rather than a real DNS configuration. With this flag enabled
+                          the `Domain` value will be used and never re-created based
+                          on the current LoadBalancer IP address.
+                        type: boolean
+                      namespaceSubDomain:
+                        description: NamespaceSubDomain the sub domain expression
+                          to expose ingress. Defaults to ".jx."
+                        type: string
+                      tls:
+                        description: TLS enable automated TLS using certmanager
+                        properties:
+                          email:
+                            description: Email address to register with services like
+                              LetsEncrypt
+                            type: string
+                          enabled:
+                            description: TLS enabled
+                            type: boolean
+                          production:
+                            description: Production false uses self-signed certificates
+                              from the LetsEncrypt staging server, true enables the
+                              production server which incurs higher rate limiting
+                              https://letsencrypt.org/docs/rate-limits/
+                            type: boolean
+                          secretName:
+                            description: SecretName the name of the secret which contains
+                              the TLS certificate
+                            type: string
+                        required:
+                        - email
+                        - enabled
+                        - production
+                        type: object
+                    required:
+                    - domain
+                    - externalDNS
+                    - namespaceSubDomain
+                    type: object
+                  key:
+                    description: Key is the key of the environment configuration
+                    type: string
+                  owner:
+                    description: Owner is the git user or organisation for the repository
+                    type: string
+                  promotionStrategy:
+                    description: PromotionStrategy what kind of promotion strategy
+                      to use
+                    type: string
+                  remoteCluster:
+                    description: RemoteCluster specifies this environment runs on
+                      a remote cluster to the development cluster
+                    type: boolean
+                  repository:
+                    description: Repository is the name of the repository within the
+                      owner
+                    type: string
+                type: object
+              type: array
+            ingress:
+              description: Ingress contains ingress specific requirements
+              properties:
+                cloud_dns_secret_name:
+                  description: CloudDNSSecretName secret name which contains the service
+                    account for external-dns and cert-manager issuer to access the
+                    Cloud DNS service to resolve a DNS challenge
+                  type: string
+                domain:
+                  description: Domain to expose ingress endpoints
+                  type: string
+                externalDNS:
+                  description: DNS is enabled
+                  type: boolean
+                ignoreLoadBalancer:
+                  description: IgnoreLoadBalancer if the nginx-controller LoadBalancer
+                    service should not be used to detect and update the domain if
+                    you are using a dynamic domain resolver like `.nip.io` rather
+                    than a real DNS configuration. With this flag enabled the `Domain`
+                    value will be used and never re-created based on the current LoadBalancer
+                    IP address.
+                  type: boolean
+                namespaceSubDomain:
+                  description: NamespaceSubDomain the sub domain expression to expose
+                    ingress. Defaults to ".jx."
+                  type: string
+                tls:
+                  description: TLS enable automated TLS using certmanager
+                  properties:
+                    email:
+                      description: Email address to register with services like LetsEncrypt
+                      type: string
+                    enabled:
+                      description: TLS enabled
+                      type: boolean
+                    production:
+                      description: Production false uses self-signed certificates
+                        from the LetsEncrypt staging server, true enables the production
+                        server which incurs higher rate limiting https://letsencrypt.org/docs/rate-limits/
+                      type: boolean
+                    secretName:
+                      description: SecretName the name of the secret which contains
+                        the TLS certificate
+                      type: string
+                  required:
+                  - email
+                  - enabled
+                  - production
+                  type: object
+              required:
+              - domain
+              - externalDNS
+              - namespaceSubDomain
+              type: object
+            pipelineUser:
+              description: PipelineUser the user name and email used for running pipelines
+              properties:
+                email:
+                  description: Email the email address of the user
+                  type: string
+                username:
+                  description: Username the username of the user
+                  type: string
+              type: object
+            repository:
+              description: Repository specifies what kind of artifact repository you
+                wish to use for storing artifacts (jars, tarballs, npm modules etc)
+              type: string
+            secretStorage:
+              description: SecretStorage how should we store secrets for the cluster
+              type: string
+            storage:
+              description: Storage contains storage requirements
+              items:
+                description: StorageConfig contains dns specific requirements
+                properties:
+                  name:
+                    description: Name of the bucket
+                    type: string
+                  url:
+                    description: URL the cloud storage bucket URL such as 'gs://mybucket'
+                      or 's3://foo' or `azblob://thingy' see https://jenkins-x.io/architecture/storage/
+                    type: string
+                required:
+                - name
+                - url
+                type: object
+              type: array
+            terraform:
+              description: Terraform specifies if  we are managing the kubernetes
+                cluster and cloud resources with Terraform
+              type: boolean
+            vault:
+              description: Vault the configuration for vault
+              properties:
+                aws:
+                  description: AWSConfig describes the AWS specific configuration
+                    needed for the Vault Operator.
+                  properties:
+                    autoCreate:
+                      type: boolean
+                    dynamoDBRegion:
+                      type: string
+                    dynamoDBTable:
+                      type: string
+                    iamUserName:
+                      type: string
+                    kmsKeyId:
+                      type: string
+                    kmsRegion:
+                      type: string
+                    s3Bucket:
+                      type: string
+                    s3Prefix:
+                      type: string
+                    s3Region:
+                      type: string
+                  type: object
+                azure:
+                  description: AzureConfig describes the Azure specific configuration
+                    needed for the Vault Operator.
+                  properties:
+                    containerName:
+                      type: string
+                    keyName:
+                      type: string
+                    storageAccountName:
+                      type: string
+                    tenantId:
+                      type: string
+                    vaultName:
+                      type: string
+                  type: object
+                bucket:
+                  type: string
+                disableURLDiscovery:
+                  description: DisableURLDiscovery allows us to optionally override
+                    the default lookup of the Vault URL, could be incluster service
+                    or external ingress
+                  type: boolean
+                key:
+                  type: string
+                keyring:
+                  type: string
+                kubernetesAuthPath:
+                  description: KubernetesAuthPath is the auth path of used for this
+                    cluster If not specified the 'kubernetes' is used.
+                  type: string
+                name:
+                  description: Name the name of the Vault if using Jenkins X managed
+                    Vault instance. Cannot be used in conjunction with the URL attribute
+                  type: string
+                namespace:
+                  description: Namespace of the Kubernetes service account allowed
+                    to authenticate against Vault.
+                  type: string
+                recreateBucket:
+                  type: boolean
+                secretEngineMountPoint:
+                  description: SecretEngineMountPoint is the secret engine mount point
+                    to be used for writing data into the KV engine of Vault. If not
+                    specified the 'secret' is used.
+                  type: string
+                serviceAccount:
+                  description: ServiceAccount is the name of the Kubernetes service
+                    account allowed to authenticate against Vault.
+                  type: string
+                url:
+                  description: URL specifies the URL of an Vault instance to use for
+                    secret storage. Needs to be specified together with the Service
+                    Account and namespace to use for connecting to Vault. This cannot
+                    be used in conjunction with the Name attribute.
+                  type: string
+              type: object
+            webhook:
+              description: Webhook specifies what engine we should use for webhooks
+              type: string
+          required:
+          - cluster
+          - ingress
+          type: object
+      required:
+      - spec
+      type: object
+  version: v4beta1
+  versions:
+  - name: v4beta1
+    served: true
+    storage: true
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

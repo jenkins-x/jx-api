@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/jenkins-x/jx-api/v4/pkg/apis/core"
 	v1 "github.com/jenkins-x/jx-api/v4/pkg/apis/jenkins.io/v1"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -35,6 +36,7 @@ var (
 
 const (
 	RequirementsName = "Requirements"
+	CrdFilename      = core.GroupName + "_requirements.yaml"
 
 	// DefaultFailOnValidationError by default fail if validation fails when reading jx-requirements
 	DefaultFailOnValidationError = true
@@ -160,6 +162,8 @@ var RepositoryTypeValues = []string{string(RepositoryTypeNone), string(Repositor
 type Requirements struct {
 	metav1.TypeMeta `json:",inline"`
 
+	// +optional
+	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
 	// Spec the definition of the secret mappings
 	Spec RequirementsConfig `json:"spec"`
 }
@@ -364,11 +368,11 @@ type VaultConfig struct {
 
 // VaultAWSConfig contains all the Vault configuration needed by Vault to be deployed in AWS
 type VaultAWSConfig struct {
-	VaultAWSUnsealConfig
-	AutoCreate          bool   `json:"autoCreate,omitempty"`
-	DynamoDBTable       string `json:"dynamoDBTable,omitempty"`
-	DynamoDBRegion      string `json:"dynamoDBRegion,omitempty"`
-	ProvidedIAMUsername string `json:"iamUserName,omitempty"`
+	VaultAWSUnsealConfig `json:",inline"`
+	AutoCreate           bool   `json:"autoCreate,omitempty"`
+	DynamoDBTable        string `json:"dynamoDBTable,omitempty"`
+	DynamoDBRegion       string `json:"dynamoDBRegion,omitempty"`
+	ProvidedIAMUsername  string `json:"iamUserName,omitempty"`
 }
 
 // VaultAWSUnsealConfig contains references to existing AWS resources that can be used to install Vault
