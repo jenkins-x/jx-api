@@ -153,6 +153,23 @@ const (
 // RepositoryTypeValues the string values for the repository types
 var RepositoryTypeValues = []string{string(RepositoryTypeNone), string(RepositoryTypeBucketRepo), string(RepositoryTypeNexus), string(RepositoryTypeArtifactory)}
 
+// IngressType is the type of a ingress strategy
+type IngressType string
+
+const (
+	// IngressTypeNone if we have yet to define a ingress type
+	IngressTypeNone IngressType = ""
+	// IngressTypeIngress uses the kubernetes extensions/v1 Ingress resources to create ingress
+	IngressTypeIngress IngressType = "ingress"
+	// IngressTypeIstio uses istio VirtualService resources to implement ingress instead of the extensions/v1 Ingress resources
+	IngressTypeIstio IngressType = "istio"
+	// IngressTypeHTTPRoute uses the Ingress V2 / HTTPRoute resources - see: https://kubernetes-sigs.github.io/service-apis/http-routing/
+	IngressTypeHTTPRoute IngressType = "httproute"
+)
+
+// IngressTypeValues the string values for the ingress types
+var IngressTypeValues = []string{"ingress", "istio", "httproute"}
+
 // Requirements represents a collection installation requirements for Jenkins X
 //
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -193,6 +210,8 @@ type IngressConfig struct {
 	CloudDNSSecretName string `json:"cloud_dns_secret_name,omitempty"`
 	// Domain to expose ingress endpoints
 	Domain string `json:"domain"`
+	// Kind the kind of ingress used (ingress v1, ingress v2, istio etc)
+	Kind IngressType `json:"kind,omitempty"`
 	// IgnoreLoadBalancer if the nginx-controller LoadBalancer service should not be used to detect and update the
 	// domain if you are using a dynamic domain resolver like `.nip.io` rather than a real DNS configuration.
 	// With this flag enabled the `Domain` value will be used and never re-created based on the current LoadBalancer IP address.
@@ -261,6 +280,8 @@ type ClusterConfig struct {
 	AzureConfig *AzureConfig `json:"azure,omitempty"`
 	// ChartRepository the repository URL to deploy charts to
 	ChartRepository string `json:"chartRepository,omitempty" envconfig:"JX_REQUIREMENT_CHART_REPOSITORY"`
+	// ChartOCI the chart repository uses OCI (a container registry) for storage rather than posting tar.gz files
+	ChartOCI bool `json:"chartOCI,omitempty" envconfig:"JX_REQUIREMENT_CHART_OCI"`
 	// GKEConfig the gke specific configuration
 	GKEConfig *GKEConfig `json:"gke,omitempty"`
 	// EnvironmentGitOwner the default git owner for environment repositories if none is specified explicitly
@@ -292,6 +313,8 @@ type ClusterConfig struct {
 	// VaultSAName the service account name for vault
 	// KanikoSAName the service account name for kaniko
 	KanikoSAName string `json:"kanikoSAName,omitempty" envconfig:"JX_REQUIREMENT_KANIKO_SA_NAME"`
+	// KanikoFlags allows global kaniko flags to be supplied such as to disable host verification
+	KanikoFlags string `json:"kanikoFlags,omitempty" envconfig:"JX_REQUIREMENT_KANIKO_FLAGS"`
 	// DevEnvApprovers contains an optional list of approvers to populate the initial OWNERS file in the dev env repo
 	DevEnvApprovers []string `json:"devEnvApprovers,omitempty"`
 	// DockerRegistryOrg the default organisation used for container images
@@ -804,6 +827,9 @@ func (c *RequirementsConfig) addDefaults() {
 	}
 	if c.Ingress.NamespaceSubDomain == "" {
 		c.Ingress.NamespaceSubDomain = "-" + "jx" + "."
+	}
+	if c.Ingress.Kind == "" {
+		c.Ingress.Kind = IngressTypeIngress
 	}
 	if c.Webhook == "" {
 		c.Webhook = WebhookTypeLighthouse
