@@ -14,9 +14,9 @@ require (
 	github.com/vrischmann/envconfig v1.2.0
 	github.com/xeipuuv/gojsonschema v1.2.0
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d // indirect
-	k8s.io/api v0.19.2
-	k8s.io/apimachinery v0.19.2
-	k8s.io/client-go v0.19.2
+	k8s.io/api v0.20.1
+	k8s.io/apimachinery v0.20.1
+	k8s.io/client-go v0.20.1
 	k8s.io/code-generator v0.19.2
 )
 
