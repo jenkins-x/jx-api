@@ -489,6 +489,8 @@ type RequirementsConfig struct {
 	Environments []EnvironmentConfig `json:"environments,omitempty"`
 	// Ingress contains ingress specific requirements
 	Ingress IngressConfig `json:"ingress"`
+	// Kuberhealthy indicates if we have already installed Kuberhealthy upfront in the kubernetes cluster
+	Kuberhealthy bool `json:"kuberhealthy,omitempty"`
 	// PipelineUser the user name and email used for running pipelines
 	PipelineUser *UserNameEmailConfig `json:"pipelineUser,omitempty"`
 	// Repository specifies what kind of artifact repository you wish to use for storing artifacts (jars, tarballs, npm modules etc)
