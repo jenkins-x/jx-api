@@ -199,6 +199,8 @@ type EnvironmentConfig struct {
 	RemoteCluster bool `json:"remoteCluster,omitempty"`
 	// PromotionStrategy what kind of promotion strategy to use
 	PromotionStrategy v1.PromotionStrategyType `json:"promotionStrategy,omitempty"`
+	// Namespace is the target namespace for deploying resources in this environment.  Will default to "jx-{{ .Key }}" if omitted
+	Namespace string `json:"namespace,omitempty"`
 }
 
 // IngressConfig contains dns specific requirements

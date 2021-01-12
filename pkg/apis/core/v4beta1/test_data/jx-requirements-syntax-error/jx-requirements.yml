@@ -20,7 +20,7 @@ environments:
         enabled: true
         production: false
     key: dev
-    namespace: staging # property namespace is not allowed
+    foobar: staging # property foobar is not allowed
 repository: nexus
 secretStorage: vault
 webhook: lighthouse
