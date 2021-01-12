@@ -110,6 +110,21 @@ const (
 	RequirementDevEnvApprovers = "JX_REQUIREMENT_DEV_ENV_APPROVERS"
 )
 
+// ChartRepositoryType is the type of chart repository used for helm
+type ChartRepositoryType string
+
+const (
+	// ChartRepositoryTypeNone no kind so implies a chart repository you push tarballs to like chart museum / nexus
+	ChartRepositoryTypeNone ChartRepositoryType = ""
+	// ChartRepositoryTypeOCI specifies that we use OCI (container images) to store charts
+	ChartRepositoryTypeOCI ChartRepositoryType = "oci"
+	// ChartRepositoryTypePages specifies that we use github pages (a branch in git) to store helm charts
+	ChartRepositoryTypePages ChartRepositoryType = "pages"
+)
+
+// ChartRepositoryTypeValues the string values for the secret storage
+var ChartRepositoryTypeValues = []string{string(ChartRepositoryTypeOCI), string(ChartRepositoryTypePages)}
+
 // SecretStorageType is the type of storage used for secrets
 type SecretStorageType string
 
@@ -282,8 +297,8 @@ type ClusterConfig struct {
 	AzureConfig *AzureConfig `json:"azure,omitempty"`
 	// ChartRepository the repository URL to deploy charts to
 	ChartRepository string `json:"chartRepository,omitempty" envconfig:"JX_REQUIREMENT_CHART_REPOSITORY"`
-	// ChartOCI the chart repository uses OCI (a container registry) for storage rather than posting tar.gz files
-	ChartOCI bool `json:"chartOCI,omitempty" envconfig:"JX_REQUIREMENT_CHART_OCI"`
+	// ChartKind the chart repository kind (e.g. normal, OCI or github pages)
+	ChartKind ChartRepositoryType `json:"chartKind,omitempty" envconfig:"JX_REQUIREMENT_CHART_KIND"`
 	// GKEConfig the gke specific configuration
 	GKEConfig *GKEConfig `json:"gke,omitempty"`
 	// EnvironmentGitOwner the default git owner for environment repositories if none is specified explicitly
