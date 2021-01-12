@@ -557,7 +557,7 @@ func TestLoadRequirementsConfig_load_invalid_yaml(t *testing.T) {
 
 	_, _, err = v4beta1.LoadRequirementsConfig(testDir, v4beta1.DefaultFailOnValidationError)
 	requirementsConfigPath := path.Join(absolute, v4beta1.RequirementsConfigFileName)
-	assert.EqualError(t, err, fmt.Sprintf("validation failures in YAML file %s:\nenvironments.0: Additional property namespace is not allowed", requirementsConfigPath))
+	assert.EqualError(t, err, fmt.Sprintf("validation failures in YAML file %s:\nenvironments.0: Additional property foobar is not allowed", requirementsConfigPath))
 }
 
 func TestBackwardsCompatibleRequirementsFile(t *testing.T) {
