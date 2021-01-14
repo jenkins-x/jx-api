@@ -210,7 +210,7 @@ type EnvironmentConfig struct {
 	GitKind string `json:"gitKind,omitempty"`
 	// GitURL optional git URL for the git repository for the enviroment. If its not specified its generated from the
 	// git server, kind, owner and repository
-	GitURL string `json:"gitURL,omitempty"`
+	GitURL string `json:"gitUrl,omitempty"`
 	// Ingress contains ingress specific requirements
 	Ingress *IngressConfig `json:"ingress,omitempty"`
 	// RemoteCluster specifies this environment runs on a remote cluster to the development cluster
@@ -294,18 +294,30 @@ type GKEConfig struct {
 	ProjectNumber string `json:"projectNumber,omitempty" envconfig:"JX_REQUIREMENT_GKE_PROJECT_NUMBER"`
 }
 
-// ClusterConfig contains cluster specific requirements
-type ClusterConfig struct {
-	// AzureConfig the azure specific configuration
-	AzureConfig *AzureConfig `json:"azure,omitempty"`
+// DestinationConfig the common cluster settings that can be specified in settings or requirements
+type DestinationConfig struct {
 	// ChartRepository the repository URL to deploy charts to
 	ChartRepository string `json:"chartRepository,omitempty" envconfig:"JX_REQUIREMENT_CHART_REPOSITORY"`
 	// ChartKind the chart repository kind (e.g. normal, OCI or github pages)
 	ChartKind ChartRepositoryType `json:"chartKind,omitempty" envconfig:"JX_REQUIREMENT_CHART_KIND"`
-	// GKEConfig the gke specific configuration
-	GKEConfig *GKEConfig `json:"gke,omitempty"`
+	// Registry the host name of the container registry
+	Registry string `json:"registry,omitempty" envconfig:"JX_REQUIREMENT_REGISTRY"`
+	// DockerRegistryOrg the default organisation used for container images
+	DockerRegistryOrg string `json:"dockerRegistryOrg,omitempty"`
+	// KanikoFlags allows global kaniko flags to be supplied such as to disable host verification
+	KanikoFlags string `json:"kanikoFlags,omitempty" envconfig:"JX_REQUIREMENT_KANIKO_FLAGS"`
 	// EnvironmentGitOwner the default git owner for environment repositories if none is specified explicitly
 	EnvironmentGitOwner string `json:"environmentGitOwner,omitempty" envconfig:"JX_REQUIREMENT_ENV_GIT_OWNER"`
+}
+
+// ClusterConfig contains cluster specific requirements
+type ClusterConfig struct {
+	DestinationConfig
+
+	// AzureConfig the azure specific configuration
+	AzureConfig *AzureConfig `json:"azure,omitempty"`
+	// GKEConfig the gke specific configuration
+	GKEConfig *GKEConfig `json:"gke,omitempty"`
 	// EnvironmentGitPublic determines whether jx boot create public or private git repos for the environments
 	EnvironmentGitPublic bool `json:"environmentGitPublic,omitempty" envconfig:"JX_REQUIREMENT_ENV_GIT_PUBLIC"`
 	// GitPublic determines whether jx boot create public or private git repos for the applications
@@ -328,17 +340,11 @@ type ClusterConfig struct {
 	GitServer string `json:"gitServer,omitempty"`
 	// ExternalDNSSAName the service account name for external dns
 	ExternalDNSSAName string `json:"externalDNSSAName,omitempty" envconfig:"JX_REQUIREMENT_EXTERNALDNS_SA_NAME"`
-	// Registry the host name of the container registry
-	Registry string `json:"registry,omitempty" envconfig:"JX_REQUIREMENT_REGISTRY"`
 	// VaultSAName the service account name for vault
 	// KanikoSAName the service account name for kaniko
 	KanikoSAName string `json:"kanikoSAName,omitempty" envconfig:"JX_REQUIREMENT_KANIKO_SA_NAME"`
-	// KanikoFlags allows global kaniko flags to be supplied such as to disable host verification
-	KanikoFlags string `json:"kanikoFlags,omitempty" envconfig:"JX_REQUIREMENT_KANIKO_FLAGS"`
 	// DevEnvApprovers contains an optional list of approvers to populate the initial OWNERS file in the dev env repo
 	DevEnvApprovers []string `json:"devEnvApprovers,omitempty"`
-	// DockerRegistryOrg the default organisation used for container images
-	DockerRegistryOrg string `json:"dockerRegistryOrg,omitempty"`
 }
 
 // Deprecated: migrate to top level Requirements object
@@ -583,7 +589,6 @@ func LoadRequirementsConfigFileNoDefaults(fileName string, failOnValidationError
 
 // LoadRequirementsConfigFile loads a specific project YAML configuration file
 func LoadRequirementsConfigFile(fileName string, failOnValidationErrors bool) (*Requirements, error) {
-
 	requirements, err := loadRequirements(fileName, failOnValidationErrors)
 	if requirements != nil {
 		requirements.Spec.addDefaults()
