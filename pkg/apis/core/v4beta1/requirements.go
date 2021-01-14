@@ -300,6 +300,8 @@ type DestinationConfig struct {
 	ChartRepository string `json:"chartRepository,omitempty" envconfig:"JX_REQUIREMENT_CHART_REPOSITORY"`
 	// ChartKind the chart repository kind (e.g. normal, OCI or github pages)
 	ChartKind ChartRepositoryType `json:"chartKind,omitempty" envconfig:"JX_REQUIREMENT_CHART_KIND"`
+	// ChartSecret an optional secret name used to be able to push to chart repositories
+	ChartSecret string `json:"chartSecret,omitempty" envconfig:"JX_REQUIREMENT_CHART_SECRET"`
 	// Registry the host name of the container registry
 	Registry string `json:"registry,omitempty" envconfig:"JX_REQUIREMENT_REGISTRY"`
 	// DockerRegistryOrg the default organisation used for container images
