@@ -116,9 +116,12 @@ func Test_OverrideRequirementsFromEnvironment_populate_requirements_from_environ
 		{v4beta1.RequirementClusterName, "my-cluster", v4beta1.RequirementsConfig{Cluster: v4beta1.ClusterConfig{ClusterName: "my-cluster"}}},
 		{v4beta1.RequirementProject, "my-project", v4beta1.RequirementsConfig{Cluster: v4beta1.ClusterConfig{ProjectID: "my-project"}}},
 		{v4beta1.RequirementZone, "my-zone", v4beta1.RequirementsConfig{Cluster: v4beta1.ClusterConfig{Zone: "my-zone"}}},
-		{v4beta1.RequirementChartRepository, "my-chart-museum", v4beta1.RequirementsConfig{Cluster: v4beta1.ClusterConfig{ChartRepository: "my-chart-museum"}}},
-		{v4beta1.RequirementRegistry, "my-registry", v4beta1.RequirementsConfig{Cluster: v4beta1.ClusterConfig{Registry: "my-registry"}}},
-		{v4beta1.RequirementEnvGitOwner, "john-doe", v4beta1.RequirementsConfig{Cluster: v4beta1.ClusterConfig{EnvironmentGitOwner: "john-doe"}}},
+		{v4beta1.RequirementChartRepository, "my-chart-museum",
+			v4beta1.RequirementsConfig{Cluster: v4beta1.ClusterConfig{DestinationConfig: v4beta1.DestinationConfig{ChartRepository: "my-chart-museum"}}}},
+		{v4beta1.RequirementRegistry, "my-registry",
+			v4beta1.RequirementsConfig{Cluster: v4beta1.ClusterConfig{DestinationConfig: v4beta1.DestinationConfig{Registry: "my-registry"}}}},
+		{v4beta1.RequirementEnvGitOwner, "john-doe",
+			v4beta1.RequirementsConfig{Cluster: v4beta1.ClusterConfig{DestinationConfig: v4beta1.DestinationConfig{EnvironmentGitOwner: "john-doe"}}}},
 		{v4beta1.RequirementKanikoServiceAccountName, "kaniko-sa", v4beta1.RequirementsConfig{Cluster: v4beta1.ClusterConfig{KanikoSAName: "kaniko-sa"}}},
 		{v4beta1.RequirementEnvGitPublic, "true", v4beta1.RequirementsConfig{Cluster: v4beta1.ClusterConfig{EnvironmentGitPublic: true}}},
 		{v4beta1.RequirementEnvGitPublic, "false", v4beta1.RequirementsConfig{Cluster: v4beta1.ClusterConfig{EnvironmentGitPublic: false}}},
@@ -340,7 +343,9 @@ func TestMergeSave(t *testing.T) {
 			Name: "Merge Cluster Config Test",
 			Original: &v4beta1.RequirementsConfig{
 				Cluster: v4beta1.ClusterConfig{
-					EnvironmentGitOwner:  "owner",
+					DestinationConfig: v4beta1.DestinationConfig{
+						EnvironmentGitOwner: "owner",
+					},
 					EnvironmentGitPublic: false,
 					GitPublic:            false,
 					Provider:             cloud.GKE,
