@@ -208,7 +208,7 @@ type EnvironmentConfig struct {
 	GitServer string `json:"gitServer,omitempty"`
 	// GitKind is the kind of git server (github, bitbucketserver etc)
 	GitKind string `json:"gitKind,omitempty"`
-	// GitURL optional git URL for the git repository for the enviroment. If its not specified its generated from the
+	// GitURL optional git URL for the git repository for the environment. If its not specified its generated from the
 	// git server, kind, owner and repository
 	GitURL string `json:"gitUrl,omitempty"`
 	// Ingress contains ingress specific requirements
