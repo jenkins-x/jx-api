@@ -6,7 +6,7 @@ require (
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-openapi/spec v0.19.7 // indirect
 	github.com/imdario/mergo v0.3.9
-	github.com/jenkins-x/jx-logging/v3 v3.0.2
+	github.com/jenkins-x/jx-logging/v3 v3.0.3
 	github.com/mattbaird/jsonpatch v0.0.0-20171005235357-81af80346b1a
 	github.com/pkg/errors v0.9.1
 	github.com/rawlingsj/jsonschema v0.0.0-20201130104235-44c4fb269f83 // use a fork until https://github.com/alecthomas/jsonschema/issues/65 is fixed
