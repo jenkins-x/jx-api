@@ -529,6 +529,8 @@ type RequirementsConfig struct {
 	Storage []StorageConfig `json:"storage,omitempty"`
 	// Terraform specifies if  we are managing the kubernetes cluster and cloud resources with Terraform
 	Terraform bool `json:"terraform,omitempty"`
+	// TerraformVault indicates whether Vault has been installed upfront by Terraform
+	TerraformVault bool `json:"terraformVault,omitempty"`
 	// Vault the configuration for vault
 	Vault VaultConfig `json:"vault,omitempty"`
 	// Webhook specifies what engine we should use for webhooks
