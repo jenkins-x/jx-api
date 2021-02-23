@@ -2,9 +2,10 @@
 
 {{ with .packages}}
 ---
-title: Configuration Reference
-linktitle: Reference
-weight: 9
+title: API Documentation
+linktitle: API Documentation
+description: Reference of the jx-promote configuration
+weight: 10
 ---
 
 <p>Packages:</p>

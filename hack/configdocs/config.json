@@ -6,10 +6,6 @@
         "ParseError$",
         "List$"
     ],
-    "dirs": [
-        "github.com/jenkins-x/jx/v2/pkg/jenkinsfile",
-        "github.com/jenkins-x/jx/v2/pkg/tekton/syntax"
-    ],
     "externalPackages": [
         {
             "typeMatchPrefix": "^k8s\\.io/apimachinery/pkg/apis/meta/v1\\.Duration$",

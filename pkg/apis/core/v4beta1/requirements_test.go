@@ -59,23 +59,6 @@ func TestRequirementsConfigMarshalExistingFile(t *testing.T) {
 	assert.Equal(t, expectedClusterName, requirements.Cluster.ClusterName, "requirements.ClusterName")
 	assert.Equal(t, expectedSecretStorage, requirements.SecretStorage, "requirements.SecretStorage")
 	assert.Equal(t, expectedDomain, requirements.Ingress.Domain, "requirements.Domain")
-
-	// lets check we can load the file from a sub dir
-	subDir := filepath.Join(dir, "subdir")
-	requirementResource, fileName, err = v4beta1.LoadRequirementsConfig(subDir, v4beta1.DefaultFailOnValidationError)
-	assert.NoError(t, err, "failed to load requirements file in subDir: %s", subDir)
-	assert.FileExists(t, fileName)
-	requirements = &requirementResource.Spec
-	t.Logf("generated requirements file %s\n", fileName)
-
-	assert.Equal(t, expectedClusterName, requirements.Cluster.ClusterName, "requirements.ClusterName")
-	assert.Equal(t, expectedSecretStorage, requirements.SecretStorage, "requirements.SecretStorage")
-	assert.Equal(t, expectedDomain, requirements.Ingress.Domain, "requirements.Domain")
-
-	require.NotNil(t, requirements.PipelineUser, "requirements.PipelineUser")
-	assert.Equal(t, expectedPipelineUserName, requirements.PipelineUser.Username, "requirements.PipelineUser.Username")
-	assert.Equal(t, expectedPipelineUserEmail, requirements.PipelineUser.Email, "requirements.PipelineUser.Email")
-
 }
 
 func Test_OverrideRequirementsFromEnvironment_does_not_initialise_nil_structs(t *testing.T) {
