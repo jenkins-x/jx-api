@@ -46,5 +46,8 @@ cover:
 code-generate:
 	./hack/generate.sh
 
+.PHONY: docs
+docs: generate-refdocs
+
 include Makefile.codegen
 
