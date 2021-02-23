@@ -563,13 +563,10 @@ func LoadRequirementsConfig(dir string, failOnValidationErrors bool) (*Requireme
 	}
 	if absolute != "" && absolute != "." && absolute != "/" {
 		fileName := filepath.Join(absolute, RequirementsConfigFileName)
-		absolute = filepath.Dir(absolute)
-
 		exists, err := util.FileExists(fileName)
 		if err != nil {
 			return nil, "", err
 		}
-
 		if exists {
 			requirements, err := LoadRequirementsConfigFile(fileName, failOnValidationErrors)
 			return requirements, fileName, err
