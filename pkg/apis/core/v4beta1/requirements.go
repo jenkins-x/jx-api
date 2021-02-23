@@ -240,6 +240,8 @@ type IngressConfig struct {
 	NamespaceSubDomain string `json:"namespaceSubDomain"`
 	// TLS enable automated TLS using certmanager
 	TLS *TLSConfig `json:"tls,omitempty"`
+	// Annotations optional annotations added to ingresses
+	Annotations map[string]string `json:"annotations,omitempty"`
 }
 
 // TLSConfig contains TLS specific requirements
@@ -559,7 +561,7 @@ func LoadRequirementsConfig(dir string, failOnValidationErrors bool) (*Requireme
 	if err != nil {
 		return nil, "", errors.Wrap(err, "creating absolute path")
 	}
-	for absolute != "" && absolute != "." && absolute != "/" {
+	if absolute != "" && absolute != "." && absolute != "/" {
 		fileName := filepath.Join(absolute, RequirementsConfigFileName)
 		absolute = filepath.Dir(absolute)
 
@@ -568,12 +570,10 @@ func LoadRequirementsConfig(dir string, failOnValidationErrors bool) (*Requireme
 			return nil, "", err
 		}
 
-		if !exists {
-			continue
+		if exists {
+			requirements, err := LoadRequirementsConfigFile(fileName, failOnValidationErrors)
+			return requirements, fileName, err
 		}
-
-		requirements, err := LoadRequirementsConfigFile(fileName, failOnValidationErrors)
-		return requirements, fileName, err
 	}
 	return nil, "", errors.New("jx-requirements.yml file not found")
 }
