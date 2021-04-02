@@ -491,7 +491,9 @@ type AutoUpdateConfig struct {
 	// Enabled autoupdate
 	Enabled bool `json:"enabled"`
 	// Schedule cron of auto updates
-	Schedule string `json:"schedule"`
+	Schedule string `json:"schedule,omitempty"`
+	// AutoMerge if enabled lets auto merge any generated update PullRequests on the dev cluster git repository
+	AutoMerge bool `json:"autoMerge,omitempty"`
 }
 
 // RequirementsValues contains the logical installation requirements in the `jx-requirements.yml` file as helm values
