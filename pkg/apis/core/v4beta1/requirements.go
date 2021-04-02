@@ -491,7 +491,7 @@ type AutoUpdateConfig struct {
 	// Enabled autoupdate
 	Enabled bool `json:"enabled"`
 	// Schedule cron of auto updates
-	Schedule string `json:"schedule,omitempty"`
+	Schedule string `json:"schedule"`
 	// AutoMerge if enabled lets auto merge any generated update PullRequests on the dev cluster git repository
 	AutoMerge bool `json:"autoMerge,omitempty"`
 }
