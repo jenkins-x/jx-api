@@ -46,8 +46,13 @@ cover:
 code-generate:
 	./hack/generate.sh
 
-.PHONY: docs
+.PHONY: docs gen-schema
 docs: generate-refdocs
+
+.PHONY: gen-schema
+gen-schema:
+	mkdir -p schema
+	go run cmd/schemagen/main.go
 
 include Makefile.codegen
 

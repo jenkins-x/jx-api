@@ -28,6 +28,12 @@ spec:
           resources: {}
         - name: build-make-build
           resources: {}
+        - image: golang:1.15
+          name: build-gen-schema
+          resources: {}
+          script: |
+            #!/bin/sh
+            make gen-schema
         - name: promote-changelog
           resources: {}
   podTemplate: {}
