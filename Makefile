@@ -9,6 +9,8 @@ GO_DEPENDENCIES := $(shell find . -type f -name '*.go')
 build: 
 	$(GO) build ./...
 
+linux: build
+
 test: build
 	$(GOTEST) -coverprofile=coverage.out ./...
 
