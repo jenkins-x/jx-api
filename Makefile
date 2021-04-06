@@ -6,8 +6,12 @@ GOTEST := $(GO) test
 PACKAGE_DIRS := $(shell $(GO) list ./... | grep -v /vendor/)
 GO_DEPENDENCIES := $(shell find . -type f -name '*.go')
 
+.PHONY: build
 build: 
 	$(GO) build ./...
+
+.PHONY: linux
+linux: build
 
 test: build
 	$(GOTEST) -coverprofile=coverage.out ./...
@@ -46,8 +50,13 @@ cover:
 code-generate:
 	./hack/generate.sh
 
-.PHONY: docs
+.PHONY: docs gen-schema
 docs: generate-refdocs
+
+.PHONY: gen-schema
+gen-schema:
+	mkdir -p schema
+	go run cmd/schemagen/main.go
 
 include Makefile.codegen
 
