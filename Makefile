@@ -6,9 +6,11 @@ GOTEST := $(GO) test
 PACKAGE_DIRS := $(shell $(GO) list ./... | grep -v /vendor/)
 GO_DEPENDENCIES := $(shell find . -type f -name '*.go')
 
+.PHONY: build
 build: 
 	$(GO) build ./...
 
+.PHONY: linux
 linux: build
 
 test: build
