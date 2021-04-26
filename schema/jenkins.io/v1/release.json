@@ -1,0 +1,445 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/Release",
+  "definitions": {
+    "AccountReference": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "CommitSummary": {
+      "properties": {
+        "author": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/UserDetails"
+        },
+        "branch": {
+          "type": "string"
+        },
+        "committer": {
+          "$ref": "#/definitions/UserDetails"
+        },
+        "issueIds": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "message": {
+          "type": "string"
+        },
+        "sha": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "DependencyUpdate": {
+      "properties": {
+        "component": {
+          "type": "string"
+        },
+        "fromReleaseHTMLURL": {
+          "type": "string"
+        },
+        "fromReleaseName": {
+          "type": "string"
+        },
+        "fromVersion": {
+          "type": "string"
+        },
+        "host": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "paths": {
+          "items": {
+            "items": {
+              "$schema": "http://json-schema.org/draft-04/schema#",
+              "$ref": "#/definitions/DependencyUpdateDetails"
+            },
+            "type": "array"
+          },
+          "type": "array"
+        },
+        "repo": {
+          "type": "string"
+        },
+        "toReleaseHTMLURL": {
+          "type": "string"
+        },
+        "toReleaseName": {
+          "type": "string"
+        },
+        "toVersion": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "DependencyUpdateDetails": {
+      "properties": {
+        "component": {
+          "type": "string"
+        },
+        "fromReleaseHTMLURL": {
+          "type": "string"
+        },
+        "fromReleaseName": {
+          "type": "string"
+        },
+        "fromVersion": {
+          "type": "string"
+        },
+        "host": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "repo": {
+          "type": "string"
+        },
+        "toReleaseHTMLURL": {
+          "type": "string"
+        },
+        "toReleaseName": {
+          "type": "string"
+        },
+        "toVersion": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "FieldsV1": {
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "IssueLabel": {
+      "properties": {
+        "color": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "IssueSummary": {
+      "properties": {
+        "assignees": {
+          "items": {
+            "$ref": "#/definitions/UserDetails"
+          },
+          "type": "array"
+        },
+        "body": {
+          "type": "string"
+        },
+        "closedBy": {
+          "$ref": "#/definitions/UserDetails"
+        },
+        "creationTimestamp": {
+          "$ref": "#/definitions/Time"
+        },
+        "id": {
+          "type": "string"
+        },
+        "labels": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/IssueLabel"
+          },
+          "type": "array"
+        },
+        "message": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "user": {
+          "$ref": "#/definitions/UserDetails"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "ManagedFieldsEntry": {
+      "properties": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "fieldsType": {
+          "type": "string"
+        },
+        "fieldsV1": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/FieldsV1"
+        },
+        "manager": {
+          "type": "string"
+        },
+        "operation": {
+          "type": "string"
+        },
+        "time": {
+          "$ref": "#/definitions/Time"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "OwnerReference": {
+      "properties": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "blockOwnerDeletion": {
+          "type": "boolean"
+        },
+        "controller": {
+          "type": "boolean"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Release": {
+      "properties": {
+        "annotations": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "apiVersion": {
+          "type": "string"
+        },
+        "clusterName": {
+          "type": "string"
+        },
+        "creationTimestamp": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/Time"
+        },
+        "deletionGracePeriodSeconds": {
+          "type": "integer"
+        },
+        "deletionTimestamp": {
+          "$ref": "#/definitions/Time"
+        },
+        "finalizers": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "generateName": {
+          "type": "string"
+        },
+        "generation": {
+          "type": "integer"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "managedFields": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/ManagedFieldsEntry"
+          },
+          "type": "array"
+        },
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "ownerReferences": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/OwnerReference"
+          },
+          "type": "array"
+        },
+        "resourceVersion": {
+          "type": "string"
+        },
+        "selfLink": {
+          "type": "string"
+        },
+        "spec": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/ReleaseSpec"
+        },
+        "status": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/ReleaseStatus"
+        },
+        "uid": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "ReleaseSpec": {
+      "properties": {
+        "commits": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/CommitSummary"
+          },
+          "type": "array"
+        },
+        "dependencyUpdates": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/DependencyUpdate"
+          },
+          "type": "array"
+        },
+        "gitCloneUrl": {
+          "type": "string"
+        },
+        "gitHttpUrl": {
+          "type": "string"
+        },
+        "gitOwner": {
+          "type": "string"
+        },
+        "gitRepository": {
+          "type": "string"
+        },
+        "issues": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/IssueSummary"
+          },
+          "type": "array"
+        },
+        "name": {
+          "type": "string"
+        },
+        "pullRequests": {
+          "items": {
+            "$ref": "#/definitions/IssueSummary"
+          },
+          "type": "array"
+        },
+        "releaseNotesURL": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "ReleaseStatus": {
+      "properties": {
+        "status": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Time": {
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "UserDetails": {
+      "properties": {
+        "accountReference": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/AccountReference"
+          },
+          "type": "array"
+        },
+        "avatarUrl": {
+          "type": "string"
+        },
+        "creationTimestamp": {
+          "$ref": "#/definitions/Time"
+        },
+        "email": {
+          "type": "string"
+        },
+        "externalUser": {
+          "type": "boolean"
+        },
+        "login": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "serviceAccount": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}

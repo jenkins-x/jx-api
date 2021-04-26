@@ -1,4 +1,4 @@
-package v1
+package jenkins_io
 
 const (
 	// GroupName is the Jenkins API group name

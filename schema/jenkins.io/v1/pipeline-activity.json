@@ -1,0 +1,503 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/PipelineActivity",
+  "definitions": {
+    "Attachment": {
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "urls": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "BatchPipelineActivity": {
+      "properties": {
+        "batchBranchName": {
+          "type": "string"
+        },
+        "batchBuildNumber": {
+          "type": "string"
+        },
+        "pullRequestInfo": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/PullRequestInfo"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "CoreActivityStep": {
+      "properties": {
+        "completedTimestamp": {
+          "$ref": "#/definitions/Time"
+        },
+        "description": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "startedTimestamp": {
+          "$ref": "#/definitions/Time"
+        },
+        "status": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "FieldsV1": {
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "GitStatus": {
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "ManagedFieldsEntry": {
+      "properties": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "fieldsType": {
+          "type": "string"
+        },
+        "fieldsV1": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/FieldsV1"
+        },
+        "manager": {
+          "type": "string"
+        },
+        "operation": {
+          "type": "string"
+        },
+        "time": {
+          "$ref": "#/definitions/Time"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "OwnerReference": {
+      "properties": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "blockOwnerDeletion": {
+          "type": "boolean"
+        },
+        "controller": {
+          "type": "boolean"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "PipelineActivity": {
+      "properties": {
+        "annotations": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "apiVersion": {
+          "type": "string"
+        },
+        "clusterName": {
+          "type": "string"
+        },
+        "creationTimestamp": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/Time"
+        },
+        "deletionGracePeriodSeconds": {
+          "type": "integer"
+        },
+        "deletionTimestamp": {
+          "$ref": "#/definitions/Time"
+        },
+        "finalizers": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "generateName": {
+          "type": "string"
+        },
+        "generation": {
+          "type": "integer"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "managedFields": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/ManagedFieldsEntry"
+          },
+          "type": "array"
+        },
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "ownerReferences": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/OwnerReference"
+          },
+          "type": "array"
+        },
+        "resourceVersion": {
+          "type": "string"
+        },
+        "selfLink": {
+          "type": "string"
+        },
+        "spec": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/PipelineActivitySpec"
+        },
+        "status": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/PipelineActivityStatus"
+        },
+        "uid": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "PipelineActivitySpec": {
+      "properties": {
+        "attachments": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/Attachment"
+          },
+          "type": "array"
+        },
+        "author": {
+          "type": "string"
+        },
+        "authorAvatarURL": {
+          "type": "string"
+        },
+        "authorURL": {
+          "type": "string"
+        },
+        "baseSHA": {
+          "type": "string"
+        },
+        "batchPipelineActivity": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/BatchPipelineActivity"
+        },
+        "build": {
+          "type": "string"
+        },
+        "buildLogsUrl": {
+          "type": "string"
+        },
+        "buildUrl": {
+          "type": "string"
+        },
+        "completedTimestamp": {
+          "$ref": "#/definitions/Time"
+        },
+        "context": {
+          "type": "string"
+        },
+        "gitBranch": {
+          "type": "string"
+        },
+        "gitOwner": {
+          "type": "string"
+        },
+        "gitRepository": {
+          "type": "string"
+        },
+        "gitUrl": {
+          "type": "string"
+        },
+        "lastCommitMessage": {
+          "type": "string"
+        },
+        "lastCommitSHA": {
+          "type": "string"
+        },
+        "lastCommitURL": {
+          "type": "string"
+        },
+        "pipeline": {
+          "type": "string"
+        },
+        "pullTitle": {
+          "type": "string"
+        },
+        "releaseNotesURL": {
+          "type": "string"
+        },
+        "startedTimestamp": {
+          "$ref": "#/definitions/Time"
+        },
+        "status": {
+          "type": "string"
+        },
+        "steps": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/PipelineActivityStep"
+          },
+          "type": "array"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "PipelineActivityStatus": {
+      "properties": {
+        "version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "PipelineActivityStep": {
+      "properties": {
+        "kind": {
+          "type": "string"
+        },
+        "preview": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/PreviewActivityStep"
+        },
+        "promote": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/PromoteActivityStep"
+        },
+        "stage": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/StageActivityStep"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "PreviewActivityStep": {
+      "properties": {
+        "applicationURL": {
+          "type": "string"
+        },
+        "completedTimestamp": {
+          "$ref": "#/definitions/Time"
+        },
+        "description": {
+          "type": "string"
+        },
+        "environment": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "pullRequestURL": {
+          "type": "string"
+        },
+        "startedTimestamp": {
+          "$ref": "#/definitions/Time"
+        },
+        "status": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "PromoteActivityStep": {
+      "properties": {
+        "applicationURL": {
+          "type": "string"
+        },
+        "completedTimestamp": {
+          "$ref": "#/definitions/Time"
+        },
+        "description": {
+          "type": "string"
+        },
+        "environment": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "pullRequest": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/PromotePullRequestStep"
+        },
+        "startedTimestamp": {
+          "$ref": "#/definitions/Time"
+        },
+        "status": {
+          "type": "string"
+        },
+        "update": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/PromoteUpdateStep"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "PromotePullRequestStep": {
+      "properties": {
+        "completedTimestamp": {
+          "$ref": "#/definitions/Time"
+        },
+        "description": {
+          "type": "string"
+        },
+        "mergeCommitSHA": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "pullRequestURL": {
+          "type": "string"
+        },
+        "startedTimestamp": {
+          "$ref": "#/definitions/Time"
+        },
+        "status": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "PromoteUpdateStep": {
+      "properties": {
+        "completedTimestamp": {
+          "$ref": "#/definitions/Time"
+        },
+        "description": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "startedTimestamp": {
+          "$ref": "#/definitions/Time"
+        },
+        "status": {
+          "type": "string"
+        },
+        "statuses": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/GitStatus"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "PullRequestInfo": {
+      "properties": {
+        "lastBuildNumberForCommit": {
+          "type": "string"
+        },
+        "lastBuildSHA": {
+          "type": "string"
+        },
+        "pullRequestNumber": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "StageActivityStep": {
+      "properties": {
+        "completedTimestamp": {
+          "$ref": "#/definitions/Time"
+        },
+        "description": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "startedTimestamp": {
+          "$ref": "#/definitions/Time"
+        },
+        "status": {
+          "type": "string"
+        },
+        "steps": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/CoreActivityStep"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Time": {
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
