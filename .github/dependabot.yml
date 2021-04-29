@@ -1,0 +1,28 @@
+version: 2
+updates:
+- package-ecosystem: gomod
+  directory: "/"
+  schedule:
+    interval: weekly
+    time: "13:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: k8s.io/apimachinery
+    versions:
+    - 0.20.4
+    - 0.20.5
+  - dependency-name: k8s.io/api
+    versions:
+    - 0.20.4
+    - 0.20.5
+  - dependency-name: k8s.io/code-generator
+    versions:
+    - 0.20.4
+    - 0.20.5
+  - dependency-name: k8s.io/client-go
+    versions:
+    - 0.20.4
+    - 0.20.5
+  - dependency-name: github.com/imdario/mergo
+    versions:
+    - 0.3.11
