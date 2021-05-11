@@ -11,7 +11,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/rawlingsj/jsonschema v0.0.0-20210511142122-a9c2cfdb7dcf // use a fork until https://github.com/alecthomas/jsonschema/issues/65 is fixed
 	github.com/stretchr/testify v1.6.1
-	github.com/vrischmann/envconfig v1.2.0
+	github.com/vrischmann/envconfig v1.3.0
 	github.com/xeipuuv/gojsonschema v1.2.0
 	k8s.io/api v0.20.2
 	k8s.io/apimachinery v0.20.2
