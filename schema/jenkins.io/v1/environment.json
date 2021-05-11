@@ -886,10 +886,18 @@
     "JobCondition": {
       "properties": {
         "lastProbeTime": {
-          "$ref": "#/definitions/Time"
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         },
         "lastTransitionTime": {
-          "$ref": "#/definitions/Time"
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         },
         "message": {
           "type": "string"
@@ -1176,8 +1184,11 @@
           "type": "string"
         },
         "creationTimestamp": {
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/Time"
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         },
         "deletionGracePeriodSeconds": {
           "type": "integer"
