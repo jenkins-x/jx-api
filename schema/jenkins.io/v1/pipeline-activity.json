@@ -39,7 +39,11 @@
     "CoreActivityStep": {
       "properties": {
         "completedTimestamp": {
-          "$ref": "#/definitions/Time"
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         },
         "description": {
           "type": "string"
@@ -48,7 +52,11 @@
           "type": "string"
         },
         "startedTimestamp": {
-          "$ref": "#/definitions/Time"
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         },
         "status": {
           "type": "string"
@@ -92,7 +100,11 @@
           "type": "string"
         },
         "time": {
-          "$ref": "#/definitions/Time"
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         }
       },
       "additionalProperties": false,
@@ -122,7 +134,11 @@
           "type": "integer"
         },
         "deletionTimestamp": {
-          "$ref": "#/definitions/Time"
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         },
         "finalizers": {
           "items": {
@@ -260,7 +276,11 @@
           "type": "string"
         },
         "completedTimestamp": {
-          "$ref": "#/definitions/Time"
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         },
         "context": {
           "type": "string"
@@ -296,7 +316,11 @@
           "type": "string"
         },
         "startedTimestamp": {
-          "$ref": "#/definitions/Time"
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         },
         "status": {
           "type": "string"
@@ -351,7 +375,11 @@
           "type": "string"
         },
         "completedTimestamp": {
-          "$ref": "#/definitions/Time"
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         },
         "description": {
           "type": "string"
@@ -366,7 +394,11 @@
           "type": "string"
         },
         "startedTimestamp": {
-          "$ref": "#/definitions/Time"
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         },
         "status": {
           "type": "string"
@@ -381,7 +413,11 @@
           "type": "string"
         },
         "completedTimestamp": {
-          "$ref": "#/definitions/Time"
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         },
         "description": {
           "type": "string"
@@ -397,7 +433,11 @@
           "$ref": "#/definitions/PromotePullRequestStep"
         },
         "startedTimestamp": {
-          "$ref": "#/definitions/Time"
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         },
         "status": {
           "type": "string"
@@ -413,7 +453,11 @@
     "PromotePullRequestStep": {
       "properties": {
         "completedTimestamp": {
-          "$ref": "#/definitions/Time"
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         },
         "description": {
           "type": "string"
@@ -428,7 +472,11 @@
           "type": "string"
         },
         "startedTimestamp": {
-          "$ref": "#/definitions/Time"
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         },
         "status": {
           "type": "string"
@@ -440,7 +488,11 @@
     "PromoteUpdateStep": {
       "properties": {
         "completedTimestamp": {
-          "$ref": "#/definitions/Time"
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         },
         "description": {
           "type": "string"
@@ -449,7 +501,11 @@
           "type": "string"
         },
         "startedTimestamp": {
-          "$ref": "#/definitions/Time"
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         },
         "status": {
           "type": "string"
@@ -483,7 +539,11 @@
     "StageActivityStep": {
       "properties": {
         "completedTimestamp": {
-          "$ref": "#/definitions/Time"
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         },
         "description": {
           "type": "string"
@@ -492,7 +552,11 @@
           "type": "string"
         },
         "startedTimestamp": {
-          "$ref": "#/definitions/Time"
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         },
         "status": {
           "type": "string"

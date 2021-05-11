@@ -167,7 +167,11 @@
           "$ref": "#/definitions/UserDetails"
         },
         "creationTimestamp": {
-          "$ref": "#/definitions/Time"
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         },
         "id": {
           "type": "string"
@@ -217,7 +221,11 @@
           "type": "string"
         },
         "time": {
-          "$ref": "#/definitions/Time"
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         }
       },
       "additionalProperties": false,
@@ -247,7 +255,11 @@
           "type": "integer"
         },
         "deletionTimestamp": {
-          "$ref": "#/definitions/Time"
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         },
         "finalizers": {
           "items": {
@@ -430,7 +442,11 @@
           "type": "string"
         },
         "creationTimestamp": {
-          "$ref": "#/definitions/Time"
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         },
         "email": {
           "type": "string"
