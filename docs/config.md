@@ -55,6 +55,17 @@ string
 <p>Schedule cron of auto updates</p>
 </td>
 </tr>
+<tr>
+<td>
+<code>autoMerge</code></br>
+<em>
+bool
+</em>
+</td>
+<td>
+<p>AutoMerge if enabled lets auto merge any generated update PullRequests on the dev cluster git repository</p>
+</td>
+</tr>
 </tbody>
 </table>
 <h3 id="core.jenkins-x.io/v4beta1.AzureConfig">AzureConfig
@@ -2101,5 +2112,5 @@ If not specified the &lsquo;kubernetes&rsquo; is used.</p>
 <hr/>
 <p><em>
 Generated with <code>gen-crd-api-reference-docs</code>
-on git commit <code>c3ce029</code>.
+on git commit <code>1b57b62</code>.
 </em></p>
