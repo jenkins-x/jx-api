@@ -29,6 +29,25 @@ func TestValidation(t *testing.T) {
 	require.Empty(t, results, "should not have validation errors for file %s", path)
 }
 
+func TestValidateSourceRepository(t *testing.T) {
+	t.Parallel()
+
+	path := filepath.Join("test_data", "good_sr.yaml")
+	data, err := ioutil.ReadFile(path)
+	require.NoError(t, err, "failed to load %s", path)
+
+	deploy := &v1.SourceRepository{}
+	err = yaml.Unmarshal(data, deploy)
+	require.NoError(t, err, "failed to unmarshal %s", path)
+
+	results, err := util.ValidateYaml(deploy, data)
+	t.Logf("got results %#v\n", results)
+
+	require.NoError(t, err, "should not have failed to validate yaml file %s", path)
+
+	require.Empty(t, results, "should not have validation errors for file %s", path)
+}
+
 func TestValidationFails(t *testing.T) {
 	t.Parallel()
 
