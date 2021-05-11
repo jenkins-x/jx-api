@@ -1,0 +1,31 @@
+# Source: jxboot-helmfile-resources/templates/environments.yaml
+apiVersion: jenkins.io/v1
+kind: Environment
+metadata:
+  labels:
+    env: "dev"
+    team: jx
+  name: "dev"
+spec:
+  source:
+    ref: "master"
+    url: https://github.com/myorg/environment-mycluster-dev.git
+  kind: Development
+  label: Development
+  namespace: jx
+  promotionStrategy: "Never"
+  webHookEngine: "Lighthouse"
+  teamSettings:
+    appsRepository: http://chartmuseum.jenkins-x.io
+    defaultScheduler:
+      apiVersion: jenkins.io/v1
+      kind: Scheduler
+      name: jx-meta-pipeline
+    dockerRegistryOrg: ""
+    envOrganisation: myorg
+    gitServer: https://github.com
+    gitPublic: true
+    kubeProvider: "kubernetes"
+    pipelineUsername: "jenkins-x-labs-bot"
+    pipelineUserEmail: "jenkins-x@googlegroups.com"
+    prowConfig: Scheduler

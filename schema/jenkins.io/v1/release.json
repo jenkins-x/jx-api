@@ -223,31 +223,7 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "OwnerReference": {
-      "properties": {
-        "apiVersion": {
-          "type": "string"
-        },
-        "blockOwnerDeletion": {
-          "type": "boolean"
-        },
-        "controller": {
-          "type": "boolean"
-        },
-        "kind": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "uid": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "Release": {
+    "ObjectMeta": {
       "properties": {
         "annotations": {
           "patternProperties": {
@@ -256,9 +232,6 @@
             }
           },
           "type": "object"
-        },
-        "apiVersion": {
-          "type": "string"
         },
         "clusterName": {
           "type": "string"
@@ -284,9 +257,6 @@
         },
         "generation": {
           "type": "integer"
-        },
-        "kind": {
-          "type": "string"
         },
         "labels": {
           "patternProperties": {
@@ -322,6 +292,49 @@
         "selfLink": {
           "type": "string"
         },
+        "uid": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "OwnerReference": {
+      "properties": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "blockOwnerDeletion": {
+          "type": "boolean"
+        },
+        "controller": {
+          "type": "boolean"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Release": {
+      "properties": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "metadata": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/ObjectMeta"
+        },
         "spec": {
           "$schema": "http://json-schema.org/draft-04/schema#",
           "$ref": "#/definitions/ReleaseSpec"
@@ -329,9 +342,6 @@
         "status": {
           "$schema": "http://json-schema.org/draft-04/schema#",
           "$ref": "#/definitions/ReleaseStatus"
-        },
-        "uid": {
-          "type": "string"
         }
       },
       "additionalProperties": false,

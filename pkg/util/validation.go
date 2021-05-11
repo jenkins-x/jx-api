@@ -13,6 +13,8 @@ func GenerateSchema(target interface{}) *schemagen.Schema {
 		IgnoredTypes: []interface{}{
 			corev1.Container{},
 		},
+
+		//ExpandedStruct: true,
 		RequiredFromJSONSchemaTags: true,
 	}
 	return reflector.Reflect(target)
