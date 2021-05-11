@@ -953,7 +953,11 @@
           "type": "integer"
         },
         "completionTime": {
-          "$ref": "#/definitions/Time"
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         },
         "conditions": {
           "items": {
@@ -966,7 +970,11 @@
           "type": "integer"
         },
         "startTime": {
-          "$ref": "#/definitions/Time"
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         },
         "succeeded": {
           "type": "integer"
@@ -1070,7 +1078,11 @@
           "type": "string"
         },
         "time": {
-          "$ref": "#/definitions/Time"
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         }
       },
       "additionalProperties": false,
@@ -1194,7 +1206,11 @@
           "type": "integer"
         },
         "deletionTimestamp": {
-          "$ref": "#/definitions/Time"
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         },
         "finalizers": {
           "items": {
