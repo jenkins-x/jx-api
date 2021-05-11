@@ -10,7 +10,7 @@ require (
 	github.com/mattbaird/jsonpatch v0.0.0-20171005235357-81af80346b1a
 	github.com/pkg/errors v0.9.1
 	github.com/rawlingsj/jsonschema v0.0.0-20210511142122-a9c2cfdb7dcf // use a fork until https://github.com/alecthomas/jsonschema/issues/65 is fixed
-	github.com/stretchr/testify v1.6.1
+	github.com/stretchr/testify v1.7.0
 	github.com/vrischmann/envconfig v1.2.0
 	github.com/xeipuuv/gojsonschema v1.2.0
 	k8s.io/api v0.20.2
