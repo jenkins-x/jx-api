@@ -35,6 +35,7 @@ func TestRequirementsConfigMarshalExistingFile(t *testing.T) {
 	expectedClusterName := "my-cluster"
 	expectedSecretStorage := v4beta1.SecretStorageTypeVault
 	expectedDomain := "cheese.co.uk"
+	expectedExtraDomains := []string{"wine.com", "grapes.org.uk"}
 	expectedPipelineUserName := "someone"
 	expectedPipelineUserEmail := "someone@acme.com"
 
@@ -44,6 +45,7 @@ func TestRequirementsConfigMarshalExistingFile(t *testing.T) {
 	requirements.SecretStorage = expectedSecretStorage
 	requirements.Cluster.ClusterName = expectedClusterName
 	requirements.Ingress.Domain = expectedDomain
+	requirements.Ingress.ExtraDomains = expectedExtraDomains
 	requirements.PipelineUser = &v4beta1.UserNameEmailConfig{
 		Username: expectedPipelineUserName,
 		Email:    expectedPipelineUserEmail,
@@ -59,6 +61,7 @@ func TestRequirementsConfigMarshalExistingFile(t *testing.T) {
 	assert.Equal(t, expectedClusterName, requirements.Cluster.ClusterName, "requirements.ClusterName")
 	assert.Equal(t, expectedSecretStorage, requirements.SecretStorage, "requirements.SecretStorage")
 	assert.Equal(t, expectedDomain, requirements.Ingress.Domain, "requirements.Domain")
+	assert.Equal(t, expectedExtraDomains, requirements.Ingress.ExtraDomains, "requirements.extraDomains")
 }
 
 func Test_OverrideRequirementsFromEnvironment_does_not_initialise_nil_structs(t *testing.T) {
