@@ -210,6 +210,12 @@
         "domain": {
           "type": "string"
         },
+        "extraDomains": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
         "externalDNS": {
           "type": "boolean"
         },

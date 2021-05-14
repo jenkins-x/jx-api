@@ -230,6 +230,8 @@ type IngressConfig struct {
 	CloudDNSSecretName string `json:"cloud_dns_secret_name,omitempty"`
 	// Domain to expose ingress endpoints
 	Domain string `json:"domain"`
+	// Extra domains to expose alternate endpoints with custom ingress
+	ExtraDomains []string `json:"extraDomains,omitempty"`
 	// Kind the kind of ingress used (ingress v1, ingress v2, istio etc)
 	Kind IngressType `json:"kind,omitempty"`
 	// IgnoreLoadBalancer if the nginx-controller LoadBalancer service should not be used to detect and update the
