@@ -210,14 +210,14 @@
         "domain": {
           "type": "string"
         },
+        "externalDNS": {
+          "type": "boolean"
+        },
         "extraDomains": {
           "items": {
             "type": "string"
           },
           "type": "array"
-        },
-        "externalDNS": {
-          "type": "boolean"
         },
         "ignoreLoadBalancer": {
           "type": "boolean"
