@@ -210,12 +210,6 @@
         "domain": {
           "type": "string"
         },
-        "extraDomains": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        },
         "externalDNS": {
           "type": "boolean"
         },
@@ -266,6 +260,13 @@
           "items": {
             "$schema": "http://json-schema.org/draft-04/schema#",
             "$ref": "#/definitions/EnvironmentConfig"
+          },
+          "type": "array"
+        },
+        "extraDomains": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/IngressConfig"
           },
           "type": "array"
         },
