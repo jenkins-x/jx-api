@@ -1021,6 +1021,19 @@ ClusterConfig
 </tr>
 <tr>
 <td>
+<code>extraDomains</code></br>
+<em>
+<a href="#core.jenkins-x.io/v4beta1.IngressConfig">
+[]IngressConfig
+</a>
+</em>
+</td>
+<td>
+<p>ExtraDomains to expose alternate services with custom ingress for specific applications</p>
+</td>
+</tr>
+<tr>
+<td>
 <code>ingress</code></br>
 <em>
 <a href="#core.jenkins-x.io/v4beta1.IngressConfig">
@@ -1204,6 +1217,19 @@ ClusterConfig
 </td>
 <td>
 <p>Environments the requirements for the environments</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>extraDomains</code></br>
+<em>
+<a href="#core.jenkins-x.io/v4beta1.IngressConfig">
+[]IngressConfig
+</a>
+</em>
+</td>
+<td>
+<p>ExtraDomains to expose alternate services with custom ingress for specific applications</p>
 </td>
 </tr>
 <tr>
@@ -2112,5 +2138,5 @@ If not specified the &lsquo;kubernetes&rsquo; is used.</p>
 <hr/>
 <p><em>
 Generated with <code>gen-crd-api-reference-docs</code>
-on git commit <code>1b57b62</code>.
+on git commit <code>499503f</code>.
 </em></p>
