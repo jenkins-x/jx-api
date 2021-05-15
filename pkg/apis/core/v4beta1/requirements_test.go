@@ -35,9 +35,21 @@ func TestRequirementsConfigMarshalExistingFile(t *testing.T) {
 	expectedClusterName := "my-cluster"
 	expectedSecretStorage := v4beta1.SecretStorageTypeVault
 	expectedDomain := "cheese.co.uk"
-	expectedExtraDomains := []string{"wine.com", "grapes.org.uk"}
 	expectedPipelineUserName := "someone"
 	expectedPipelineUserEmail := "someone@acme.com"
+	expectedExtraDomains := []v4beta1.IngressConfig{{
+		Domain: "wine.com",
+		TLS: &v4beta1.TLSConfig{
+			Enabled:    true,
+			Production: true,
+		},
+	}, {
+		Domain: "grapes.org.uk",
+		TLS: &v4beta1.TLSConfig{
+			Enabled:    true,
+			Production: false,
+		},
+	}}
 
 	file := filepath.Join(dir, v4beta1.RequirementsConfigFileName)
 	requirementResource := v4beta1.NewRequirementsConfig()
@@ -45,7 +57,7 @@ func TestRequirementsConfigMarshalExistingFile(t *testing.T) {
 	requirements.SecretStorage = expectedSecretStorage
 	requirements.Cluster.ClusterName = expectedClusterName
 	requirements.Ingress.Domain = expectedDomain
-	requirements.Ingress.ExtraDomains = expectedExtraDomains
+	requirements.ExtraDomains = expectedExtraDomains
 	requirements.PipelineUser = &v4beta1.UserNameEmailConfig{
 		Username: expectedPipelineUserName,
 		Email:    expectedPipelineUserEmail,
@@ -61,7 +73,7 @@ func TestRequirementsConfigMarshalExistingFile(t *testing.T) {
 	assert.Equal(t, expectedClusterName, requirements.Cluster.ClusterName, "requirements.ClusterName")
 	assert.Equal(t, expectedSecretStorage, requirements.SecretStorage, "requirements.SecretStorage")
 	assert.Equal(t, expectedDomain, requirements.Ingress.Domain, "requirements.Domain")
-	assert.Equal(t, expectedExtraDomains, requirements.Ingress.ExtraDomains, "requirements.extraDomains")
+	assert.Equal(t, expectedExtraDomains, requirements.ExtraDomains, "requirements.extraDomains")
 }
 
 func Test_OverrideRequirementsFromEnvironment_does_not_initialise_nil_structs(t *testing.T) {
