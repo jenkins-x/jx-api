@@ -731,6 +731,17 @@ string
 <tbody>
 <tr>
 <td>
+<code>apiVersion</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>APIVersion optional Ingress API version to use. Otherwise defaults to v1</p>
+</td>
+</tr>
+<tr>
+<td>
 <code>externalDNS</code></br>
 <em>
 bool
@@ -2138,5 +2149,5 @@ If not specified the &lsquo;kubernetes&rsquo; is used.</p>
 <hr/>
 <p><em>
 Generated with <code>gen-crd-api-reference-docs</code>
-on git commit <code>499503f</code>.
+on git commit <code>0d13620</code>.
 </em></p>
