@@ -5,7 +5,7 @@ go 1.15
 require (
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-openapi/spec v0.19.7 // indirect
-	github.com/imdario/mergo v0.3.9
+	github.com/imdario/mergo v0.3.12
 	github.com/jenkins-x/gen-crd-api-reference-docs v0.1.6 // indirect
 	github.com/jenkins-x/jx-logging/v3 v3.0.6
 	github.com/mattbaird/jsonpatch v0.0.0-20171005235357-81af80346b1a
