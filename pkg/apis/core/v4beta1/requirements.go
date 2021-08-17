@@ -531,8 +531,8 @@ type RequirementsConfig struct {
 	PipelineUser *UserNameEmailConfig `json:"pipelineUser,omitempty"`
 	// Repository specifies what kind of artifact repository you wish to use for storing artifacts (jars, tarballs, npm modules etc)
 	Repository RepositoryType `json:"repository,omitempty" envconfig:"JX_REQUIREMENT_REPOSITORY"`
-	// RepositoryConfig the configuration for language specific repositories
-	RepositoryConfig *RepositoryConfig `json:"repositoryConfig,omitempty"`
+	// Repositories the configuration for language specific repositories
+	Repositories *RepositoryConfig `json:"repositories,omitempty"`
 	// SecretStorage how should we store secrets for the cluster
 	SecretStorage SecretStorageType `json:"secretStorage,omitempty" envconfig:"JX_REQUIREMENT_SECRET_STORAGE_TYPE"`
 	// Storage contains storage requirements
@@ -822,8 +822,8 @@ func (c *RequirementsConfig) ToMap() (map[string]interface{}, error) {
 	if m != nil {
 		ensureHasFields(m, "provider", "project", "environmentGitOwner", "gitops", "webhook")
 	}
-	if m["repositoryConfig"] == nil {
-		m["repositoryConfig"] = map[string]interface{}{
+	if m["repositories"] == nil {
+		m["repositories"] = map[string]interface{}{
 			"maven": map[string]interface{}{
 				"releaseUrl":  "",
 				"snapshotUrl": "",

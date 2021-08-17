@@ -1168,7 +1168,7 @@ RepositoryType
 </tr>
 <tr>
 <td>
-<code>repositoryConfig</code></br>
+<code>repositories</code></br>
 <em>
 <a href="#core.jenkins-x.io/v4beta1.RepositoryConfig">
 RepositoryConfig
@@ -1176,7 +1176,7 @@ RepositoryConfig
 </em>
 </td>
 <td>
-<p>RepositoryConfig the configuration for language specific repositories</p>
+<p>Repositories the configuration for language specific repositories</p>
 </td>
 </tr>
 <tr>
@@ -1381,7 +1381,7 @@ RepositoryType
 </tr>
 <tr>
 <td>
-<code>repositoryConfig</code></br>
+<code>repositories</code></br>
 <em>
 <a href="#core.jenkins-x.io/v4beta1.RepositoryConfig">
 RepositoryConfig
@@ -1389,7 +1389,7 @@ RepositoryConfig
 </em>
 </td>
 <td>
-<p>RepositoryConfig the configuration for language specific repositories</p>
+<p>Repositories the configuration for language specific repositories</p>
 </td>
 </tr>
 <tr>
@@ -2248,5 +2248,5 @@ If not specified the &lsquo;kubernetes&rsquo; is used.</p>
 <hr/>
 <p><em>
 Generated with <code>gen-crd-api-reference-docs</code>
-on git commit <code>4d4afbb</code>.
+on git commit <code>cb291c4</code>.
 </em></p>
