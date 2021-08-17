@@ -204,6 +204,9 @@
           },
           "type": "object"
         },
+        "apiVersion": {
+          "type": "string"
+        },
         "cloud_dns_secret_name": {
           "type": "string"
         },

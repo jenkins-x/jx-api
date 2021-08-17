@@ -531,6 +531,8 @@ type RequirementsConfig struct {
 	PipelineUser *UserNameEmailConfig `json:"pipelineUser,omitempty"`
 	// Repository specifies what kind of artifact repository you wish to use for storing artifacts (jars, tarballs, npm modules etc)
 	Repository RepositoryType `json:"repository,omitempty" envconfig:"JX_REQUIREMENT_REPOSITORY"`
+	// RepositoryConfig the configuration for language specific repositories
+	RepositoryConfig *RepositoryConfig `json:"repositoryConfig,omitempty"`
 	// SecretStorage how should we store secrets for the cluster
 	SecretStorage SecretStorageType `json:"secretStorage,omitempty" envconfig:"JX_REQUIREMENT_SECRET_STORAGE_TYPE"`
 	// Storage contains storage requirements
@@ -543,6 +545,20 @@ type RequirementsConfig struct {
 	Vault VaultConfig `json:"vault,omitempty"`
 	// Webhook specifies what engine we should use for webhooks
 	Webhook WebhookType `json:"webhook,omitempty"`
+}
+
+// RepositoryConfig contains optional language specific repository configurations
+type RepositoryConfig struct {
+	// Maven the username of the user
+	Maven *MavenRepositoryConfig `json:"maven,omitempty"`
+}
+
+// MavenRepositoryConfig contains optional configuration for maven repository configuration
+type MavenRepositoryConfig struct {
+	// ReleaseURL the release distribution URL
+	ReleaseURL string `json:"releaseUrl,omitempty"`
+	// SnapshotURL the snapshop distribution URL
+	SnapshotURL string `json:"snapshotUrl,omitempty"`
 }
 
 // NewRequirementsConfig creates a default configuration file
@@ -805,6 +821,14 @@ func (c *RequirementsConfig) ToMap() (map[string]interface{}, error) {
 	m, err := util.ToObjectMap(c)
 	if m != nil {
 		ensureHasFields(m, "provider", "project", "environmentGitOwner", "gitops", "webhook")
+	}
+	if m["repositoryConfig"] == nil {
+		m["repositoryConfig"] = map[string]interface{}{
+			"maven": map[string]interface{}{
+				"releaseUrl":  "",
+				"snapshotUrl": "",
+			},
+		}
 	}
 	return m, err
 }
