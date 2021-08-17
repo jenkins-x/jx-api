@@ -233,6 +233,28 @@
       "additionalProperties": false,
       "type": "object"
     },
+    "MavenRepositoryConfig": {
+      "properties": {
+        "releaseUrl": {
+          "type": "string"
+        },
+        "snapshotUrl": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "RepositoryConfig": {
+      "properties": {
+        "maven": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/MavenRepositoryConfig"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
     "Requirements": {
       "properties": {
         "apiVersion": {
@@ -281,6 +303,10 @@
         "pipelineUser": {
           "$schema": "http://json-schema.org/draft-04/schema#",
           "$ref": "#/definitions/UserNameEmailConfig"
+        },
+        "repositories": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/RepositoryConfig"
         },
         "repository": {
           "type": "string"
