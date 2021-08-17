@@ -955,6 +955,79 @@ see <a href="https://jenkins-x.io/architecture/storage/">https://jenkins-x.io/ar
 </tr>
 </tbody>
 </table>
+<h3 id="core.jenkins-x.io/v4beta1.MavenRepositoryConfig">MavenRepositoryConfig
+</h3>
+<p>
+(<em>Appears on:</em>
+<a href="#core.jenkins-x.io/v4beta1.RepositoryConfig">RepositoryConfig</a>)
+</p>
+<p>
+<p>MavenRepositoryConfig contains optional configuration for maven repository configuration</p>
+</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>releaseUrl</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>ReleaseURL the release distribution URL</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>snapshotUrl</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>SnapshotURL the snapshop distribution URL</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3 id="core.jenkins-x.io/v4beta1.RepositoryConfig">RepositoryConfig
+</h3>
+<p>
+(<em>Appears on:</em>
+<a href="#core.jenkins-x.io/v4beta1.RequirementsConfig">RequirementsConfig</a>)
+</p>
+<p>
+<p>RepositoryConfig contains optional language specific repository configurations</p>
+</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>maven</code></br>
+<em>
+<a href="#core.jenkins-x.io/v4beta1.MavenRepositoryConfig">
+MavenRepositoryConfig
+</a>
+</em>
+</td>
+<td>
+<p>Maven the username of the user</p>
+</td>
+</tr>
+</tbody>
+</table>
 <h3 id="core.jenkins-x.io/v4beta1.RepositoryType">RepositoryType
 (<code>string</code> alias)</p></h3>
 <p>
@@ -1091,6 +1164,19 @@ RepositoryType
 </td>
 <td>
 <p>Repository specifies what kind of artifact repository you wish to use for storing artifacts (jars, tarballs, npm modules etc)</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>repositoryConfig</code></br>
+<em>
+<a href="#core.jenkins-x.io/v4beta1.RepositoryConfig">
+RepositoryConfig
+</a>
+</em>
+</td>
+<td>
+<p>RepositoryConfig the configuration for language specific repositories</p>
 </td>
 </tr>
 <tr>
@@ -1291,6 +1377,19 @@ RepositoryType
 </td>
 <td>
 <p>Repository specifies what kind of artifact repository you wish to use for storing artifacts (jars, tarballs, npm modules etc)</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>repositoryConfig</code></br>
+<em>
+<a href="#core.jenkins-x.io/v4beta1.RepositoryConfig">
+RepositoryConfig
+</a>
+</em>
+</td>
+<td>
+<p>RepositoryConfig the configuration for language specific repositories</p>
 </td>
 </tr>
 <tr>
@@ -2149,5 +2248,5 @@ If not specified the &lsquo;kubernetes&rsquo; is used.</p>
 <hr/>
 <p><em>
 Generated with <code>gen-crd-api-reference-docs</code>
-on git commit <code>0d13620</code>.
+on git commit <code>4d4afbb</code>.
 </em></p>
