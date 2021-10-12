@@ -24,10 +24,26 @@ type Settings struct {
 type SettingsConfig struct {
 	// GitURL the git URL for your development cluster where the default environments and cluster configuration are specified
 	GitURL string `json:"gitUrl,omitempty"`
+	// Issue tracker to use for generating changelog
+	IssueTracker *IssueTracker `json:"issueProvider,omitempty"`
 	// Destination settings to define where release artifacts go in terms of containers and charts
 	Destination *DestinationConfig `json:"destination"`
 	// PromoteEnvironments the environments for promotion
 	PromoteEnvironments []EnvironmentConfig `json:"promoteEnvironments,omitempty"`
 	// IgnoreDevEnvironments if enabled do not inherit any environments from the
 	IgnoreDevEnvironments bool `json:"ignoreDevEnvironments,omitempty"`
+}
+
+// IssueTracker is currently only used for generating the changelog. If Jira isn't set it defaults to the git provider.
+type IssueTracker struct {
+	Jira *JiraTracker `json:"jira,omitempty"`
+}
+
+// JiraTracker has settings for jira
+type JiraTracker struct {
+	ServerURL string `json:"serverUrl,omitempty"`
+	Username  string `json:"userName,omitempty"`
+	// The Jira API token is taken from the environment variable JIRA_API_TOKEN. Can be populated using the jx-boot-job-env-vars secret.
+	// Not used at the moment
+	Project string `json:"project,omitempty"`
 }
