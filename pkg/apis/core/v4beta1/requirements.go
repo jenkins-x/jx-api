@@ -3,6 +3,11 @@ package v4beta1
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"os"
+	"path/filepath"
+	"reflect"
+	"strings"
 
 	v1 "github.com/jenkins-x/jx-api/v4/pkg/apis/jenkins.io/v1"
 
@@ -11,12 +16,6 @@ import (
 	"github.com/jenkins-x/jx-api/v4/pkg/cloud"
 	"github.com/jenkins-x/jx-api/v4/pkg/util"
 	"github.com/jenkins-x/jx-logging/v3/pkg/log"
-
-	"io/ioutil"
-	"os"
-	"path/filepath"
-	"reflect"
-	"strings"
 
 	"github.com/ghodss/yaml"
 	"github.com/imdario/mergo"
@@ -351,6 +350,8 @@ type ClusterConfig struct {
 	KanikoSAName string `json:"kanikoSAName,omitempty" envconfig:"JX_REQUIREMENT_KANIKO_SA_NAME"`
 	// DevEnvApprovers contains an optional list of approvers to populate the initial OWNERS file in the dev env repo
 	DevEnvApprovers []string `json:"devEnvApprovers,omitempty"`
+	// Issue tracker to use for generating changelog
+	IssueTracker *IssueTracker `json:"issueProvider,omitempty"`
 }
 
 // Deprecated: migrate to top level Requirements object
