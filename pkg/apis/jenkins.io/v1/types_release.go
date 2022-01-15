@@ -9,7 +9,12 @@ import (
 
 // +genclient
 // +genclient:noStatus
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:printcolumn:name="Name",type="string",JSONPath=".spec.name",description="The name of the Release"
+// +kubebuilder:printcolumn:name="Version",type="string",JSONPath=".spec.version",description="The version number of the Release"
+// +kubebuilder:printcolumn:name="Git URL",type="string",JSONPath=".spec.gitHttpUrl",description="The URL of the Git repository"
+// +kubebuilder:resource:categories=all,shortName=rel
 // +k8s:openapi-gen=true
 
 // Release represents a single version of an app that has been released
@@ -19,12 +24,12 @@ type Release struct {
 	// More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata
 	// +optional
 	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
-
+	// +kubebuilder:pruning:PreserveUnknownFields
 	Spec   ReleaseSpec   `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
 	Status ReleaseStatus `json:"status,omitempty" protobuf:"bytes,3,opt,name=status"`
 }
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:object:root=true
 
 // ReleaseList is a list of Release resources
 type ReleaseList struct {

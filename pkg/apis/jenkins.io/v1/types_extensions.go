@@ -7,8 +7,13 @@ import (
 
 // +genclient
 // +genclient:noStatus
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
+// +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:printcolumn:name="URL",type="string",JSONPath=".spec.url",description="The URL of the git repository"
+// +kubebuilder:printcolumn:name="Description",type="string",JSONPath=".spec.description",description="A description of the source code repository - non-functional user-data"
+// +kubebuilder:resource:categories=all,shortName=sourcerepo;srcrepo;sr
+// +k8s:openapi-gen=true
+// +kubebuilder:storageversion
 // SourceRepository is the metadata for an Application/Project/SourceRepository
 type SourceRepository struct {
 	metav1.TypeMeta `json:",inline"`
@@ -16,7 +21,7 @@ type SourceRepository struct {
 	// More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata
 	// +optional
 	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
-
+	// +kubebuilder:pruning:PreserveUnknownFields
 	Spec SourceRepositorySpec `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
 }
 
@@ -30,7 +35,7 @@ func (repo *SourceRepository) Sanitize() {
 	repo.Spec.ProviderName = util.SanitizeURL(repo.Spec.ProviderName)
 }
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:object:root=true
 
 // SourceRepositoryList is a structure used by k8s to store lists of apps
 type SourceRepositoryList struct {
@@ -73,7 +78,7 @@ type PipelineExtension struct {
 	Args []string `json:"args,omitempty" protobuf:"bytes,4,rep,name=args"`
 }
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:object:root=true
 
 // PluginList is a list of Plugins available for a team
 type PluginList struct {
@@ -85,7 +90,7 @@ type PluginList struct {
 
 // +genclient
 // +genclient:noStatus
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:object:root=true
 // +k8s:openapi-gen=true
 
 // Plugin represents a binary plugin installed into this Jenkins X team
