@@ -12,7 +12,15 @@ import (
 
 // +genclient
 // +genclient:noStatus
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:printcolumn:name="Namespace",type="string",JSONPath=".spec.namespace",description="The namespace used for the environment"
+// +kubebuilder:printcolumn:name="Kind",type="string",JSONPath=".spec.kind",description="The kind of environment"
+// +kubebuilder:printcolumn:name="Promotion",type="string",JSONPath=".spec.promotionStrategy",description="The strategy used for promoting to this environment"
+// +kubebuilder:printcolumn:name="Order",type="integer",JSONPath=".spec.order",description="The order in which environments are automatically promoted"
+// +kubebuilder:printcolumn:name="Git URL",type="string",JSONPath=".spec.source.url",description="The Git repository URL for the source of the environment configuration"
+// +kubebuilder:printcolumn:name="Git Branch",type="string",JSONPath=".spec.source.ref",description="The git branch for the source of the environment configuration"
+// +kubebuilder:resource:categories=all,shortName=env
 // +k8s:openapi-gen=true
 
 // Environment represents an environment like Dev, Test, Staging, Production where code lives
@@ -22,7 +30,7 @@ type Environment struct {
 	// More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata
 	// +optional
 	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
-
+	// +kubebuilder:pruning:PreserveUnknownFields
 	Spec   EnvironmentSpec   `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
 	Status EnvironmentStatus `json:"status,omitempty" protobuf:"bytes,3,opt,name=status"`
 }
@@ -50,7 +58,7 @@ type EnvironmentStatus struct {
 	Version string `json:"version,omitempty"`
 }
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:object:root=true
 
 // EnvironmentList is a list of TypeMeta resources
 type EnvironmentList struct {

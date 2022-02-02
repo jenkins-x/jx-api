@@ -18,7 +18,11 @@ const (
 
 // +genclient
 // +genclient:noStatus
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:printcolumn:name="Git URL",type="string",JSONPath=".spec.gitUrl",description="The URL of the Git repository"
+// +kubebuilder:printcolumn:name="Status",type="string",JSONPath=".spec.status",description="The status of the pipeline"
+// +kubebuilder:resource:categories=all,shortName=activity;act;pa
 // +k8s:openapi-gen=true
 
 // PipelineActivity represents pipeline activity for a particular run of a pipeline
@@ -28,7 +32,7 @@ type PipelineActivity struct {
 	// More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata
 	// +optional
 	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
-
+	// +kubebuilder:pruning:PreserveUnknownFields
 	Spec   PipelineActivitySpec   `json:"spec,omitempty" protobuf:"bytes,2,opt,name=spec"`
 	Status PipelineActivityStatus `json:"status,omitempty" protobuf:"bytes,3,opt,name=status"`
 }
@@ -39,7 +43,9 @@ type PipelineActivitySpec struct {
 	Build                 string                 `json:"build,omitempty" protobuf:"bytes,2,opt,name=build"`
 	Version               string                 `json:"version,omitempty" protobuf:"bytes,3,opt,name=version"`
 	Status                ActivityStatusType     `json:"status,omitempty" protobuf:"bytes,4,opt,name=status"`
+	// +nullable
 	StartedTimestamp      *metav1.Time           `json:"startedTimestamp,omitempty" protobuf:"bytes,5,opt,name=startedTimestamp"`
+	// +nullable
 	CompletedTimestamp    *metav1.Time           `json:"completedTimestamp,omitempty" protobuf:"bytes,6,opt,name=completedTimestamp"`
 	Steps                 []PipelineActivityStep `json:"steps,omitempty" protobuf:"bytes,7,opt,name=steps"`
 	BuildURL              string                 `json:"buildUrl,omitempty" protobuf:"bytes,8,opt,name=buildUrl"`
@@ -91,7 +97,9 @@ type CoreActivityStep struct {
 	Name               string             `json:"name,omitempty" protobuf:"bytes,1,opt,name=name"`
 	Description        string             `json:"description,omitempty" protobuf:"bytes,2,opt,name=description"`
 	Status             ActivityStatusType `json:"status,omitempty" protobuf:"bytes,3,opt,name=status"`
+	// +nullable
 	StartedTimestamp   *metav1.Time       `json:"startedTimestamp,omitempty" protobuf:"bytes,4,opt,name=startedTimestamp"`
+	// +nullable
 	CompletedTimestamp *metav1.Time       `json:"completedTimestamp,omitempty" protobuf:"bytes,5,opt,name=completedTimestamp"`
 }
 
@@ -148,7 +156,7 @@ type PipelineActivityStatus struct {
 	Version string `json:"version,omitempty"  protobuf:"bytes,1,opt,name=version"`
 }
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:object:root=true
 
 // PipelineActivityList is a list of PipelineActivity resources
 type PipelineActivityList struct {
