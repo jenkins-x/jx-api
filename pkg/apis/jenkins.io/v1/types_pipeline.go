@@ -202,6 +202,8 @@ const (
 	ActivityStatusTypeAborted ActivityStatusType = "Aborted"
 	// ActivityStatusTypeNotExecuted if the workflow was not executed
 	ActivityStatusTypeNotExecuted ActivityStatusType = "NotExecuted"
+	// ActivityStatusTypeFailed an activity failed
+	ActivityStatusTypeTimedOut ActivityStatusType = "TimedOut"
 )
 
 type Attachment struct {
