@@ -582,9 +582,6 @@
     },
     "EphemeralVolumeSource": {
       "properties": {
-        "readOnly": {
-          "type": "boolean"
-        },
         "volumeClaimTemplate": {
           "$schema": "http://json-schema.org/draft-04/schema#",
           "$ref": "#/definitions/PersistentVolumeClaimTemplate"
@@ -923,6 +920,9 @@
         "backoffLimit": {
           "type": "integer"
         },
+        "completionMode": {
+          "type": "string"
+        },
         "completions": {
           "type": "integer"
         },
@@ -935,6 +935,9 @@
         "selector": {
           "$schema": "http://json-schema.org/draft-04/schema#",
           "$ref": "#/definitions/LabelSelector"
+        },
+        "suspend": {
+          "type": "boolean"
         },
         "template": {
           "$schema": "http://json-schema.org/draft-04/schema#",
@@ -951,6 +954,9 @@
       "properties": {
         "active": {
           "type": "integer"
+        },
+        "completedIndexes": {
+          "type": "string"
         },
         "completionTime": {
           "type": [
@@ -1383,6 +1389,9 @@
         "labelSelector": {
           "$ref": "#/definitions/LabelSelector"
         },
+        "namespaceSelector": {
+          "$ref": "#/definitions/LabelSelector"
+        },
         "namespaces": {
           "items": {
             "type": "string"
@@ -1760,6 +1769,9 @@
         "tcpSocket": {
           "$schema": "http://json-schema.org/draft-04/schema#",
           "$ref": "#/definitions/TCPSocketAction"
+        },
+        "terminationGracePeriodSeconds": {
+          "type": "integer"
         },
         "timeoutSeconds": {
           "type": "integer"
