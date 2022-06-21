@@ -216,6 +216,8 @@ type EnvironmentConfig struct {
 	RemoteCluster bool `json:"remoteCluster,omitempty"`
 	// PromotionStrategy what kind of promotion strategy to use
 	PromotionStrategy v1.PromotionStrategyType `json:"promotionStrategy,omitempty"`
+	// Should pull requests be labeled so that if there is an existing pull request for the application it can be found and updated
+	ReusePullRequest bool `json:"reusePullRequest,omitempty"`
 	// Namespace is the target namespace for deploying resources in this environment.  Will default to "jx-{{ .Key }}" if omitted
 	Namespace string `json:"namespace,omitempty"`
 }
