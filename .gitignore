@@ -1,8 +1,7 @@
-.idea
-coverage.out
 build
 bin
 config
+coverage.out
 
 # generated apidocs
 docs/apidocs/build
@@ -22,3 +21,7 @@ docs/apidocs/static/fontawesome-webfont.woff2
 docs/apidocs/static/jquery-3.2.1.min.js
 docs/apidocs/static/jquery.scrollTo.min.js
 docs/apidocs/static/scroll.js
+
+#IDEs
+.vscode
+.idea

@@ -39,12 +39,13 @@ type PipelineActivity struct {
 
 // PipelineActivitySpec is the specification of the pipeline activity
 type PipelineActivitySpec struct {
-	Pipeline              string                 `json:"pipeline,omitempty" protobuf:"bytes,1,opt,name=pipeline"`
-	Build                 string                 `json:"build,omitempty" protobuf:"bytes,2,opt,name=build"`
-	Version               string                 `json:"version,omitempty" protobuf:"bytes,3,opt,name=version"`
-	Status                ActivityStatusType     `json:"status,omitempty" protobuf:"bytes,4,opt,name=status"`
+	Pipeline string              `json:"pipeline,omitempty" protobuf:"bytes,1,opt,name=pipeline"`
+	Build    string              `json:"build,omitempty" protobuf:"bytes,2,opt,name=build"`
+	Version  string              `json:"version,omitempty" protobuf:"bytes,3,opt,name=version"`
+	Status   ActivityStatusType  `json:"status,omitempty" protobuf:"bytes,4,opt,name=status"`
+	Message  ActivityMessageType `json:"message,omitempty" protobuf:"bytes,4,opt,name=message"`
 	// +nullable
-	StartedTimestamp      *metav1.Time           `json:"startedTimestamp,omitempty" protobuf:"bytes,5,opt,name=startedTimestamp"`
+	StartedTimestamp *metav1.Time `json:"startedTimestamp,omitempty" protobuf:"bytes,5,opt,name=startedTimestamp"`
 	// +nullable
 	CompletedTimestamp    *metav1.Time           `json:"completedTimestamp,omitempty" protobuf:"bytes,6,opt,name=completedTimestamp"`
 	Steps                 []PipelineActivityStep `json:"steps,omitempty" protobuf:"bytes,7,opt,name=steps"`
@@ -94,13 +95,14 @@ type PipelineActivityStep struct {
 
 // CoreActivityStep is a base step included in Stages of a pipeline or other kinds of step
 type CoreActivityStep struct {
-	Name               string             `json:"name,omitempty" protobuf:"bytes,1,opt,name=name"`
-	Description        string             `json:"description,omitempty" protobuf:"bytes,2,opt,name=description"`
-	Status             ActivityStatusType `json:"status,omitempty" protobuf:"bytes,3,opt,name=status"`
+	Name        string              `json:"name,omitempty" protobuf:"bytes,1,opt,name=name"`
+	Description string              `json:"description,omitempty" protobuf:"bytes,2,opt,name=description"`
+	Status      ActivityStatusType  `json:"status,omitempty" protobuf:"bytes,3,opt,name=status"`
+	Message     ActivityMessageType `json:"message,omitempty" protobuf:"bytes,3,opt,name=message"`
 	// +nullable
-	StartedTimestamp   *metav1.Time       `json:"startedTimestamp,omitempty" protobuf:"bytes,4,opt,name=startedTimestamp"`
+	StartedTimestamp *metav1.Time `json:"startedTimestamp,omitempty" protobuf:"bytes,4,opt,name=startedTimestamp"`
 	// +nullable
-	CompletedTimestamp *metav1.Time       `json:"completedTimestamp,omitempty" protobuf:"bytes,5,opt,name=completedTimestamp"`
+	CompletedTimestamp *metav1.Time `json:"completedTimestamp,omitempty" protobuf:"bytes,5,opt,name=completedTimestamp"`
 }
 
 // StageActivityStep represents a stage of zero to more sub steps in a jenkins pipeline
@@ -181,7 +183,10 @@ const (
 )
 
 // ActivityStatusType is the status of an activity; usually succeeded or failed/error on completion
-type ActivityStatusType string
+type (
+	ActivityStatusType  string
+	ActivityMessageType string
+)
 
 const (
 	// ActivityStatusTypeNone an activity step has not started yet
@@ -220,6 +225,10 @@ func (s ActivityStatusType) IsTerminated() bool {
 
 func (s ActivityStatusType) String() string {
 	return string(s)
+}
+
+func (m ActivityMessageType) String() string {
+	return string(m)
 }
 
 // RepositoryName returns the repository name for the given pipeline
