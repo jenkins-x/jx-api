@@ -182,9 +182,10 @@ const (
 	ActivityStepKindTypePromote ActivityStepKindType = "Promote"
 )
 
-// ActivityStatusType is the status of an activity; usually succeeded or failed/error on completion
 type (
-	ActivityStatusType  string
+	// ActivityStatusType is the status of an activity; usually succeeded or failed/error on completion
+	ActivityStatusType string
+	// ActivityMessageType is the message of an activity; usually succeeded or failed/error on completion
 	ActivityMessageType string
 )
 
