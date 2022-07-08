@@ -48,6 +48,9 @@
         "description": {
           "type": "string"
         },
+        "message": {
+          "type": "string"
+        },
         "name": {
           "type": "string"
         },
@@ -306,6 +309,9 @@
         "lastCommitURL": {
           "type": "string"
         },
+        "message": {
+          "type": "string"
+        },
         "pipeline": {
           "type": "string"
         },
@@ -387,6 +393,9 @@
         "environment": {
           "type": "string"
         },
+        "message": {
+          "type": "string"
+        },
         "name": {
           "type": "string"
         },
@@ -423,6 +432,9 @@
           "type": "string"
         },
         "environment": {
+          "type": "string"
+        },
+        "message": {
           "type": "string"
         },
         "name": {
@@ -465,6 +477,9 @@
         "mergeCommitSHA": {
           "type": "string"
         },
+        "message": {
+          "type": "string"
+        },
         "name": {
           "type": "string"
         },
@@ -495,6 +510,9 @@
           "format": "date-time"
         },
         "description": {
+          "type": "string"
+        },
+        "message": {
           "type": "string"
         },
         "name": {
@@ -546,6 +564,9 @@
           "format": "date-time"
         },
         "description": {
+          "type": "string"
+        },
+        "message": {
           "type": "string"
         },
         "name": {
