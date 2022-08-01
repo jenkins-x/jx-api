@@ -4,12 +4,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/jenkins-x/jx-api/v4/pkg/util"
-	"github.com/jenkins-x/jx-logging/v3/pkg/log"
-	"github.com/pkg/errors"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+
+	"github.com/jenkins-x/jx-api/v4/pkg/util"
+	"github.com/jenkins-x/jx-logging/v3/pkg/log"
+	"github.com/pkg/errors"
 )
 
 const (
@@ -45,7 +46,7 @@ func GenerateSchemas(resourceKinds []ResourceKind, out string) error {
 
 // Generate generates the schema document
 func generate(schemaName string, out string, schemaTarget interface{}) error {
-	schema := util.GenerateSchema(schemaTarget)
+	schema := util.GenerateSchema(schemaTarget, false)
 	if schema == nil {
 		return fmt.Errorf("could not generate schema for %s", schemaName)
 	}
