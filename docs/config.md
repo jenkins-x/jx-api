@@ -447,6 +447,19 @@ KanikoSAName the service account name for kaniko</p>
 <p>DevEnvApprovers contains an optional list of approvers to populate the initial OWNERS file in the dev env repo</p>
 </td>
 </tr>
+<tr>
+<td>
+<code>issueProvider</code></br>
+<em>
+<a href="#core.jenkins-x.io/v4beta1.IssueTracker">
+IssueTracker
+</a>
+</em>
+</td>
+<td>
+<p>Issue tracker to use for generating changelog</p>
+</td>
+</tr>
 </tbody>
 </table>
 <h3 id="core.jenkins-x.io/v4beta1.DestinationConfig">DestinationConfig
@@ -670,6 +683,17 @@ github.com/jenkins-x/jx-api/v4/pkg/apis/jenkins.io/v1.PromotionStrategyType
 </tr>
 <tr>
 <td>
+<code>reusePullRequest</code></br>
+<em>
+bool
+</em>
+</td>
+<td>
+<p>Should pull requests be labeled so that if there is an existing pull request for the application it can be found and updated</p>
+</td>
+</tr>
+<tr>
+<td>
 <code>namespace</code></br>
 <em>
 string
@@ -846,6 +870,89 @@ map[string]string
 <p>
 <p>IngressType is the type of a ingress strategy</p>
 </p>
+<h3 id="core.jenkins-x.io/v4beta1.IssueTracker">IssueTracker
+</h3>
+<p>
+(<em>Appears on:</em>
+<a href="#core.jenkins-x.io/v4beta1.ClusterConfig">ClusterConfig</a>, 
+<a href="#core.jenkins-x.io/v4beta1.SettingsConfig">SettingsConfig</a>)
+</p>
+<p>
+<p>IssueTracker is currently only used for generating the changelog. If Jira isn&rsquo;t set it defaults to the git provider.</p>
+</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>jira</code></br>
+<em>
+<a href="#core.jenkins-x.io/v4beta1.JiraTracker">
+JiraTracker
+</a>
+</em>
+</td>
+<td>
+</td>
+</tr>
+</tbody>
+</table>
+<h3 id="core.jenkins-x.io/v4beta1.JiraTracker">JiraTracker
+</h3>
+<p>
+(<em>Appears on:</em>
+<a href="#core.jenkins-x.io/v4beta1.IssueTracker">IssueTracker</a>)
+</p>
+<p>
+<p>JiraTracker has settings for jira</p>
+</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>serverUrl</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>userName</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>project</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>The Jira API token is taken from the environment variable JIRA_API_TOKEN. Can be populated using the jx-boot-job-env-vars secret.
+Not used at the moment</p>
+</td>
+</tr>
+</tbody>
+</table>
 <h3 id="core.jenkins-x.io/v4beta1.LegacyStorageConfig">LegacyStorageConfig
 </h3>
 <p>
@@ -1606,6 +1713,19 @@ string
 </tr>
 <tr>
 <td>
+<code>issueProvider</code></br>
+<em>
+<a href="#core.jenkins-x.io/v4beta1.IssueTracker">
+IssueTracker
+</a>
+</em>
+</td>
+<td>
+<p>Issue tracker to use for generating changelog</p>
+</td>
+</tr>
+<tr>
+<td>
 <code>destination</code></br>
 <em>
 <a href="#core.jenkins-x.io/v4beta1.DestinationConfig">
@@ -1672,6 +1792,19 @@ string
 </td>
 <td>
 <p>GitURL the git URL for your development cluster where the default environments and cluster configuration are specified</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>issueProvider</code></br>
+<em>
+<a href="#core.jenkins-x.io/v4beta1.IssueTracker">
+IssueTracker
+</a>
+</em>
+</td>
+<td>
+<p>Issue tracker to use for generating changelog</p>
 </td>
 </tr>
 <tr>
@@ -2248,5 +2381,5 @@ If not specified the &lsquo;kubernetes&rsquo; is used.</p>
 <hr/>
 <p><em>
 Generated with <code>gen-crd-api-reference-docs</code>
-on git commit <code>cb291c4</code>.
+on git commit <code>8f3084d</code>.
 </em></p>
