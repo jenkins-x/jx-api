@@ -23,8 +23,6 @@ Resource Types:
 <a href="#jenkins.io/v1.Plugin">Plugin</a>
 </li><li>
 <a href="#jenkins.io/v1.Release">Release</a>
-</li><li>
-<a href="#jenkins.io/v1.SourceRepository">SourceRepository</a>
 </li></ul>
 <h3 id="jenkins.io/v1.Environment">Environment
 </h3>
@@ -332,6 +330,18 @@ string
 <em>
 <a href="#jenkins.io/v1.ActivityStatusType">
 ActivityStatusType
+</a>
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>message</code></br>
+<em>
+<a href="#jenkins.io/v1.ActivityMessageType">
+ActivityMessageType
 </a>
 </em>
 </td>
@@ -897,180 +907,6 @@ ReleaseStatus
 </tr>
 </tbody>
 </table>
-<h3 id="jenkins.io/v1.SourceRepository">SourceRepository
-</h3>
-<p>
-<p>SourceRepository is the metadata for an Application/Project/SourceRepository</p>
-</p>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<code>apiVersion</code></br>
-string</td>
-<td>
-<code>
-jenkins.io/v1
-</code>
-</td>
-</tr>
-<tr>
-<td>
-<code>kind</code></br>
-string
-</td>
-<td><code>SourceRepository</code></td>
-</tr>
-<tr>
-<td>
-<code>metadata</code></br>
-<em>
-<a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.13/#objectmeta-v1-meta">
-Kubernetes meta/v1.ObjectMeta
-</a>
-</em>
-</td>
-<td>
-<em>(Optional)</em>
-<p>Standard object&rsquo;s metadata.
-More info: <a href="https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata">https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata</a></p>
-Refer to the Kubernetes API documentation for the fields of the
-<code>metadata</code> field.
-</td>
-</tr>
-<tr>
-<td>
-<code>spec</code></br>
-<em>
-<a href="#jenkins.io/v1.SourceRepositorySpec">
-SourceRepositorySpec
-</a>
-</em>
-</td>
-<td>
-<br/>
-<br/>
-<table>
-<tr>
-<td>
-<code>description</code></br>
-<em>
-string
-</em>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<code>provider</code></br>
-<em>
-string
-</em>
-</td>
-<td>
-<p>Provider stores the URL of the git provider such as <a href="https://github.com">https://github.com</a></p>
-</td>
-</tr>
-<tr>
-<td>
-<code>org</code></br>
-<em>
-string
-</em>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<code>repo</code></br>
-<em>
-string
-</em>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-<code>providerName</code></br>
-<em>
-string
-</em>
-</td>
-<td>
-<p>ProviderName is a logical name for the provider without any URL scheme which can be used in a label selector</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>providerKind</code></br>
-<em>
-string
-</em>
-</td>
-<td>
-<p>ProviderKind is the kind of provider (github / bitbucketcloud / bitbucketserver etc)</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>url</code></br>
-<em>
-string
-</em>
-</td>
-<td>
-<p>URL is the web URL of the project page</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>sshCloneURL</code></br>
-<em>
-string
-</em>
-</td>
-<td>
-<p>SSHCloneURL is the git URL to clone this repository using SSH</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>httpCloneURL</code></br>
-<em>
-string
-</em>
-</td>
-<td>
-<p>HTTPCloneURL is the git URL to clone this repository using HTTP/HTTPS</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>scheduler</code></br>
-<em>
-<a href="#jenkins.io/v1.ResourceReference">
-ResourceReference
-</a>
-</em>
-</td>
-<td>
-<p>Scheduler a reference to a custom scheduler otherwise we default to the Team&rsquo;s Scededuler</p>
-</td>
-</tr>
-</table>
-</td>
-</tr>
-</tbody>
-</table>
 <h3 id="jenkins.io/v1.AccountReference">AccountReference
 </h3>
 <p>
@@ -1110,6 +946,16 @@ string
 </tr>
 </tbody>
 </table>
+<h3 id="jenkins.io/v1.ActivityMessageType">ActivityMessageType
+(<code>string</code> alias)</p></h3>
+<p>
+(<em>Appears on:</em>
+<a href="#jenkins.io/v1.CoreActivityStep">CoreActivityStep</a>, 
+<a href="#jenkins.io/v1.PipelineActivitySpec">PipelineActivitySpec</a>)
+</p>
+<p>
+<p>ActivityMessageType is the message of an activity; usually succeeded or failed/error on completion</p>
+</p>
 <h3 id="jenkins.io/v1.ActivityStatusType">ActivityStatusType
 (<code>string</code> alias)</p></h3>
 <p>
@@ -1407,6 +1253,18 @@ string
 <em>
 <a href="#jenkins.io/v1.ActivityStatusType">
 ActivityStatusType
+</a>
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>message</code></br>
+<em>
+<a href="#jenkins.io/v1.ActivityMessageType">
+ActivityMessageType
 </a>
 </em>
 </td>
@@ -2266,6 +2124,18 @@ string
 <em>
 <a href="#jenkins.io/v1.ActivityStatusType">
 ActivityStatusType
+</a>
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>message</code></br>
+<em>
+<a href="#jenkins.io/v1.ActivityMessageType">
+ActivityMessageType
 </a>
 </em>
 </td>
@@ -3479,6 +3349,163 @@ More info: <a href="http://kubernetes.io/docs/user-guide/identifiers#uids">http:
 </tr>
 </tbody>
 </table>
+<h3 id="jenkins.io/v1.SourceRepository">SourceRepository
+</h3>
+<p>
+<p>SourceRepository is the metadata for an Application/Project/SourceRepository</p>
+</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>metadata</code></br>
+<em>
+<a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.13/#objectmeta-v1-meta">
+Kubernetes meta/v1.ObjectMeta
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Standard object&rsquo;s metadata.
+More info: <a href="https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata">https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata</a></p>
+Refer to the Kubernetes API documentation for the fields of the
+<code>metadata</code> field.
+</td>
+</tr>
+<tr>
+<td>
+<code>spec</code></br>
+<em>
+<a href="#jenkins.io/v1.SourceRepositorySpec">
+SourceRepositorySpec
+</a>
+</em>
+</td>
+<td>
+<br/>
+<br/>
+<table>
+<tr>
+<td>
+<code>description</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>provider</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>Provider stores the URL of the git provider such as <a href="https://github.com">https://github.com</a></p>
+</td>
+</tr>
+<tr>
+<td>
+<code>org</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>repo</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>providerName</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>ProviderName is a logical name for the provider without any URL scheme which can be used in a label selector</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>providerKind</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>ProviderKind is the kind of provider (github / bitbucketcloud / bitbucketserver etc)</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>url</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>URL is the web URL of the project page</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>sshCloneURL</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>SSHCloneURL is the git URL to clone this repository using SSH</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>httpCloneURL</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>HTTPCloneURL is the git URL to clone this repository using HTTP/HTTPS</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>scheduler</code></br>
+<em>
+<a href="#jenkins.io/v1.ResourceReference">
+ResourceReference
+</a>
+</em>
+</td>
+<td>
+<p>Scheduler a reference to a custom scheduler otherwise we default to the Team&rsquo;s Scededuler</p>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
 <h3 id="jenkins.io/v1.SourceRepositorySpec">SourceRepositorySpec
 </h3>
 <p>
@@ -4145,5 +4172,5 @@ string
 <hr/>
 <p><em>
 Generated with <code>gen-crd-api-reference-docs</code>
-on git commit <code>cb291c4</code>.
+on git commit <code>8f3084d</code>.
 </em></p>
