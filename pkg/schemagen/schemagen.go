@@ -83,5 +83,5 @@ func prettyPrintJSON(input interface{}) string {
 	if err := json.Indent(formatted, output.Bytes(), "", "  "); err != nil {
 		return ""
 	}
-	return string(formatted.Bytes())
+	return formatted.String()
 }

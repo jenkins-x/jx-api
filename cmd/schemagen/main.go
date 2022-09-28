@@ -1,13 +1,14 @@
 package main
 
 import (
+	"os"
+
 	"github.com/jenkins-x/jx-api/v4/pkg/apis/core"
 	"github.com/jenkins-x/jx-api/v4/pkg/apis/core/v4beta1"
 	jenkins_io "github.com/jenkins-x/jx-api/v4/pkg/apis/jenkins.io"
-	"github.com/jenkins-x/jx-api/v4/pkg/apis/jenkins.io/v1"
+	v1 "github.com/jenkins-x/jx-api/v4/pkg/apis/jenkins.io/v1"
 	"github.com/jenkins-x/jx-api/v4/pkg/schemagen"
 	"github.com/jenkins-x/jx-logging/v3/pkg/log"
-	"os"
 )
 
 var (

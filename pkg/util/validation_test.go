@@ -1,13 +1,14 @@
 package util_test
 
 import (
+	"io/ioutil"
+	"path/filepath"
+	"testing"
+
 	"github.com/ghodss/yaml"
 	v1 "github.com/jenkins-x/jx-api/v4/pkg/apis/jenkins.io/v1"
 	"github.com/jenkins-x/jx-api/v4/pkg/util"
 	"github.com/stretchr/testify/require"
-	"io/ioutil"
-	"path/filepath"
-	"testing"
 )
 
 func TestValidation(t *testing.T) {
