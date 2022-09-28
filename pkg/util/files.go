@@ -29,7 +29,7 @@ func DeleteFile(fileName string) (err error) {
 	if fileName != "" {
 		exists, err := FileExists(fileName)
 		if err != nil {
-			return fmt.Errorf("Could not check if file exists %s due to %s", fileName, err)
+			return fmt.Errorf("could not check if file exists %s due to %s", fileName, err)
 		}
 
 		if exists {
@@ -39,7 +39,7 @@ func DeleteFile(fileName string) (err error) {
 			}
 		}
 	} else {
-		return fmt.Errorf("Filename is not valid")
+		return fmt.Errorf("filename is not valid")
 	}
 	return nil
 }
