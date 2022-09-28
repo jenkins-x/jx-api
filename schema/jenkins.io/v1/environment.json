@@ -582,9 +582,6 @@
     },
     "EphemeralVolumeSource": {
       "properties": {
-        "readOnly": {
-          "type": "boolean"
-        },
         "volumeClaimTemplate": {
           "$schema": "http://json-schema.org/draft-04/schema#",
           "$ref": "#/definitions/PersistentVolumeClaimTemplate"
@@ -923,6 +920,9 @@
         "backoffLimit": {
           "type": "integer"
         },
+        "completionMode": {
+          "type": "string"
+        },
         "completions": {
           "type": "integer"
         },
@@ -935,6 +935,9 @@
         "selector": {
           "$schema": "http://json-schema.org/draft-04/schema#",
           "$ref": "#/definitions/LabelSelector"
+        },
+        "suspend": {
+          "type": "boolean"
         },
         "template": {
           "$schema": "http://json-schema.org/draft-04/schema#",
@@ -951,6 +954,9 @@
       "properties": {
         "active": {
           "type": "integer"
+        },
+        "completedIndexes": {
+          "type": "string"
         },
         "completionTime": {
           "type": [
@@ -978,6 +984,10 @@
         },
         "succeeded": {
           "type": "integer"
+        },
+        "uncountedTerminatedPods": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/UncountedTerminatedPods"
         }
       },
       "additionalProperties": false,
@@ -1075,6 +1085,9 @@
           "type": "string"
         },
         "operation": {
+          "type": "string"
+        },
+        "subresource": {
           "type": "string"
         },
         "time": {
@@ -1301,6 +1314,9 @@
           "$schema": "http://json-schema.org/draft-04/schema#",
           "$ref": "#/definitions/TypedLocalObjectReference"
         },
+        "dataSourceRef": {
+          "$ref": "#/definitions/TypedLocalObjectReference"
+        },
         "resources": {
           "$schema": "http://json-schema.org/draft-04/schema#",
           "$ref": "#/definitions/ResourceRequirements"
@@ -1381,6 +1397,9 @@
     "PodAffinityTerm": {
       "properties": {
         "labelSelector": {
+          "$ref": "#/definitions/LabelSelector"
+        },
+        "namespaceSelector": {
           "$ref": "#/definitions/LabelSelector"
         },
         "namespaces": {
@@ -1760,6 +1779,9 @@
         "tcpSocket": {
           "$schema": "http://json-schema.org/draft-04/schema#",
           "$ref": "#/definitions/TCPSocketAction"
+        },
+        "terminationGracePeriodSeconds": {
+          "type": "integer"
         },
         "timeoutSeconds": {
           "type": "integer"
@@ -2325,6 +2347,24 @@
       "additionalProperties": false,
       "type": "object"
     },
+    "UncountedTerminatedPods": {
+      "properties": {
+        "failed": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "succeeded": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
     "UserSpec": {
       "properties": {
         "imageUrl": {
@@ -2563,6 +2603,9 @@
         },
         "gmsaCredentialSpecName": {
           "type": "string"
+        },
+        "hostProcess": {
+          "type": "boolean"
         },
         "runAsUserName": {
           "type": "string"
