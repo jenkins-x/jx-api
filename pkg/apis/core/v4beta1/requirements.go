@@ -501,6 +501,12 @@ type AutoUpdateConfig struct {
 	AutoMerge bool `json:"autoMerge,omitempty"`
 }
 
+// ChainsConfig contains configurations for using the tekton-chains helm chart
+type ChainsConfig struct {
+	// Enabled chains
+	Enabled bool `json:"enabled"`
+}
+
 // RequirementsValues contains the logical installation requirements in the `jx-requirements.yml` file as helm values
 type RequirementsValues struct {
 	// RequirementsConfig contains the logical installation requirements
@@ -520,6 +526,8 @@ type UserNameEmailConfig struct {
 type RequirementsConfig struct {
 	// AutoUpdate contains auto update config
 	AutoUpdate AutoUpdateConfig `json:"autoUpdate,omitempty"`
+	// Chaons contains tekton chains config
+	Chains ChainsConfig `json:"chains,omitempty"`
 	// Cluster contains cluster specific requirements
 	Cluster ClusterConfig `json:"cluster"`
 	// Environments the requirements for the environments
