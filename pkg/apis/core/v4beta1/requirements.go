@@ -283,14 +283,19 @@ type AzureStorageConfig struct {
 	StorageAccountName string `json:"storageAccountName,omitempty"`
 }
 
+type AzureClusterNodesConfig struct {
+	ClientID string `json:"clientID"`
+}
+
 // AzureConfig contains Azure specific requirements
 type AzureConfig struct {
 	// RegistrySubscription the registry subscription for defaulting the container registry.
 	// Not used if you specify a Registry explicitly
-	RegistrySubscription     string              `json:"registrySubscription,omitempty"`
-	AzureDNSConfig           *AzureDNSConfig     `json:"dns,omitempty"`
-	AzureSecretStorageConfig *AzureSecretConfig  `json:"secretStorage,omitempty"`
-	AzureStorageConfig       *AzureStorageConfig `json:"storage,omitempty"`
+	RegistrySubscription     string                   `json:"registrySubscription,omitempty"`
+	AzureDNSConfig           *AzureDNSConfig          `json:"dns,omitempty"`
+	AzureSecretStorageConfig *AzureSecretConfig       `json:"secretStorage,omitempty"`
+	AzureStorageConfig       *AzureStorageConfig      `json:"storage,omitempty"`
+	AzureClusterNodesConfig  *AzureClusterNodesConfig `json:"clusterNodes,omitempty"`
 }
 
 // GKEConfig contains GKE specific requirements
