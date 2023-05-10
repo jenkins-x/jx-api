@@ -17,8 +17,21 @@
       "additionalProperties": false,
       "type": "object"
     },
+    "AzureClusterNodesConfig": {
+      "properties": {
+        "clientID": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
     "AzureConfig": {
       "properties": {
+        "clusterNodes": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/AzureClusterNodesConfig"
+        },
         "dns": {
           "$schema": "http://json-schema.org/draft-04/schema#",
           "$ref": "#/definitions/AzureDNSConfig"
@@ -123,6 +136,10 @@
           "$schema": "http://json-schema.org/draft-04/schema#",
           "$ref": "#/definitions/GKEConfig"
         },
+        "issueProvider": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/IssueTracker"
+        },
         "kanikoFlags": {
           "type": "string"
         },
@@ -180,6 +197,9 @@
         },
         "repository": {
           "type": "string"
+        },
+        "reusePullRequest": {
+          "type": "boolean"
         }
       },
       "additionalProperties": false,
@@ -233,6 +253,53 @@
       "additionalProperties": false,
       "type": "object"
     },
+    "IssueTracker": {
+      "properties": {
+        "jira": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/JiraTracker"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "JiraTracker": {
+      "properties": {
+        "project": {
+          "type": "string"
+        },
+        "serverUrl": {
+          "type": "string"
+        },
+        "userName": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "MavenRepositoryConfig": {
+      "properties": {
+        "releaseUrl": {
+          "type": "string"
+        },
+        "snapshotUrl": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "RepositoryConfig": {
+      "properties": {
+        "maven": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/MavenRepositoryConfig"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
     "Requirements": {
       "properties": {
         "apiVersion": {
@@ -281,6 +348,10 @@
         "pipelineUser": {
           "$schema": "http://json-schema.org/draft-04/schema#",
           "$ref": "#/definitions/UserNameEmailConfig"
+        },
+        "repositories": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/RepositoryConfig"
         },
         "repository": {
           "type": "string"
