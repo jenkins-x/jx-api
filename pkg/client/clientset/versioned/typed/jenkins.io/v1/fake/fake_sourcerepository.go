@@ -20,10 +20,9 @@ package fake
 import (
 	"context"
 
-	jenkinsiov1 "github.com/jenkins-x/jx-api/v4/pkg/apis/jenkins.io/v1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	v1 "github.com/jenkins-x/jx-api/v4/pkg/apis/jenkins.io/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -35,25 +34,25 @@ type FakeSourceRepositories struct {
 	ns   string
 }
 
-var sourcerepositoriesResource = schema.GroupVersionResource{Group: "jenkins.io", Version: "v1", Resource: "sourcerepositories"}
+var sourcerepositoriesResource = v1.SchemeGroupVersion.WithResource("sourcerepositories")
 
-var sourcerepositoriesKind = schema.GroupVersionKind{Group: "jenkins.io", Version: "v1", Kind: "SourceRepository"}
+var sourcerepositoriesKind = v1.SchemeGroupVersion.WithKind("SourceRepository")
 
 // Get takes name of the sourceRepository, and returns the corresponding sourceRepository object, and an error if there is any.
-func (c *FakeSourceRepositories) Get(ctx context.Context, name string, options v1.GetOptions) (result *jenkinsiov1.SourceRepository, err error) {
+func (c *FakeSourceRepositories) Get(ctx context.Context, name string, options metav1.GetOptions) (result *v1.SourceRepository, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(sourcerepositoriesResource, c.ns, name), &jenkinsiov1.SourceRepository{})
+		Invokes(testing.NewGetAction(sourcerepositoriesResource, c.ns, name), &v1.SourceRepository{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*jenkinsiov1.SourceRepository), err
+	return obj.(*v1.SourceRepository), err
 }
 
 // List takes label and field selectors, and returns the list of SourceRepositories that match those selectors.
-func (c *FakeSourceRepositories) List(ctx context.Context, opts v1.ListOptions) (result *jenkinsiov1.SourceRepositoryList, err error) {
+func (c *FakeSourceRepositories) List(ctx context.Context, opts metav1.ListOptions) (result *v1.SourceRepositoryList, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewListAction(sourcerepositoriesResource, sourcerepositoriesKind, c.ns, opts), &jenkinsiov1.SourceRepositoryList{})
+		Invokes(testing.NewListAction(sourcerepositoriesResource, sourcerepositoriesKind, c.ns, opts), &v1.SourceRepositoryList{})
 
 	if obj == nil {
 		return nil, err
@@ -63,8 +62,8 @@ func (c *FakeSourceRepositories) List(ctx context.Context, opts v1.ListOptions) 
 	if label == nil {
 		label = labels.Everything()
 	}
-	list := &jenkinsiov1.SourceRepositoryList{ListMeta: obj.(*jenkinsiov1.SourceRepositoryList).ListMeta}
-	for _, item := range obj.(*jenkinsiov1.SourceRepositoryList).Items {
+	list := &v1.SourceRepositoryList{ListMeta: obj.(*v1.SourceRepositoryList).ListMeta}
+	for _, item := range obj.(*v1.SourceRepositoryList).Items {
 		if label.Matches(labels.Set(item.Labels)) {
 			list.Items = append(list.Items, item)
 		}
@@ -73,57 +72,57 @@ func (c *FakeSourceRepositories) List(ctx context.Context, opts v1.ListOptions) 
 }
 
 // Watch returns a watch.Interface that watches the requested sourceRepositories.
-func (c *FakeSourceRepositories) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+func (c *FakeSourceRepositories) Watch(ctx context.Context, opts metav1.ListOptions) (watch.Interface, error) {
 	return c.Fake.
 		InvokesWatch(testing.NewWatchAction(sourcerepositoriesResource, c.ns, opts))
 
 }
 
 // Create takes the representation of a sourceRepository and creates it.  Returns the server's representation of the sourceRepository, and an error, if there is any.
-func (c *FakeSourceRepositories) Create(ctx context.Context, sourceRepository *jenkinsiov1.SourceRepository, opts v1.CreateOptions) (result *jenkinsiov1.SourceRepository, err error) {
+func (c *FakeSourceRepositories) Create(ctx context.Context, sourceRepository *v1.SourceRepository, opts metav1.CreateOptions) (result *v1.SourceRepository, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(sourcerepositoriesResource, c.ns, sourceRepository), &jenkinsiov1.SourceRepository{})
+		Invokes(testing.NewCreateAction(sourcerepositoriesResource, c.ns, sourceRepository), &v1.SourceRepository{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*jenkinsiov1.SourceRepository), err
+	return obj.(*v1.SourceRepository), err
 }
 
 // Update takes the representation of a sourceRepository and updates it. Returns the server's representation of the sourceRepository, and an error, if there is any.
-func (c *FakeSourceRepositories) Update(ctx context.Context, sourceRepository *jenkinsiov1.SourceRepository, opts v1.UpdateOptions) (result *jenkinsiov1.SourceRepository, err error) {
+func (c *FakeSourceRepositories) Update(ctx context.Context, sourceRepository *v1.SourceRepository, opts metav1.UpdateOptions) (result *v1.SourceRepository, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(sourcerepositoriesResource, c.ns, sourceRepository), &jenkinsiov1.SourceRepository{})
+		Invokes(testing.NewUpdateAction(sourcerepositoriesResource, c.ns, sourceRepository), &v1.SourceRepository{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*jenkinsiov1.SourceRepository), err
+	return obj.(*v1.SourceRepository), err
 }
 
 // Delete takes name of the sourceRepository and deletes it. Returns an error if one occurs.
-func (c *FakeSourceRepositories) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+func (c *FakeSourceRepositories) Delete(ctx context.Context, name string, opts metav1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(sourcerepositoriesResource, c.ns, name), &jenkinsiov1.SourceRepository{})
+		Invokes(testing.NewDeleteActionWithOptions(sourcerepositoriesResource, c.ns, name, opts), &v1.SourceRepository{})
 
 	return err
 }
 
 // DeleteCollection deletes a collection of objects.
-func (c *FakeSourceRepositories) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+func (c *FakeSourceRepositories) DeleteCollection(ctx context.Context, opts metav1.DeleteOptions, listOpts metav1.ListOptions) error {
 	action := testing.NewDeleteCollectionAction(sourcerepositoriesResource, c.ns, listOpts)
 
-	_, err := c.Fake.Invokes(action, &jenkinsiov1.SourceRepositoryList{})
+	_, err := c.Fake.Invokes(action, &v1.SourceRepositoryList{})
 	return err
 }
 
 // Patch applies the patch and returns the patched sourceRepository.
-func (c *FakeSourceRepositories) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *jenkinsiov1.SourceRepository, err error) {
+func (c *FakeSourceRepositories) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts metav1.PatchOptions, subresources ...string) (result *v1.SourceRepository, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(sourcerepositoriesResource, c.ns, name, pt, data, subresources...), &jenkinsiov1.SourceRepository{})
+		Invokes(testing.NewPatchSubresourceAction(sourcerepositoriesResource, c.ns, name, pt, data, subresources...), &v1.SourceRepository{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*jenkinsiov1.SourceRepository), err
+	return obj.(*v1.SourceRepository), err
 }

@@ -7,8 +7,6 @@ import (
 	"os/exec"
 	"strings"
 	"time"
-
-	"github.com/pkg/errors"
 )
 
 // Command is a struct containing the details of an external command to be executed
@@ -32,6 +30,7 @@ type CommandError struct {
 	cause   error
 }
 
+// nolint:gocritic
 func (c CommandError) Error() string {
 	// sanitise any password arguments before printing the error string. The actual sensitive argument is still present
 	// in the Command object
@@ -48,6 +47,7 @@ func (c CommandError) Error() string {
 		c.Command.Name, strings.Join(sanitisedArgs, " "), c.Command.Dir, c.Output)
 }
 
+// nolint:gocritic
 func (c CommandError) Cause() error {
 	return c.cause
 }
@@ -98,7 +98,7 @@ func (c *Command) CurrentEnv() map[string]string {
 }
 
 // SetEnvVariable sets an environment variable into the environment
-func (c *Command) SetEnvVariable(name string, value string) {
+func (c *Command) SetEnvVariable(name, value string) {
 	if c.Env == nil {
 		c.Env = map[string]string{}
 	}
@@ -132,7 +132,7 @@ func (c *Command) Error() error {
 func (c *Command) RunWithoutRetry() (string, error) {
 	err := os.Setenv("PATH", PathWithBinary(c.Dir))
 	if err != nil {
-		return "", errors.Wrap(err, "failed to set PATH env variable")
+		return "", fmt.Errorf("failed to set PATH env variable: %w", err)
 	}
 	var r string
 	var e error
@@ -224,7 +224,7 @@ func (c *Command) run() (string, error) {
 	return text, err
 }
 
-//PathWithBinary Returns the path to be used to execute a binary from, takes the form JX_HOME/bin:mvnBinDir:customPaths
+// PathWithBinary Returns the path to be used to execute a binary from, takes the form JX_HOME/bin:mvnBinDir:customPaths
 func PathWithBinary(customPaths ...string) string {
 	existingEnvironmentPath := os.Getenv("PATH")
 

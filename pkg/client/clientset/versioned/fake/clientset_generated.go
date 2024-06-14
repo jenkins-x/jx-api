@@ -73,7 +73,10 @@ func (c *Clientset) Tracker() testing.ObjectTracker {
 	return c.tracker
 }
 
-var _ clientset.Interface = &Clientset{}
+var (
+	_ clientset.Interface = &Clientset{}
+	_ testing.FakeClient  = &Clientset{}
+)
 
 // JenkinsV1 retrieves the JenkinsV1Client
 func (c *Clientset) JenkinsV1() jenkinsv1.JenkinsV1Interface {

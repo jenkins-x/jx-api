@@ -17,14 +17,14 @@ func testCommand(t *testing.T, file string) {
 	if err != nil {
 		panic(err)
 	}
-	tempfile, err := os.Create(filepath.Join(startPath, "/test_data/scripts", file))
+	tempfile, err := os.Create(filepath.Join(startPath, "test_data", "scripts", file))
 	assert.NoError(t, err)
 	tempfile.Close()
 	defer os.Remove(tempfile.Name())
 
 	cmd := util.Command{
 		Name:    getFailIteratorScript(),
-		Dir:     filepath.Join(startPath, "/test_data/scripts"),
+		Dir:     filepath.Join(startPath, "test_data", "scripts"),
 		Args:    []string{file, "100"},
 		Timeout: 3 * time.Second,
 	}

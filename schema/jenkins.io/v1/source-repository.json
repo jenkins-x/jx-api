@@ -1,38 +1,35 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "$ref": "#/definitions/SourceRepository",
-  "definitions": {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jenkins-x/jx-api/v4/pkg/apis/jenkins.io/v1/source-repository",
+  "$ref": "#/$defs/SourceRepository",
+  "$defs": {
     "FieldsV1": {
+      "properties": {},
       "additionalProperties": false,
       "type": "object"
     },
     "ManagedFieldsEntry": {
       "properties": {
-        "apiVersion": {
-          "type": "string"
-        },
-        "fieldsType": {
-          "type": "string"
-        },
-        "fieldsV1": {
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/FieldsV1"
-        },
         "manager": {
           "type": "string"
         },
         "operation": {
           "type": "string"
         },
-        "subresource": {
+        "apiVersion": {
           "type": "string"
         },
         "time": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "format": "date-time"
+          "$ref": "#/$defs/Time"
+        },
+        "fieldsType": {
+          "type": "string"
+        },
+        "fieldsV1": {
+          "$ref": "#/$defs/FieldsV1"
+        },
+        "subresource": {
+          "type": "string"
         }
       },
       "additionalProperties": false,
@@ -40,75 +37,13 @@
     },
     "ObjectMeta": {
       "properties": {
-        "annotations": {
-          "patternProperties": {
-            ".*": {
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "clusterName": {
+        "name": {
           "type": "string"
-        },
-        "creationTimestamp": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "format": "date-time"
-        },
-        "deletionGracePeriodSeconds": {
-          "type": "integer"
-        },
-        "deletionTimestamp": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "format": "date-time"
-        },
-        "finalizers": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
         },
         "generateName": {
           "type": "string"
         },
-        "generation": {
-          "type": "integer"
-        },
-        "labels": {
-          "patternProperties": {
-            ".*": {
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "managedFields": {
-          "items": {
-            "$schema": "http://json-schema.org/draft-04/schema#",
-            "$ref": "#/definitions/ManagedFieldsEntry"
-          },
-          "type": "array"
-        },
-        "name": {
-          "type": "string"
-        },
         "namespace": {
-          "type": "string"
-        },
-        "ownerReferences": {
-          "items": {
-            "$schema": "http://json-schema.org/draft-04/schema#",
-            "$ref": "#/definitions/OwnerReference"
-          },
-          "type": "array"
-        },
-        "resourceVersion": {
           "type": "string"
         },
         "selfLink": {
@@ -116,6 +51,51 @@
         },
         "uid": {
           "type": "string"
+        },
+        "resourceVersion": {
+          "type": "string"
+        },
+        "generation": {
+          "type": "integer"
+        },
+        "creationTimestamp": {
+          "$ref": "#/$defs/Time"
+        },
+        "deletionTimestamp": {
+          "$ref": "#/$defs/Time"
+        },
+        "deletionGracePeriodSeconds": {
+          "type": "integer"
+        },
+        "labels": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "annotations": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "ownerReferences": {
+          "items": {
+            "$ref": "#/$defs/OwnerReference"
+          },
+          "type": "array"
+        },
+        "finalizers": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "managedFields": {
+          "items": {
+            "$ref": "#/$defs/ManagedFieldsEntry"
+          },
+          "type": "array"
         }
       },
       "additionalProperties": false,
@@ -126,12 +106,6 @@
         "apiVersion": {
           "type": "string"
         },
-        "blockOwnerDeletion": {
-          "type": "boolean"
-        },
-        "controller": {
-          "type": "boolean"
-        },
         "kind": {
           "type": "string"
         },
@@ -140,6 +114,12 @@
         },
         "uid": {
           "type": "string"
+        },
+        "controller": {
+          "type": "boolean"
+        },
+        "blockOwnerDeletion": {
+          "type": "boolean"
         }
       },
       "additionalProperties": false,
@@ -165,19 +145,17 @@
     },
     "SourceRepository": {
       "properties": {
-        "apiVersion": {
-          "type": "string"
-        },
         "kind": {
           "type": "string"
         },
+        "apiVersion": {
+          "type": "string"
+        },
         "metadata": {
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/ObjectMeta"
+          "$ref": "#/$defs/ObjectMeta"
         },
         "spec": {
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/SourceRepositorySpec"
+          "$ref": "#/$defs/SourceRepositorySpec"
         }
       },
       "additionalProperties": false,
@@ -188,39 +166,39 @@
         "description": {
           "type": "string"
         },
-        "httpCloneURL": {
+        "provider": {
           "type": "string"
         },
         "org": {
           "type": "string"
         },
-        "provider": {
-          "type": "string"
-        },
-        "providerKind": {
+        "repo": {
           "type": "string"
         },
         "providerName": {
           "type": "string"
         },
-        "repo": {
-          "type": "string"
-        },
-        "scheduler": {
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/ResourceReference"
-        },
-        "sshCloneURL": {
+        "providerKind": {
           "type": "string"
         },
         "url": {
           "type": "string"
+        },
+        "sshCloneURL": {
+          "type": "string"
+        },
+        "httpCloneURL": {
+          "type": "string"
+        },
+        "scheduler": {
+          "$ref": "#/$defs/ResourceReference"
         }
       },
       "additionalProperties": false,
       "type": "object"
     },
     "Time": {
+      "properties": {},
       "additionalProperties": false,
       "type": "object"
     }

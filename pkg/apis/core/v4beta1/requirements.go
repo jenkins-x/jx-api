@@ -3,7 +3,6 @@ package v4beta1
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -17,9 +16,8 @@ import (
 	"github.com/jenkins-x/jx-api/v4/pkg/util"
 	"github.com/jenkins-x/jx-logging/v3/pkg/log"
 
+	"dario.cat/mergo"
 	"github.com/ghodss/yaml"
-	"github.com/imdario/mergo"
-	"github.com/pkg/errors"
 	"github.com/vrischmann/envconfig"
 )
 
@@ -481,7 +479,7 @@ func (t *ClusterConfig) UnmarshalJSON(data []byte) error {
 	private, gitPrivateSet := raw["environmentGitPrivate"]
 
 	if gitPrivateSet && gitPublicSet {
-		return errors.New("found settings for EnvironmentGitPublic as well as EnvironmentGitPrivate in ClusterConfig, only EnvironmentGitPublic should be used")
+		return fmt.Errorf("found settings for EnvironmentGitPublic as well as EnvironmentGitPrivate in ClusterConfig, only EnvironmentGitPublic should be used")
 	}
 
 	if gitPrivateSet {
@@ -589,7 +587,7 @@ func NewRequirementsConfig() *Requirements {
 func LoadRequirementsConfig(dir string, failOnValidationErrors bool) (*Requirements, string, error) {
 	absolute, err := filepath.Abs(dir)
 	if err != nil {
-		return nil, "", errors.Wrap(err, "creating absolute path")
+		return nil, "", fmt.Errorf("creating absolute path: %w", err)
 	}
 	if absolute != "" && absolute != "." && absolute != "/" {
 		fileName := filepath.Join(absolute, RequirementsConfigFileName)
@@ -602,7 +600,7 @@ func LoadRequirementsConfig(dir string, failOnValidationErrors bool) (*Requireme
 			return requirements, fileName, err
 		}
 	}
-	return nil, "", errors.New("jx-requirements.yml file not found")
+	return nil, "", fmt.Errorf("jx-requirements.yml file not found")
 }
 
 func IsNewRequirementsFile(s string) bool {
@@ -635,10 +633,10 @@ func loadRequirements(fileName string, failOnValidationErrors bool) (*Requiremen
 		}}
 	_, err := os.Stat(fileName)
 	if err != nil {
-		return nil, errors.Wrapf(err, "checking if file %s exists", fileName)
+		return nil, fmt.Errorf("checking if file %s exists: %w", fileName, err)
 	}
 
-	data, err := ioutil.ReadFile(fileName)
+	data, err := os.ReadFile(fileName)
 	if err != nil {
 		return nil, fmt.Errorf("failed to load file %s due to %s", fileName, err)
 	}
@@ -699,9 +697,9 @@ func (c *Requirements) SaveConfig(fileName string) error {
 	if err != nil {
 		return err
 	}
-	err = ioutil.WriteFile(fileName, data, util.DefaultWritePermissions)
+	err = os.WriteFile(fileName, data, util.DefaultWritePermissions)
 	if err != nil {
-		return errors.Wrapf(err, "failed to save file %s", fileName)
+		return fmt.Errorf("failed to save file %s: %w", fileName, err)
 	}
 
 	return nil
@@ -717,14 +715,15 @@ func (t sliceTransformer) Transformer(typ reflect.Type) func(dst, src reflect.Va
 			d := dst.Interface().([]EnvironmentConfig)
 			s := src.Interface().([]EnvironmentConfig)
 			if dst.CanSet() {
-				for i, v := range s {
+				for i := range s {
+					v := s[i]
 					if i > len(d)-1 {
 						d = append(d, v)
 					} else {
 						nv := v
 						err := mergo.Merge(&d[i], &nv, mergo.WithOverride)
 						if err != nil {
-							return errors.Wrap(err, "error merging EnvironmentConfig slices")
+							return fmt.Errorf("error merging EnvironmentConfig slices: %w", err)
 						}
 					}
 				}
@@ -745,7 +744,7 @@ func (t sliceTransformer) Transformer(typ reflect.Type) func(dst, src reflect.Va
 						nv := v
 						err := mergo.Merge(&d[i], &nv, mergo.WithOverride)
 						if err != nil {
-							return errors.Wrap(err, "error merging StorageConfig slices")
+							return fmt.Errorf("error merging StorageConfig slices: %w", err)
 						}
 					}
 				}
@@ -765,11 +764,11 @@ func (t sliceTransformer) Transformer(typ reflect.Type) func(dst, src reflect.Va
 func (c *Requirements) MergeSave(src *Requirements, requirementsFileName string) error {
 	err := mergo.Merge(c, src, mergo.WithOverride, mergo.WithTransformers(sliceTransformer{}))
 	if err != nil {
-		return errors.Wrap(err, "error merging jx-requirements.yml files")
+		return fmt.Errorf("error merging jx-requirements.yml files: %w", err)
 	}
 	err = c.SaveConfig(requirementsFileName)
 	if err != nil {
-		return errors.Wrapf(err, "error saving the merged jx-requirements.yml files to %s", requirementsFileName)
+		return fmt.Errorf("error saving the merged jx-requirements.yml files to %s: %w", requirementsFileName, err)
 	}
 	return nil
 }
@@ -796,7 +795,8 @@ func (c *Requirements) migrateV3(config *legacyRequirementsConfig) {
 // configurations
 func (c *RequirementsConfig) EnvironmentMap() map[string]interface{} {
 	answer := map[string]interface{}{}
-	for _, env := range c.Environments {
+	for i := range c.Environments {
+		env := c.Environments[i]
 		k := env.Key
 		if k == "" {
 			log.Logger().Warnf("missing 'key' for Environment requirements %#v", env)
@@ -816,7 +816,8 @@ func (c *RequirementsConfig) EnvironmentMap() map[string]interface{} {
 
 // Environment looks up the environment configuration based on environment name
 func (c *RequirementsConfig) Environment(name string) (*EnvironmentConfig, error) {
-	for _, env := range c.Environments {
+	for i := range c.Environments {
+		env := c.Environments[i]
 		if env.Key == name {
 			return &env, nil
 		}
@@ -857,7 +858,7 @@ func ensureHasFields(m map[string]interface{}, keys ...string) {
 }
 
 // MissingRequirement returns an error if there is a missing property in the requirements
-func MissingRequirement(property string, fileName string) error {
+func MissingRequirement(property, fileName string) error {
 	return fmt.Errorf("missing property: %s in file %s", property, fileName)
 }
 
@@ -870,7 +871,7 @@ func (c *RequirementsConfig) IsLazyCreateSecrets(flag string) (bool, error) {
 		case constFalse:
 			return false, nil
 		default:
-			return false, errors.Errorf("invalid option for lazy-create: %s", flag)
+			return false, fmt.Errorf("invalid option for lazy-create: %s", flag)
 		}
 	} else if !c.Terraform {
 		return true, nil
@@ -926,51 +927,51 @@ func (c *RequirementsConfig) OverrideRequirementsFromEnvironment(gkeProjectNumbe
 	}
 
 	// RequirementIngressTLSProduction applies to more than one environment and needs to be handled explicitly
-	if "" != os.Getenv(RequirementIngressTLSProduction) {
+	if os.Getenv(RequirementIngressTLSProduction) != "" {
 		useProduction := os.Getenv(RequirementIngressTLSProduction)
 		if envVarBoolean(useProduction) {
 			c.Ingress.TLS.Production = true
-			for _, e := range c.Environments {
-				e.Ingress.TLS.Production = true
+			for i := range c.Environments {
+				c.Environments[i].Ingress.TLS.Production = true
 			}
 		} else {
 			c.Ingress.TLS.Production = false
-			for _, e := range c.Environments {
-				e.Ingress.TLS.Production = false
+			for i := range c.Environments {
+				c.Environments[i].Ingress.TLS.Production = false
 			}
 		}
 	}
 
 	// StorageConfig is reused between multiple storage configuration types and needs to be handled explicitly
-	if "" != os.Getenv(RequirementStorageBackupURL) {
+	if os.Getenv(RequirementStorageBackupURL) != "" {
 		c.Storage = append(c.Storage, StorageConfig{
 			Name: backupName,
 			URL:  os.Getenv(RequirementStorageBackupURL),
 		})
 	}
 
-	if "" != os.Getenv(RequirementStorageLogsURL) {
+	if os.Getenv(RequirementStorageLogsURL) != "" {
 		c.Storage = append(c.Storage, StorageConfig{
 			Name: logsName,
 			URL:  os.Getenv(RequirementStorageLogsURL),
 		})
 	}
 
-	if "" != os.Getenv(RequirementStorageReportsURL) {
+	if os.Getenv(RequirementStorageReportsURL) != "" {
 		c.Storage = append(c.Storage, StorageConfig{
 			Name: reportsName,
 			URL:  os.Getenv(RequirementStorageReportsURL),
 		})
 	}
 
-	if "" != os.Getenv(RequirementStorageRepositoryURL) {
+	if os.Getenv(RequirementStorageRepositoryURL) != "" {
 		c.Storage = append(c.Storage, StorageConfig{
 			Name: repositoryName,
 			URL:  os.Getenv(RequirementStorageRepositoryURL),
 		})
 	}
 
-	if "" != os.Getenv(RequirementDevEnvApprovers) {
+	if os.Getenv(RequirementDevEnvApprovers) != "" {
 		rawApprovers := os.Getenv(RequirementDevEnvApprovers)
 		for _, approver := range strings.Split(rawApprovers, ",") {
 			c.Cluster.DevEnvApprovers = append(c.Cluster.DevEnvApprovers, strings.TrimSpace(approver))

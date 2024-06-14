@@ -16,6 +16,7 @@ import (
 // +kubebuilder:printcolumn:name="Git URL",type="string",JSONPath=".spec.gitHttpUrl",description="The URL of the Git repository"
 // +kubebuilder:resource:categories=all,shortName=rel
 // +k8s:openapi-gen=true
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // Release represents a single version of an app that has been released
 type Release struct {
@@ -30,6 +31,7 @@ type Release struct {
 }
 
 // +kubebuilder:object:root=true
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // ReleaseList is a list of Release resources
 type ReleaseList struct {
@@ -130,7 +132,7 @@ func (i *IssueSummary) IsClosed() bool {
 	return strings.HasPrefix(lower, "clos") || strings.HasPrefix(lower, "fix")
 }
 
-//DependencyUpdate describes an dependency update message from the commit log
+// DependencyUpdate describes an dependency update message from the commit log
 type DependencyUpdate struct {
 	DependencyUpdateDetails `json:",inline"`
 	Paths                   []DependencyUpdatePath `json:"paths,omitempty"`

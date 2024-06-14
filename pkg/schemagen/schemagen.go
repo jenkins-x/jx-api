@@ -4,13 +4,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 
 	"github.com/jenkins-x/jx-api/v4/pkg/util"
 	"github.com/jenkins-x/jx-logging/v3/pkg/log"
-	"github.com/pkg/errors"
 )
 
 const (
@@ -33,19 +31,19 @@ func GenerateSchemas(resourceKinds []ResourceKind, out string) error {
 		dir := filepath.Dir(out)
 		err := os.MkdirAll(dir, DefaultDirWritePermissions)
 		if err != nil {
-			return errors.Wrapf(err, "failed to create dir %s", dir)
+			return fmt.Errorf("failed to create dir %s: %w", dir, err)
 		}
 
 		err = generate(name, out, k.Resource)
 		if err != nil {
-			return errors.Wrapf(err, "failed to generate file %s", out)
+			return fmt.Errorf("failed to generate file %s: %w", out, err)
 		}
 	}
 	return nil
 }
 
 // Generate generates the schema document
-func generate(schemaName string, out string, schemaTarget interface{}) error {
+func generate(schemaName, out string, schemaTarget interface{}) error {
 	schema := util.GenerateSchema(schemaTarget, false)
 	if schema == nil {
 		return fmt.Errorf("could not generate schema for %s", schemaName)
@@ -56,16 +54,16 @@ func generate(schemaName string, out string, schemaTarget interface{}) error {
 	if output == "" {
 		tempOutput, err := json.Marshal(schema)
 		if err != nil {
-			return errors.Wrapf(err, "error outputting schema for %s", schemaName)
+			return fmt.Errorf("error outputting schema for %s: %w", schemaName, err)
 		}
 		output = string(tempOutput)
 	}
 	log.Logger().Infof("JSON schema for %s:", schemaName)
 
 	if out != "" {
-		err := ioutil.WriteFile(out, []byte(output), util.DefaultWritePermissions)
+		err := os.WriteFile(out, []byte(output), util.DefaultWritePermissions)
 		if err != nil {
-			return errors.Wrapf(err, "failed to save file %s", out)
+			return fmt.Errorf("failed to save file %s: %w", out, err)
 		}
 		log.Logger().Infof("wrote file %s", out)
 		return nil

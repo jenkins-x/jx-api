@@ -1,7 +1,8 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "$ref": "#/definitions/PipelineActivity",
-  "definitions": {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jenkins-x/jx-api/v4/pkg/apis/jenkins.io/v1/pipeline-activity",
+  "$ref": "#/$defs/PipelineActivity",
+  "$defs": {
     "Attachment": {
       "properties": {
         "name": {
@@ -19,16 +20,15 @@
     },
     "BatchPipelineActivity": {
       "properties": {
-        "batchBranchName": {
+        "batchBuildNumber": {
           "type": "string"
         },
-        "batchBuildNumber": {
+        "batchBranchName": {
           "type": "string"
         },
         "pullRequestInfo": {
           "items": {
-            "$schema": "http://json-schema.org/draft-04/schema#",
-            "$ref": "#/definitions/PullRequestInfo"
+            "$ref": "#/$defs/PullRequestInfo"
           },
           "type": "array"
         }
@@ -38,46 +38,39 @@
     },
     "CoreActivityStep": {
       "properties": {
-        "completedTimestamp": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "format": "date-time"
+        "name": {
+          "type": "string"
         },
         "description": {
+          "type": "string"
+        },
+        "status": {
           "type": "string"
         },
         "message": {
           "type": "string"
         },
-        "name": {
-          "type": "string"
-        },
         "startedTimestamp": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "format": "date-time"
+          "$ref": "#/$defs/Time"
         },
-        "status": {
-          "type": "string"
+        "completedTimestamp": {
+          "$ref": "#/$defs/Time"
         }
       },
       "additionalProperties": false,
       "type": "object"
     },
     "FieldsV1": {
+      "properties": {},
       "additionalProperties": false,
       "type": "object"
     },
     "GitStatus": {
       "properties": {
-        "status": {
+        "url": {
           "type": "string"
         },
-        "url": {
+        "status": {
           "type": "string"
         }
       },
@@ -86,31 +79,26 @@
     },
     "ManagedFieldsEntry": {
       "properties": {
-        "apiVersion": {
-          "type": "string"
-        },
-        "fieldsType": {
-          "type": "string"
-        },
-        "fieldsV1": {
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/FieldsV1"
-        },
         "manager": {
           "type": "string"
         },
         "operation": {
           "type": "string"
         },
-        "subresource": {
+        "apiVersion": {
           "type": "string"
         },
         "time": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "format": "date-time"
+          "$ref": "#/$defs/Time"
+        },
+        "fieldsType": {
+          "type": "string"
+        },
+        "fieldsV1": {
+          "$ref": "#/$defs/FieldsV1"
+        },
+        "subresource": {
+          "type": "string"
         }
       },
       "additionalProperties": false,
@@ -118,75 +106,13 @@
     },
     "ObjectMeta": {
       "properties": {
-        "annotations": {
-          "patternProperties": {
-            ".*": {
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "clusterName": {
+        "name": {
           "type": "string"
-        },
-        "creationTimestamp": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "format": "date-time"
-        },
-        "deletionGracePeriodSeconds": {
-          "type": "integer"
-        },
-        "deletionTimestamp": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "format": "date-time"
-        },
-        "finalizers": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
         },
         "generateName": {
           "type": "string"
         },
-        "generation": {
-          "type": "integer"
-        },
-        "labels": {
-          "patternProperties": {
-            ".*": {
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "managedFields": {
-          "items": {
-            "$schema": "http://json-schema.org/draft-04/schema#",
-            "$ref": "#/definitions/ManagedFieldsEntry"
-          },
-          "type": "array"
-        },
-        "name": {
-          "type": "string"
-        },
         "namespace": {
-          "type": "string"
-        },
-        "ownerReferences": {
-          "items": {
-            "$schema": "http://json-schema.org/draft-04/schema#",
-            "$ref": "#/definitions/OwnerReference"
-          },
-          "type": "array"
-        },
-        "resourceVersion": {
           "type": "string"
         },
         "selfLink": {
@@ -194,6 +120,51 @@
         },
         "uid": {
           "type": "string"
+        },
+        "resourceVersion": {
+          "type": "string"
+        },
+        "generation": {
+          "type": "integer"
+        },
+        "creationTimestamp": {
+          "$ref": "#/$defs/Time"
+        },
+        "deletionTimestamp": {
+          "$ref": "#/$defs/Time"
+        },
+        "deletionGracePeriodSeconds": {
+          "type": "integer"
+        },
+        "labels": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "annotations": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "ownerReferences": {
+          "items": {
+            "$ref": "#/$defs/OwnerReference"
+          },
+          "type": "array"
+        },
+        "finalizers": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "managedFields": {
+          "items": {
+            "$ref": "#/$defs/ManagedFieldsEntry"
+          },
+          "type": "array"
         }
       },
       "additionalProperties": false,
@@ -204,12 +175,6 @@
         "apiVersion": {
           "type": "string"
         },
-        "blockOwnerDeletion": {
-          "type": "boolean"
-        },
-        "controller": {
-          "type": "boolean"
-        },
         "kind": {
           "type": "string"
         },
@@ -218,6 +183,12 @@
         },
         "uid": {
           "type": "string"
+        },
+        "controller": {
+          "type": "boolean"
+        },
+        "blockOwnerDeletion": {
+          "type": "boolean"
         }
       },
       "additionalProperties": false,
@@ -225,23 +196,20 @@
     },
     "PipelineActivity": {
       "properties": {
-        "apiVersion": {
-          "type": "string"
-        },
         "kind": {
           "type": "string"
         },
+        "apiVersion": {
+          "type": "string"
+        },
         "metadata": {
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/ObjectMeta"
+          "$ref": "#/$defs/ObjectMeta"
         },
         "spec": {
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/PipelineActivitySpec"
+          "$ref": "#/$defs/PipelineActivitySpec"
         },
         "status": {
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/PipelineActivityStatus"
+          "$ref": "#/$defs/PipelineActivityStatus"
         }
       },
       "additionalProperties": false,
@@ -249,12 +217,50 @@
     },
     "PipelineActivitySpec": {
       "properties": {
-        "attachments": {
+        "pipeline": {
+          "type": "string"
+        },
+        "build": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "startedTimestamp": {
+          "$ref": "#/$defs/Time"
+        },
+        "completedTimestamp": {
+          "$ref": "#/$defs/Time"
+        },
+        "steps": {
           "items": {
-            "$schema": "http://json-schema.org/draft-04/schema#",
-            "$ref": "#/definitions/Attachment"
+            "$ref": "#/$defs/PipelineActivityStep"
           },
           "type": "array"
+        },
+        "buildUrl": {
+          "type": "string"
+        },
+        "buildLogsUrl": {
+          "type": "string"
+        },
+        "gitUrl": {
+          "type": "string"
+        },
+        "gitRepository": {
+          "type": "string"
+        },
+        "gitOwner": {
+          "type": "string"
+        },
+        "gitBranch": {
+          "type": "string"
         },
         "author": {
           "type": "string"
@@ -265,83 +271,34 @@
         "authorURL": {
           "type": "string"
         },
-        "baseSHA": {
-          "type": "string"
-        },
-        "batchPipelineActivity": {
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/BatchPipelineActivity"
-        },
-        "build": {
-          "type": "string"
-        },
-        "buildLogsUrl": {
-          "type": "string"
-        },
-        "buildUrl": {
-          "type": "string"
-        },
-        "completedTimestamp": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "format": "date-time"
-        },
-        "context": {
-          "type": "string"
-        },
-        "gitBranch": {
-          "type": "string"
-        },
-        "gitOwner": {
-          "type": "string"
-        },
-        "gitRepository": {
-          "type": "string"
-        },
-        "gitUrl": {
-          "type": "string"
-        },
-        "lastCommitMessage": {
-          "type": "string"
-        },
-        "lastCommitSHA": {
-          "type": "string"
-        },
-        "lastCommitURL": {
-          "type": "string"
-        },
-        "message": {
-          "type": "string"
-        },
-        "pipeline": {
-          "type": "string"
-        },
         "pullTitle": {
           "type": "string"
         },
         "releaseNotesURL": {
           "type": "string"
         },
-        "startedTimestamp": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "format": "date-time"
-        },
-        "status": {
+        "lastCommitSHA": {
           "type": "string"
         },
-        "steps": {
+        "lastCommitMessage": {
+          "type": "string"
+        },
+        "lastCommitURL": {
+          "type": "string"
+        },
+        "attachments": {
           "items": {
-            "$schema": "http://json-schema.org/draft-04/schema#",
-            "$ref": "#/definitions/PipelineActivityStep"
+            "$ref": "#/$defs/Attachment"
           },
           "type": "array"
         },
-        "version": {
+        "batchPipelineActivity": {
+          "$ref": "#/$defs/BatchPipelineActivity"
+        },
+        "context": {
+          "type": "string"
+        },
+        "baseSHA": {
           "type": "string"
         }
       },
@@ -362,17 +319,14 @@
         "kind": {
           "type": "string"
         },
-        "preview": {
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/PreviewActivityStep"
+        "stage": {
+          "$ref": "#/$defs/StageActivityStep"
         },
         "promote": {
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/PromoteActivityStep"
+          "$ref": "#/$defs/PromoteActivityStep"
         },
-        "stage": {
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/StageActivityStep"
+        "preview": {
+          "$ref": "#/$defs/PreviewActivityStep"
         }
       },
       "additionalProperties": false,
@@ -380,39 +334,31 @@
     },
     "PreviewActivityStep": {
       "properties": {
-        "applicationURL": {
+        "name": {
           "type": "string"
-        },
-        "completedTimestamp": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "format": "date-time"
         },
         "description": {
           "type": "string"
         },
-        "environment": {
+        "status": {
           "type": "string"
         },
         "message": {
           "type": "string"
         },
-        "name": {
+        "startedTimestamp": {
+          "$ref": "#/$defs/Time"
+        },
+        "completedTimestamp": {
+          "$ref": "#/$defs/Time"
+        },
+        "environment": {
           "type": "string"
         },
         "pullRequestURL": {
           "type": "string"
         },
-        "startedTimestamp": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "format": "date-time"
-        },
-        "status": {
+        "applicationURL": {
           "type": "string"
         }
       },
@@ -421,45 +367,35 @@
     },
     "PromoteActivityStep": {
       "properties": {
-        "applicationURL": {
+        "name": {
           "type": "string"
-        },
-        "completedTimestamp": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "format": "date-time"
         },
         "description": {
           "type": "string"
         },
-        "environment": {
+        "status": {
           "type": "string"
         },
         "message": {
           "type": "string"
         },
-        "name": {
+        "startedTimestamp": {
+          "$ref": "#/$defs/Time"
+        },
+        "completedTimestamp": {
+          "$ref": "#/$defs/Time"
+        },
+        "environment": {
           "type": "string"
         },
         "pullRequest": {
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/PromotePullRequestStep"
-        },
-        "startedTimestamp": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "format": "date-time"
-        },
-        "status": {
-          "type": "string"
+          "$ref": "#/$defs/PromotePullRequestStep"
         },
         "update": {
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/PromoteUpdateStep"
+          "$ref": "#/$defs/PromoteUpdateStep"
+        },
+        "applicationURL": {
+          "type": "string"
         }
       },
       "additionalProperties": false,
@@ -467,36 +403,28 @@
     },
     "PromotePullRequestStep": {
       "properties": {
-        "completedTimestamp": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "format": "date-time"
+        "name": {
+          "type": "string"
         },
         "description": {
           "type": "string"
         },
-        "mergeCommitSHA": {
+        "status": {
           "type": "string"
         },
         "message": {
           "type": "string"
         },
-        "name": {
-          "type": "string"
+        "startedTimestamp": {
+          "$ref": "#/$defs/Time"
+        },
+        "completedTimestamp": {
+          "$ref": "#/$defs/Time"
         },
         "pullRequestURL": {
           "type": "string"
         },
-        "startedTimestamp": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "format": "date-time"
-        },
-        "status": {
+        "mergeCommitSHA": {
           "type": "string"
         }
       },
@@ -505,36 +433,27 @@
     },
     "PromoteUpdateStep": {
       "properties": {
-        "completedTimestamp": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "format": "date-time"
+        "name": {
+          "type": "string"
         },
         "description": {
+          "type": "string"
+        },
+        "status": {
           "type": "string"
         },
         "message": {
           "type": "string"
         },
-        "name": {
-          "type": "string"
-        },
         "startedTimestamp": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "format": "date-time"
+          "$ref": "#/$defs/Time"
         },
-        "status": {
-          "type": "string"
+        "completedTimestamp": {
+          "$ref": "#/$defs/Time"
         },
         "statuses": {
           "items": {
-            "$schema": "http://json-schema.org/draft-04/schema#",
-            "$ref": "#/definitions/GitStatus"
+            "$ref": "#/$defs/GitStatus"
           },
           "type": "array"
         }
@@ -544,13 +463,13 @@
     },
     "PullRequestInfo": {
       "properties": {
+        "pullRequestNumber": {
+          "type": "string"
+        },
         "lastBuildNumberForCommit": {
           "type": "string"
         },
         "lastBuildSHA": {
-          "type": "string"
-        },
-        "pullRequestNumber": {
           "type": "string"
         }
       },
@@ -559,36 +478,27 @@
     },
     "StageActivityStep": {
       "properties": {
-        "completedTimestamp": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "format": "date-time"
+        "name": {
+          "type": "string"
         },
         "description": {
+          "type": "string"
+        },
+        "status": {
           "type": "string"
         },
         "message": {
           "type": "string"
         },
-        "name": {
-          "type": "string"
-        },
         "startedTimestamp": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "format": "date-time"
+          "$ref": "#/$defs/Time"
         },
-        "status": {
-          "type": "string"
+        "completedTimestamp": {
+          "$ref": "#/$defs/Time"
         },
         "steps": {
           "items": {
-            "$schema": "http://json-schema.org/draft-04/schema#",
-            "$ref": "#/definitions/CoreActivityStep"
+            "$ref": "#/$defs/CoreActivityStep"
           },
           "type": "array"
         }
@@ -597,6 +507,7 @@
       "type": "object"
     },
     "Time": {
+      "properties": {},
       "additionalProperties": false,
       "type": "object"
     }

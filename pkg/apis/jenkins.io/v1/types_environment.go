@@ -2,7 +2,7 @@ package v1
 
 import (
 	"encoding/json"
-	"errors"
+	"fmt"
 
 	"github.com/jenkins-x/jx-logging/v3/pkg/log"
 
@@ -22,6 +22,7 @@ import (
 // +kubebuilder:printcolumn:name="Git Branch",type="string",JSONPath=".spec.source.ref",description="The git branch for the source of the environment configuration"
 // +kubebuilder:resource:categories=all,shortName=env
 // +k8s:openapi-gen=true
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // Environment represents an environment like Dev, Test, Staging, Production where code lives
 type Environment struct {
@@ -59,6 +60,7 @@ type EnvironmentStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // EnvironmentList is a list of TypeMeta resources
 type EnvironmentList struct {
@@ -313,7 +315,7 @@ func (t *TeamSettings) UnmarshalJSON(data []byte) error {
 	private, gitPrivateSet := raw["gitPrivate"]
 
 	if gitPrivateSet && gitPublicSet {
-		return errors.New("found settings for GitPublic as well as GitPrivate in TeamSettings, only GitPublic should be used")
+		return fmt.Errorf("found settings for GitPublic as well as GitPrivate in TeamSettings, only GitPublic should be used")
 	}
 
 	if gitPrivateSet {

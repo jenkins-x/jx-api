@@ -1,7 +1,7 @@
 package util_test
 
 import (
-	"io/ioutil"
+	"os"
 	"path/filepath"
 	"testing"
 
@@ -15,7 +15,7 @@ func TestValidation(t *testing.T) {
 	t.Parallel()
 
 	path := filepath.Join("test_data", "good_env.yaml")
-	data, err := ioutil.ReadFile(path)
+	data, err := os.ReadFile(path)
 	require.NoError(t, err, "failed to load %s", path)
 
 	deploy := &v1.Environment{}
@@ -34,7 +34,7 @@ func TestValidateSourceRepository(t *testing.T) {
 	t.Parallel()
 
 	path := filepath.Join("test_data", "good_sr.yaml")
-	data, err := ioutil.ReadFile(path)
+	data, err := os.ReadFile(path)
 	require.NoError(t, err, "failed to load %s", path)
 
 	deploy := &v1.SourceRepository{}
@@ -53,7 +53,7 @@ func TestValidateRelease(t *testing.T) {
 	t.Parallel()
 
 	path := filepath.Join("test_data", "good_release.yaml")
-	data, err := ioutil.ReadFile(path)
+	data, err := os.ReadFile(path)
 	require.NoError(t, err, "failed to load %s", path)
 
 	deploy := &v1.Release{}
@@ -72,7 +72,7 @@ func TestValidationFails(t *testing.T) {
 	t.Parallel()
 
 	path := filepath.Join("test_data", "bad_env.yaml")
-	data, err := ioutil.ReadFile(path)
+	data, err := os.ReadFile(path)
 	require.NoError(t, err, "failed to load %s", path)
 
 	deploy := &v1.Environment{}

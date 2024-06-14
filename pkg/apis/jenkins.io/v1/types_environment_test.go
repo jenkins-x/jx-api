@@ -2,7 +2,7 @@ package v1_test
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"os"
 	"path"
 	"testing"
 
@@ -29,7 +29,7 @@ func TestGitPublic(t *testing.T) {
 
 	for _, testCase := range gitPublicTests {
 		t.Run(testCase.jsonFile, func(t *testing.T) {
-			content, err := ioutil.ReadFile(path.Join(testEnvironmentDataDir, testCase.jsonFile))
+			content, err := os.ReadFile(path.Join(testEnvironmentDataDir, testCase.jsonFile))
 			assert.NoError(t, err)
 
 			env := v1.Environment{}
@@ -44,7 +44,7 @@ func TestGitPublic(t *testing.T) {
 }
 
 func Test_GitPublic_and_GitPrivate_specified_throws_error(t *testing.T) {
-	content, err := ioutil.ReadFile(path.Join(testEnvironmentDataDir, "git_public_true_git_private_true.json"))
+	content, err := os.ReadFile(path.Join(testEnvironmentDataDir, "git_public_true_git_private_true.json"))
 	assert.NoError(t, err)
 
 	env := v1.Environment{}

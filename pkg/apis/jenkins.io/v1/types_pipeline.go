@@ -24,6 +24,7 @@ const (
 // +kubebuilder:printcolumn:name="Status",type="string",JSONPath=".spec.status",description="The status of the pipeline"
 // +kubebuilder:resource:categories=all,shortName=activity;act;pa
 // +k8s:openapi-gen=true
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // PipelineActivity represents pipeline activity for a particular run of a pipeline
 type PipelineActivity struct {
@@ -159,6 +160,7 @@ type PipelineActivityStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // PipelineActivityList is a list of PipelineActivity resources
 type PipelineActivityList struct {
