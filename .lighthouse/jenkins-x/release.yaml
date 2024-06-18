@@ -25,7 +25,7 @@ spec:
           resources: {}
         - name: build-make-build
           resources: {}
-        - image: golang:1.17.9
+        - image: golang:1.22.3
           name: build-gen-schema
           resources: {}
           script: |
