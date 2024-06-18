@@ -20,10 +20,9 @@ package fake
 import (
 	"context"
 
-	jenkinsiov1 "github.com/jenkins-x/jx-api/v4/pkg/apis/jenkins.io/v1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	v1 "github.com/jenkins-x/jx-api/v4/pkg/apis/jenkins.io/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -35,25 +34,25 @@ type FakeReleases struct {
 	ns   string
 }
 
-var releasesResource = schema.GroupVersionResource{Group: "jenkins.io", Version: "v1", Resource: "releases"}
+var releasesResource = v1.SchemeGroupVersion.WithResource("releases")
 
-var releasesKind = schema.GroupVersionKind{Group: "jenkins.io", Version: "v1", Kind: "Release"}
+var releasesKind = v1.SchemeGroupVersion.WithKind("Release")
 
 // Get takes name of the release, and returns the corresponding release object, and an error if there is any.
-func (c *FakeReleases) Get(ctx context.Context, name string, options v1.GetOptions) (result *jenkinsiov1.Release, err error) {
+func (c *FakeReleases) Get(ctx context.Context, name string, options metav1.GetOptions) (result *v1.Release, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(releasesResource, c.ns, name), &jenkinsiov1.Release{})
+		Invokes(testing.NewGetAction(releasesResource, c.ns, name), &v1.Release{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*jenkinsiov1.Release), err
+	return obj.(*v1.Release), err
 }
 
 // List takes label and field selectors, and returns the list of Releases that match those selectors.
-func (c *FakeReleases) List(ctx context.Context, opts v1.ListOptions) (result *jenkinsiov1.ReleaseList, err error) {
+func (c *FakeReleases) List(ctx context.Context, opts metav1.ListOptions) (result *v1.ReleaseList, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewListAction(releasesResource, releasesKind, c.ns, opts), &jenkinsiov1.ReleaseList{})
+		Invokes(testing.NewListAction(releasesResource, releasesKind, c.ns, opts), &v1.ReleaseList{})
 
 	if obj == nil {
 		return nil, err
@@ -63,8 +62,8 @@ func (c *FakeReleases) List(ctx context.Context, opts v1.ListOptions) (result *j
 	if label == nil {
 		label = labels.Everything()
 	}
-	list := &jenkinsiov1.ReleaseList{ListMeta: obj.(*jenkinsiov1.ReleaseList).ListMeta}
-	for _, item := range obj.(*jenkinsiov1.ReleaseList).Items {
+	list := &v1.ReleaseList{ListMeta: obj.(*v1.ReleaseList).ListMeta}
+	for _, item := range obj.(*v1.ReleaseList).Items {
 		if label.Matches(labels.Set(item.Labels)) {
 			list.Items = append(list.Items, item)
 		}
@@ -73,57 +72,57 @@ func (c *FakeReleases) List(ctx context.Context, opts v1.ListOptions) (result *j
 }
 
 // Watch returns a watch.Interface that watches the requested releases.
-func (c *FakeReleases) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+func (c *FakeReleases) Watch(ctx context.Context, opts metav1.ListOptions) (watch.Interface, error) {
 	return c.Fake.
 		InvokesWatch(testing.NewWatchAction(releasesResource, c.ns, opts))
 
 }
 
 // Create takes the representation of a release and creates it.  Returns the server's representation of the release, and an error, if there is any.
-func (c *FakeReleases) Create(ctx context.Context, release *jenkinsiov1.Release, opts v1.CreateOptions) (result *jenkinsiov1.Release, err error) {
+func (c *FakeReleases) Create(ctx context.Context, release *v1.Release, opts metav1.CreateOptions) (result *v1.Release, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(releasesResource, c.ns, release), &jenkinsiov1.Release{})
+		Invokes(testing.NewCreateAction(releasesResource, c.ns, release), &v1.Release{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*jenkinsiov1.Release), err
+	return obj.(*v1.Release), err
 }
 
 // Update takes the representation of a release and updates it. Returns the server's representation of the release, and an error, if there is any.
-func (c *FakeReleases) Update(ctx context.Context, release *jenkinsiov1.Release, opts v1.UpdateOptions) (result *jenkinsiov1.Release, err error) {
+func (c *FakeReleases) Update(ctx context.Context, release *v1.Release, opts metav1.UpdateOptions) (result *v1.Release, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(releasesResource, c.ns, release), &jenkinsiov1.Release{})
+		Invokes(testing.NewUpdateAction(releasesResource, c.ns, release), &v1.Release{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*jenkinsiov1.Release), err
+	return obj.(*v1.Release), err
 }
 
 // Delete takes name of the release and deletes it. Returns an error if one occurs.
-func (c *FakeReleases) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+func (c *FakeReleases) Delete(ctx context.Context, name string, opts metav1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(releasesResource, c.ns, name), &jenkinsiov1.Release{})
+		Invokes(testing.NewDeleteActionWithOptions(releasesResource, c.ns, name, opts), &v1.Release{})
 
 	return err
 }
 
 // DeleteCollection deletes a collection of objects.
-func (c *FakeReleases) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+func (c *FakeReleases) DeleteCollection(ctx context.Context, opts metav1.DeleteOptions, listOpts metav1.ListOptions) error {
 	action := testing.NewDeleteCollectionAction(releasesResource, c.ns, listOpts)
 
-	_, err := c.Fake.Invokes(action, &jenkinsiov1.ReleaseList{})
+	_, err := c.Fake.Invokes(action, &v1.ReleaseList{})
 	return err
 }
 
 // Patch applies the patch and returns the patched release.
-func (c *FakeReleases) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *jenkinsiov1.Release, err error) {
+func (c *FakeReleases) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts metav1.PatchOptions, subresources ...string) (result *v1.Release, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(releasesResource, c.ns, name, pt, data, subresources...), &jenkinsiov1.Release{})
+		Invokes(testing.NewPatchSubresourceAction(releasesResource, c.ns, name, pt, data, subresources...), &v1.Release{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*jenkinsiov1.Release), err
+	return obj.(*v1.Release), err
 }

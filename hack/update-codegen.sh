@@ -1,4 +1,3 @@
-
 #!/usr/bin/env bash
 
 # Copyright 2017 The Kubernetes Authors.
@@ -19,40 +18,29 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-#CODEGEN_PKG=${CODEGEN_PKG:-$(cd "${SCRIPT_ROOT}"; ls -d -1 ./vendor/k8s.io/code-generator 2>/dev/null || echo ./cmd/code-generator)}
-GENERATOR_VERSION=v0.20.2
-(
-  # To support running this script from anywhere, we have to first cd into this directory
-  # so we can install the tools.
-  cd "$(dirname "${0}")"
-  go get k8s.io/code-generator/cmd/{defaulter-gen,client-gen,lister-gen,informer-gen,deepcopy-gen}@$GENERATOR_VERSION
-)
+SCRIPT_ROOT=$(dirname ${BASH_SOURCE})/..
+CODEGEN_VERSION=$(grep 'k8s.io/code-generator' go.sum | awk '{print $2}' | sed 's/\/go.mod//g' | tail -1)
+CODEGEN_PKG=$(echo `go env GOPATH`"/pkg/mod/k8s.io/code-generator@${CODEGEN_VERSION}")
 
-SCRIPT_ROOT=$(dirname "${BASH_SOURCE[0]}")/..
-rm -rf "${SCRIPT_ROOT}"/pkg/client
-# generate the code with:
-# --output-base    because this script should also be able to run inside the vendor dir of
-#                  k8s.io/kubernetes. The output-base is needed for the generators to output into the vendor dir
-#                  instead of the $GOPATH directly. For normal projects this can be dropped.
-bash hack/generate-groups.sh all \
-  github.com/jenkins-x/jx-api/v4/pkg/client github.com/jenkins-x/jx-api/v4/pkg/apis \
-  jenkins.io:v1 \
-  --output-base "$(dirname "${BASH_SOURCE[0]}")/../../../.." \
-  --go-header-file "${SCRIPT_ROOT}"/hack/custom-boilerplate.go.txt
+if [[ ! -d ${CODEGEN_PKG} ]]; then
+  echo "${CODEGEN_PKG} is missing. Running 'go mod download'."
+  go mod download
+fi
 
-cp -R "${SCRIPT_ROOT}"/v4/pkg/client/ "${SCRIPT_ROOT}"/pkg/client
-cp -R "${SCRIPT_ROOT}"/v4/pkg/apis/jenkins.io/v1/zz_generated.deepcopy.go "${SCRIPT_ROOT}"/pkg/apis/jenkins.io/v1/zz_generated.deepcopy.go
+source "${CODEGEN_PKG}/kube_codegen.sh"
 
-rm -rf "${SCRIPT_ROOT}"/v4
 
-#bash hack/generate-groups.sh all \
-#  github.com/jenkins-x/jx-api/v4/pkg/generated/core github.com/jenkins-x/jx-api/v4/pkg/apis \
-#  core:v4beta1 \
-#  --output-base "$(dirname "${BASH_SOURCE[0]}")/../../../.." \
-#  --go-header-file "${SCRIPT_ROOT}"/hack/custom-boilerplate.go.txt
-#
-#
-#cp -R "${SCRIPT_ROOT}"/v4/pkg/generated/ "${SCRIPT_ROOT}"/pkg/generated
-#cp -R "${SCRIPT_ROOT}"/v4/pkg/apis/core/v4beta1/zz_generated.deepcopy.go "${SCRIPT_ROOT}"/pkg/apis/core/v4beta1/zz_generated.deepcopy.go
-#
-#rm -rf "${SCRIPT_ROOT}"/v4
+
+
+THIS_PKG="github.com/jenkins-x/jx-api"
+
+kube::codegen::gen_helpers \
+    --boilerplate "${SCRIPT_ROOT}/hack/custom-boilerplate.go.txt" \
+    "${SCRIPT_ROOT}/pkg/apis"
+
+kube::codegen::gen_client \
+    --with-watch \
+    --output-dir "${SCRIPT_ROOT}/pkg/client" \
+    --output-pkg "${THIS_PKG}/v4/pkg/client" \
+    --boilerplate "${SCRIPT_ROOT}/hack/custom-boilerplate.go.txt" \
+    "${SCRIPT_ROOT}/pkg/apis"

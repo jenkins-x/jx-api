@@ -2,7 +2,6 @@ package v4beta1_test
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
@@ -29,7 +28,7 @@ const (
 func TestRequirementsConfigMarshalExistingFile(t *testing.T) {
 	t.Parallel()
 
-	dir, err := ioutil.TempDir("", "test-requirements-config-")
+	dir, err := os.MkdirTemp("", "test-requirements-config-")
 	assert.NoError(t, err, "should create a temporary config dir")
 
 	expectedClusterName := "my-cluster"
@@ -85,7 +84,7 @@ func Test_OverrideRequirementsFromEnvironment_does_not_initialise_nil_structs(t 
 		return "", nil
 	})
 
-	tempDir, err := ioutil.TempDir("", "test-requirements-config")
+	tempDir, err := os.MkdirTemp("", "test-requirements-config")
 	assert.NoError(t, err, "should create a temporary config dir")
 	defer func() {
 		_ = os.RemoveAll(tempDir)
@@ -209,7 +208,7 @@ func Test_OverrideRequirementsFromEnvironment_populate_requirements_from_environ
 func TestRequirementsConfigMarshalExistingFileKanikoFalse(t *testing.T) {
 	t.Parallel()
 
-	dir, err := ioutil.TempDir("", "test-requirements-config-")
+	dir, err := os.MkdirTemp("", "test-requirements-config-")
 	assert.NoError(t, err, "should create a temporary config dir")
 
 	file := filepath.Join(dir, v4beta1.RequirementsConfigFileName)
@@ -226,7 +225,7 @@ func TestRequirementsConfigMarshalExistingFileKanikoFalse(t *testing.T) {
 func TestRequirementsConfigMarshalInEmptyDir(t *testing.T) {
 	t.Parallel()
 
-	dir, err := ioutil.TempDir("", "test-requirements-config-empty-")
+	dir, err := os.MkdirTemp("", "test-requirements-config-empty-")
 	assert.NoError(t, err)
 
 	requirements, fileName, err := v4beta1.LoadRequirementsConfig(dir, v4beta1.DefaultFailOnValidationError)
@@ -255,7 +254,7 @@ func Test_unmarshalling_requirements_config_with_build_pack_configuration_succee
 
 	requirements := v4beta1.NewRequirementsConfig()
 
-	content, err := ioutil.ReadFile(path.Join(testDataDir, "build_pack_library.yaml"))
+	content, err := os.ReadFile(path.Join(testDataDir, "build_pack_library.yaml"))
 	assert.NoError(t, err)
 
 	err = yaml.Unmarshal(content, requirements)
@@ -313,7 +312,7 @@ func Test_env_repository_visibility(t *testing.T) {
 
 	for _, testCase := range gitPublicTests {
 		t.Run(testCase.yamlFile, func(t *testing.T) {
-			content, err := ioutil.ReadFile(path.Join(testDataDir, testCase.yamlFile))
+			content, err := os.ReadFile(path.Join(testDataDir, testCase.yamlFile))
 			assert.NoError(t, err)
 
 			requirementsResource := v4beta1.NewRequirementsConfig()
@@ -466,7 +465,7 @@ func TestMergeSave(t *testing.T) {
 			},
 		},
 	}
-	f, err := ioutil.TempFile("", "")
+	f, err := os.CreateTemp("", "")
 	assert.NoError(t, err)
 	defer func() {
 		err := util.DeleteFile(f.Name())
@@ -491,7 +490,7 @@ func TestMergeSave(t *testing.T) {
 }
 
 func Test_EnvironmentGitPublic_and_EnvironmentGitPrivate_specified_together_return_error(t *testing.T) {
-	content, err := ioutil.ReadFile(path.Join(testDataDir, "git_public_true_git_private_true.yaml"))
+	content, err := os.ReadFile(path.Join(testDataDir, "git_public_true_git_private_true.yaml"))
 	assert.NoError(t, err)
 
 	requirementsResource := v4beta1.NewRequirementsConfig()
@@ -518,7 +517,7 @@ func Test_LoadRequirementsConfig(t *testing.T) {
 
 	for _, testCase := range gitPublicTests {
 		t.Run(testCase.requirementsPath, func(t *testing.T) {
-			dir, err := ioutil.TempDir("", "jx-test-load-requirements-config")
+			dir, err := os.MkdirTemp("", "jx-test-load-requirements-config")
 			require.NoError(t, err, "failed to create tmp directory")
 			defer func() {
 				_ = os.RemoveAll(dir)
@@ -532,7 +531,7 @@ func Test_LoadRequirementsConfig(t *testing.T) {
 			if testCase.createRequirements {
 				expectedRequirementsFile = filepath.Join(testPath, v4beta1.RequirementsConfigFileName)
 				dummyRequirementsData := []byte("webhook: prow\n")
-				err := ioutil.WriteFile(expectedRequirementsFile, dummyRequirementsData, 0600)
+				err := os.WriteFile(expectedRequirementsFile, dummyRequirementsData, 0600)
 				require.NoError(t, err, "unable to write requirements file %s", expectedRequirementsFile)
 			}
 

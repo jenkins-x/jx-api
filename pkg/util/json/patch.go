@@ -2,7 +2,7 @@ package json
 
 import (
 	"encoding/json"
-	"errors"
+	"fmt"
 
 	"github.com/mattbaird/jsonpatch"
 )
@@ -15,11 +15,11 @@ import (
 // An error will be returned if any of the two structs is nil.
 func CreatePatch(before, after interface{}) ([]byte, error) {
 	if before == nil {
-		return nil, errors.New("'before' cannot be nil when creating a JSON patch")
+		return nil, fmt.Errorf("'before' cannot be nil when creating a JSON patch")
 	}
 
 	if after == nil {
-		return nil, errors.New("'after' cannot be nil when creating a JSON patch")
+		return nil, fmt.Errorf("'after' cannot be nil when creating a JSON patch")
 	}
 
 	rawBefore, rawAfter, err := marshallBeforeAfter(before, after)

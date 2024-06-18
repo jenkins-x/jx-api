@@ -3,8 +3,6 @@ package util
 import (
 	"fmt"
 	"os"
-
-	"github.com/pkg/errors"
 )
 
 const (
@@ -20,7 +18,7 @@ func FileExists(path string) (bool, error) {
 	if os.IsNotExist(err) {
 		return false, nil
 	}
-	return false, errors.Wrapf(err, "failed to check if file exists %s", path)
+	return false, fmt.Errorf("failed to check if file exists %s: %w", path, err)
 }
 
 // DeleteFile deletes a file from the operating system. This should NOT be used to delete any sensitive information
@@ -35,7 +33,7 @@ func DeleteFile(fileName string) (err error) {
 		if exists {
 			err = os.Remove(fileName)
 			if err != nil {
-				return errors.Wrapf(err, "Could not remove file due to %s", fileName)
+				return fmt.Errorf("Could not remove file due to %s: %w", fileName, err)
 			}
 		}
 	} else {

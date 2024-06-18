@@ -20,7 +20,7 @@ test1: ## Runs single test specified by test name and optional package, eg 'make
 	$(GOTEST) -v ./pkg/log -run $(TEST)
 
 get-fmt-deps: ## Install test dependencies
-	$(GO_NOMOD) get golang.org/x/tools/cmd/goimports
+	$(GO_NOMOD) install golang.org/x/tools/cmd/goimports
 
 fmt: importfmt ## Format the code
 	@FORMATTED=`$(GO) fmt $(PACKAGE_DIRS)`

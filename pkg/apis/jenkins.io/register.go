@@ -1,4 +1,4 @@
-package jenkins_io
+package jenkins_io // nolint:revive
 
 const (
 	// GroupName is the Jenkins API group name

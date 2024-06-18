@@ -11,6 +11,6 @@ const (
 	KUBERNETES = "kubernetes"
 	OPENSHIFT  = "openshift"
 	ICP        = "icp"
-	JX_INFRA   = "jx-infra"
+	JX_INFRA   = "jx-infra" // nolint:revive
 	ALIBABA    = "alibaba"
 )

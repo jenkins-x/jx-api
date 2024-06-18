@@ -68,6 +68,34 @@ bool
 </tr>
 </tbody>
 </table>
+<h3 id="core.jenkins-x.io/v4beta1.AzureClusterNodesConfig">AzureClusterNodesConfig
+</h3>
+<p>
+(<em>Appears on:</em>
+<a href="#core.jenkins-x.io/v4beta1.AzureConfig">AzureConfig</a>)
+</p>
+<p>
+</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>clientID</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+</td>
+</tr>
+</tbody>
+</table>
 <h3 id="core.jenkins-x.io/v4beta1.AzureConfig">AzureConfig
 </h3>
 <p>
@@ -127,6 +155,18 @@ AzureSecretConfig
 <em>
 <a href="#core.jenkins-x.io/v4beta1.AzureStorageConfig">
 AzureStorageConfig
+</a>
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>clusterNodes</code></br>
+<em>
+<a href="#core.jenkins-x.io/v4beta1.AzureClusterNodesConfig">
+AzureClusterNodesConfig
 </a>
 </em>
 </td>
@@ -2381,5 +2421,5 @@ If not specified the &lsquo;kubernetes&rsquo; is used.</p>
 <hr/>
 <p><em>
 Generated with <code>gen-crd-api-reference-docs</code>
-on git commit <code>8f3084d</code>.
+on git commit <code>c471c8c</code>.
 </em></p>

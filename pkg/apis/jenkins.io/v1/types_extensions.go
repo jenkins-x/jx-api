@@ -13,6 +13,7 @@ import (
 // +kubebuilder:printcolumn:name="Description",type="string",JSONPath=".spec.description",description="A description of the source code repository - non-functional user-data"
 // +kubebuilder:resource:categories=all,shortName=sourcerepo;srcrepo;sr
 // +k8s:openapi-gen=true
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:storageversion
 // SourceRepository is the metadata for an Application/Project/SourceRepository
 type SourceRepository struct {
@@ -36,6 +37,7 @@ func (repo *SourceRepository) Sanitize() {
 }
 
 // +kubebuilder:object:root=true
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // SourceRepositoryList is a structure used by k8s to store lists of apps
 type SourceRepositoryList struct {
@@ -79,6 +81,7 @@ type PipelineExtension struct {
 }
 
 // +kubebuilder:object:root=true
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // PluginList is a list of Plugins available for a team
 type PluginList struct {
@@ -92,6 +95,7 @@ type PluginList struct {
 // +genclient:noStatus
 // +kubebuilder:object:root=true
 // +k8s:openapi-gen=true
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // Plugin represents a binary plugin installed into this Jenkins X team
 type Plugin struct {

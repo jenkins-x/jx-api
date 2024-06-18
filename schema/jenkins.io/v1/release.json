@@ -1,13 +1,14 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "$ref": "#/definitions/Release",
-  "definitions": {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jenkins-x/jx-api/v4/pkg/apis/jenkins.io/v1/release",
+  "$ref": "#/$defs/Release",
+  "$defs": {
     "AccountReference": {
       "properties": {
-        "id": {
+        "provider": {
           "type": "string"
         },
-        "provider": {
+        "id": {
           "type": "string"
         }
       },
@@ -16,22 +17,6 @@
     },
     "CommitSummary": {
       "properties": {
-        "author": {
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/UserDetails"
-        },
-        "branch": {
-          "type": "string"
-        },
-        "committer": {
-          "$ref": "#/definitions/UserDetails"
-        },
-        "issueIds": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        },
         "message": {
           "type": "string"
         },
@@ -40,6 +25,21 @@
         },
         "url": {
           "type": "string"
+        },
+        "author": {
+          "$ref": "#/$defs/UserDetails"
+        },
+        "committer": {
+          "$ref": "#/$defs/UserDetails"
+        },
+        "branch": {
+          "type": "string"
+        },
+        "issueIds": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
         }
       },
       "additionalProperties": false,
@@ -47,7 +47,22 @@
     },
     "DependencyUpdate": {
       "properties": {
+        "host": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "repo": {
+          "type": "string"
+        },
         "component": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "fromVersion": {
           "type": "string"
         },
         "fromReleaseHTMLURL": {
@@ -56,26 +71,7 @@
         "fromReleaseName": {
           "type": "string"
         },
-        "fromVersion": {
-          "type": "string"
-        },
-        "host": {
-          "type": "string"
-        },
-        "owner": {
-          "type": "string"
-        },
-        "paths": {
-          "items": {
-            "items": {
-              "$schema": "http://json-schema.org/draft-04/schema#",
-              "$ref": "#/definitions/DependencyUpdateDetails"
-            },
-            "type": "array"
-          },
-          "type": "array"
-        },
-        "repo": {
+        "toVersion": {
           "type": "string"
         },
         "toReleaseHTMLURL": {
@@ -84,11 +80,11 @@
         "toReleaseName": {
           "type": "string"
         },
-        "toVersion": {
-          "type": "string"
-        },
-        "url": {
-          "type": "string"
+        "paths": {
+          "items": {
+            "$ref": "#/$defs/DependencyUpdatePath"
+          },
+          "type": "array"
         }
       },
       "additionalProperties": false,
@@ -96,18 +92,6 @@
     },
     "DependencyUpdateDetails": {
       "properties": {
-        "component": {
-          "type": "string"
-        },
-        "fromReleaseHTMLURL": {
-          "type": "string"
-        },
-        "fromReleaseName": {
-          "type": "string"
-        },
-        "fromVersion": {
-          "type": "string"
-        },
         "host": {
           "type": "string"
         },
@@ -117,35 +101,54 @@
         "repo": {
           "type": "string"
         },
-        "toReleaseHTMLURL": {
+        "component": {
           "type": "string"
         },
-        "toReleaseName": {
+        "url": {
+          "type": "string"
+        },
+        "fromVersion": {
+          "type": "string"
+        },
+        "fromReleaseHTMLURL": {
+          "type": "string"
+        },
+        "fromReleaseName": {
           "type": "string"
         },
         "toVersion": {
           "type": "string"
         },
-        "url": {
+        "toReleaseHTMLURL": {
+          "type": "string"
+        },
+        "toReleaseName": {
           "type": "string"
         }
       },
       "additionalProperties": false,
       "type": "object"
     },
+    "DependencyUpdatePath": {
+      "items": {
+        "$ref": "#/$defs/DependencyUpdateDetails"
+      },
+      "type": "array"
+    },
     "FieldsV1": {
+      "properties": {},
       "additionalProperties": false,
       "type": "object"
     },
     "IssueLabel": {
       "properties": {
-        "color": {
-          "type": "string"
-        },
         "name": {
           "type": "string"
         },
         "url": {
+          "type": "string"
+        },
+        "color": {
           "type": "string"
         }
       },
@@ -154,49 +157,44 @@
     },
     "IssueSummary": {
       "properties": {
-        "assignees": {
-          "items": {
-            "$ref": "#/definitions/UserDetails"
-          },
-          "type": "array"
-        },
-        "body": {
-          "type": "string"
-        },
-        "closedBy": {
-          "$ref": "#/definitions/UserDetails"
-        },
-        "creationTimestamp": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "format": "date-time"
-        },
         "id": {
-          "type": "string"
-        },
-        "labels": {
-          "items": {
-            "$schema": "http://json-schema.org/draft-04/schema#",
-            "$ref": "#/definitions/IssueLabel"
-          },
-          "type": "array"
-        },
-        "message": {
-          "type": "string"
-        },
-        "state": {
-          "type": "string"
-        },
-        "title": {
           "type": "string"
         },
         "url": {
           "type": "string"
         },
+        "title": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
         "user": {
-          "$ref": "#/definitions/UserDetails"
+          "$ref": "#/$defs/UserDetails"
+        },
+        "assignees": {
+          "items": {
+            "$ref": "#/$defs/UserDetails"
+          },
+          "type": "array"
+        },
+        "closedBy": {
+          "$ref": "#/$defs/UserDetails"
+        },
+        "creationTimestamp": {
+          "$ref": "#/$defs/Time"
+        },
+        "labels": {
+          "items": {
+            "$ref": "#/$defs/IssueLabel"
+          },
+          "type": "array"
         }
       },
       "additionalProperties": false,
@@ -204,31 +202,26 @@
     },
     "ManagedFieldsEntry": {
       "properties": {
-        "apiVersion": {
-          "type": "string"
-        },
-        "fieldsType": {
-          "type": "string"
-        },
-        "fieldsV1": {
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/FieldsV1"
-        },
         "manager": {
           "type": "string"
         },
         "operation": {
           "type": "string"
         },
-        "subresource": {
+        "apiVersion": {
           "type": "string"
         },
         "time": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "format": "date-time"
+          "$ref": "#/$defs/Time"
+        },
+        "fieldsType": {
+          "type": "string"
+        },
+        "fieldsV1": {
+          "$ref": "#/$defs/FieldsV1"
+        },
+        "subresource": {
+          "type": "string"
         }
       },
       "additionalProperties": false,
@@ -236,75 +229,13 @@
     },
     "ObjectMeta": {
       "properties": {
-        "annotations": {
-          "patternProperties": {
-            ".*": {
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "clusterName": {
+        "name": {
           "type": "string"
-        },
-        "creationTimestamp": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "format": "date-time"
-        },
-        "deletionGracePeriodSeconds": {
-          "type": "integer"
-        },
-        "deletionTimestamp": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "format": "date-time"
-        },
-        "finalizers": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
         },
         "generateName": {
           "type": "string"
         },
-        "generation": {
-          "type": "integer"
-        },
-        "labels": {
-          "patternProperties": {
-            ".*": {
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "managedFields": {
-          "items": {
-            "$schema": "http://json-schema.org/draft-04/schema#",
-            "$ref": "#/definitions/ManagedFieldsEntry"
-          },
-          "type": "array"
-        },
-        "name": {
-          "type": "string"
-        },
         "namespace": {
-          "type": "string"
-        },
-        "ownerReferences": {
-          "items": {
-            "$schema": "http://json-schema.org/draft-04/schema#",
-            "$ref": "#/definitions/OwnerReference"
-          },
-          "type": "array"
-        },
-        "resourceVersion": {
           "type": "string"
         },
         "selfLink": {
@@ -312,6 +243,51 @@
         },
         "uid": {
           "type": "string"
+        },
+        "resourceVersion": {
+          "type": "string"
+        },
+        "generation": {
+          "type": "integer"
+        },
+        "creationTimestamp": {
+          "$ref": "#/$defs/Time"
+        },
+        "deletionTimestamp": {
+          "$ref": "#/$defs/Time"
+        },
+        "deletionGracePeriodSeconds": {
+          "type": "integer"
+        },
+        "labels": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "annotations": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "ownerReferences": {
+          "items": {
+            "$ref": "#/$defs/OwnerReference"
+          },
+          "type": "array"
+        },
+        "finalizers": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "managedFields": {
+          "items": {
+            "$ref": "#/$defs/ManagedFieldsEntry"
+          },
+          "type": "array"
         }
       },
       "additionalProperties": false,
@@ -322,12 +298,6 @@
         "apiVersion": {
           "type": "string"
         },
-        "blockOwnerDeletion": {
-          "type": "boolean"
-        },
-        "controller": {
-          "type": "boolean"
-        },
         "kind": {
           "type": "string"
         },
@@ -336,6 +306,12 @@
         },
         "uid": {
           "type": "string"
+        },
+        "controller": {
+          "type": "boolean"
+        },
+        "blockOwnerDeletion": {
+          "type": "boolean"
         }
       },
       "additionalProperties": false,
@@ -343,23 +319,20 @@
     },
     "Release": {
       "properties": {
-        "apiVersion": {
-          "type": "string"
-        },
         "kind": {
           "type": "string"
         },
+        "apiVersion": {
+          "type": "string"
+        },
         "metadata": {
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/ObjectMeta"
+          "$ref": "#/$defs/ObjectMeta"
         },
         "spec": {
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/ReleaseSpec"
+          "$ref": "#/$defs/ReleaseSpec"
         },
         "status": {
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "$ref": "#/definitions/ReleaseStatus"
+          "$ref": "#/$defs/ReleaseStatus"
         }
       },
       "additionalProperties": false,
@@ -367,52 +340,49 @@
     },
     "ReleaseSpec": {
       "properties": {
-        "commits": {
-          "items": {
-            "$schema": "http://json-schema.org/draft-04/schema#",
-            "$ref": "#/definitions/CommitSummary"
-          },
-          "type": "array"
+        "name": {
+          "type": "string"
         },
-        "dependencyUpdates": {
-          "items": {
-            "$schema": "http://json-schema.org/draft-04/schema#",
-            "$ref": "#/definitions/DependencyUpdate"
-          },
-          "type": "array"
-        },
-        "gitCloneUrl": {
+        "version": {
           "type": "string"
         },
         "gitHttpUrl": {
           "type": "string"
         },
-        "gitOwner": {
+        "gitCloneUrl": {
           "type": "string"
         },
-        "gitRepository": {
-          "type": "string"
-        },
-        "issues": {
+        "commits": {
           "items": {
-            "$schema": "http://json-schema.org/draft-04/schema#",
-            "$ref": "#/definitions/IssueSummary"
+            "$ref": "#/$defs/CommitSummary"
           },
           "type": "array"
         },
-        "name": {
-          "type": "string"
+        "issues": {
+          "items": {
+            "$ref": "#/$defs/IssueSummary"
+          },
+          "type": "array"
         },
         "pullRequests": {
           "items": {
-            "$ref": "#/definitions/IssueSummary"
+            "$ref": "#/$defs/IssueSummary"
+          },
+          "type": "array"
+        },
+        "dependencyUpdates": {
+          "items": {
+            "$ref": "#/$defs/DependencyUpdate"
           },
           "type": "array"
         },
         "releaseNotesURL": {
           "type": "string"
         },
-        "version": {
+        "gitRepository": {
+          "type": "string"
+        },
+        "gitOwner": {
           "type": "string"
         }
       },
@@ -429,45 +399,41 @@
       "type": "object"
     },
     "Time": {
+      "properties": {},
       "additionalProperties": false,
       "type": "object"
     },
     "UserDetails": {
       "properties": {
-        "accountReference": {
-          "items": {
-            "$schema": "http://json-schema.org/draft-04/schema#",
-            "$ref": "#/definitions/AccountReference"
-          },
-          "type": "array"
-        },
-        "avatarUrl": {
-          "type": "string"
-        },
-        "creationTimestamp": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "format": "date-time"
-        },
-        "email": {
-          "type": "string"
-        },
-        "externalUser": {
-          "type": "boolean"
-        },
         "login": {
           "type": "string"
         },
         "name": {
           "type": "string"
         },
-        "serviceAccount": {
+        "email": {
           "type": "string"
+        },
+        "creationTimestamp": {
+          "$ref": "#/$defs/Time"
         },
         "url": {
           "type": "string"
+        },
+        "avatarUrl": {
+          "type": "string"
+        },
+        "serviceAccount": {
+          "type": "string"
+        },
+        "accountReference": {
+          "items": {
+            "$ref": "#/$defs/AccountReference"
+          },
+          "type": "array"
+        },
+        "externalUser": {
+          "type": "boolean"
         }
       },
       "additionalProperties": false,
