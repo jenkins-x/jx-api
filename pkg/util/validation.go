@@ -2,7 +2,7 @@ package util
 
 import (
 	"github.com/ghodss/yaml"
-	schemagen "github.com/rawlingsj/jsonschema"
+	schemagen "github.com/invopop/jsonschema"
 	"github.com/xeipuuv/gojsonschema"
 	corev1 "k8s.io/api/core/v1"
 )

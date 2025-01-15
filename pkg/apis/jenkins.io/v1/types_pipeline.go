@@ -223,7 +223,8 @@ type Attachment struct {
 
 // IsTerminated returns true if this activity has stopped executing
 func (s ActivityStatusType) IsTerminated() bool {
-	return s == ActivityStatusTypeSucceeded || s == ActivityStatusTypeFailed || s == ActivityStatusTypeError || s == ActivityStatusTypeAborted
+	return s == ActivityStatusTypeSucceeded || s == ActivityStatusTypeFailed || s == ActivityStatusTypeError ||
+		s == ActivityStatusTypeAborted || s == ActivityStatusTypeTimedOut || s == ActivityStatusTypeCancelled
 }
 
 func (s ActivityStatusType) String() string {
