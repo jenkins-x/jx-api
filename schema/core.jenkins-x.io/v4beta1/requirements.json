@@ -18,6 +18,15 @@
       "additionalProperties": false,
       "type": "object"
     },
+    "AzureClusterNodesConfig": {
+      "properties": {
+        "clientID": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
     "AzureConfig": {
       "properties": {
         "registrySubscription": {
@@ -31,6 +40,9 @@
         },
         "storage": {
           "$ref": "#/$defs/AzureStorageConfig"
+        },
+        "clusterNodes": {
+          "$ref": "#/$defs/AzureClusterNodesConfig"
         }
       },
       "additionalProperties": false,
