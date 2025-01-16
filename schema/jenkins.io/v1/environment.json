@@ -1,13 +1,9 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/jenkins-x/jx-api/v4/pkg/apis/jenkins.io/v1/environment",
-  "$ref": "#/$defs/Environment",
-  "$defs": {
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/Environment",
+  "definitions": {
     "AWSElasticBlockStoreVolumeSource": {
       "properties": {
-        "volumeID": {
-          "type": "string"
-        },
         "fsType": {
           "type": "string"
         },
@@ -16,6 +12,9 @@
         },
         "readOnly": {
           "type": "boolean"
+        },
+        "volumeID": {
+          "type": "string"
         }
       },
       "additionalProperties": false,
@@ -24,13 +23,16 @@
     "Affinity": {
       "properties": {
         "nodeAffinity": {
-          "$ref": "#/$defs/NodeAffinity"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/NodeAffinity"
         },
         "podAffinity": {
-          "$ref": "#/$defs/PodAffinity"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/PodAffinity"
         },
         "podAntiAffinity": {
-          "$ref": "#/$defs/PodAntiAffinity"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/PodAntiAffinity"
         }
       },
       "additionalProperties": false,
@@ -38,10 +40,10 @@
     },
     "AppArmorProfile": {
       "properties": {
-        "type": {
+        "localhostProfile": {
           "type": "string"
         },
-        "localhostProfile": {
+        "type": {
           "type": "string"
         }
       },
@@ -50,23 +52,23 @@
     },
     "AzureDiskVolumeSource": {
       "properties": {
+        "cachingMode": {
+          "type": "string"
+        },
         "diskName": {
           "type": "string"
         },
         "diskURI": {
           "type": "string"
         },
-        "cachingMode": {
+        "fsType": {
           "type": "string"
         },
-        "fsType": {
+        "kind": {
           "type": "string"
         },
         "readOnly": {
           "type": "boolean"
-        },
-        "kind": {
-          "type": "string"
         }
       },
       "additionalProperties": false,
@@ -74,14 +76,14 @@
     },
     "AzureFileVolumeSource": {
       "properties": {
+        "readOnly": {
+          "type": "boolean"
+        },
         "secretName": {
           "type": "string"
         },
         "shareName": {
           "type": "string"
-        },
-        "readOnly": {
-          "type": "boolean"
         }
       },
       "additionalProperties": false,
@@ -92,20 +94,22 @@
         "driver": {
           "type": "string"
         },
-        "readOnly": {
-          "type": "boolean"
-        },
         "fsType": {
           "type": "string"
         },
+        "nodePublishSecretRef": {
+          "$ref": "#/definitions/LocalObjectReference"
+        },
+        "readOnly": {
+          "type": "boolean"
+        },
         "volumeAttributes": {
-          "additionalProperties": {
-            "type": "string"
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
           },
           "type": "object"
-        },
-        "nodePublishSecretRef": {
-          "$ref": "#/$defs/LocalObjectReference"
         }
       },
       "additionalProperties": false,
@@ -140,17 +144,17 @@
         "path": {
           "type": "string"
         },
-        "user": {
-          "type": "string"
+        "readOnly": {
+          "type": "boolean"
         },
         "secretFile": {
           "type": "string"
         },
         "secretRef": {
-          "$ref": "#/$defs/LocalObjectReference"
+          "$ref": "#/definitions/LocalObjectReference"
         },
-        "readOnly": {
-          "type": "boolean"
+        "user": {
+          "type": "string"
         }
       },
       "additionalProperties": false,
@@ -158,9 +162,6 @@
     },
     "CinderVolumeSource": {
       "properties": {
-        "volumeID": {
-          "type": "string"
-        },
         "fsType": {
           "type": "string"
         },
@@ -168,7 +169,10 @@
           "type": "boolean"
         },
         "secretRef": {
-          "$ref": "#/$defs/LocalObjectReference"
+          "$ref": "#/definitions/LocalObjectReference"
+        },
+        "volumeID": {
+          "type": "string"
         }
       },
       "additionalProperties": false,
@@ -188,19 +192,19 @@
     },
     "ClusterTrustBundleProjection": {
       "properties": {
+        "labelSelector": {
+          "$ref": "#/definitions/LabelSelector"
+        },
         "name": {
           "type": "string"
-        },
-        "signerName": {
-          "type": "string"
-        },
-        "labelSelector": {
-          "$ref": "#/$defs/LabelSelector"
         },
         "optional": {
           "type": "boolean"
         },
         "path": {
+          "type": "string"
+        },
+        "signerName": {
           "type": "string"
         }
       },
@@ -221,10 +225,10 @@
     },
     "ConfigMapKeySelector": {
       "properties": {
-        "name": {
+        "key": {
           "type": "string"
         },
-        "key": {
+        "name": {
           "type": "string"
         },
         "optional": {
@@ -236,14 +240,14 @@
     },
     "ConfigMapProjection": {
       "properties": {
-        "name": {
-          "type": "string"
-        },
         "items": {
           "items": {
-            "$ref": "#/$defs/KeyToPath"
+            "$ref": "#/definitions/KeyToPath"
           },
           "type": "array"
+        },
+        "name": {
+          "type": "string"
         },
         "optional": {
           "type": "boolean"
@@ -254,17 +258,17 @@
     },
     "ConfigMapVolumeSource": {
       "properties": {
-        "name": {
-          "type": "string"
+        "defaultMode": {
+          "type": "integer"
         },
         "items": {
           "items": {
-            "$ref": "#/$defs/KeyToPath"
+            "$ref": "#/definitions/KeyToPath"
           },
           "type": "array"
         },
-        "defaultMode": {
-          "type": "integer"
+        "name": {
+          "type": "string"
         },
         "optional": {
           "type": "boolean"
@@ -274,25 +278,24 @@
       "type": "object"
     },
     "Container": {
-      "properties": {},
-      "additionalProperties": false,
+      "additionalProperties": true,
       "type": "object"
     },
     "ContainerPort": {
       "properties": {
-        "name": {
+        "containerPort": {
+          "type": "integer"
+        },
+        "hostIP": {
           "type": "string"
         },
         "hostPort": {
           "type": "integer"
         },
-        "containerPort": {
-          "type": "integer"
-        },
-        "protocol": {
+        "name": {
           "type": "string"
         },
-        "hostIP": {
+        "protocol": {
           "type": "string"
         }
       },
@@ -327,7 +330,7 @@
       "properties": {
         "items": {
           "items": {
-            "$ref": "#/$defs/DownwardAPIVolumeFile"
+            "$ref": "#/definitions/DownwardAPIVolumeFile"
           },
           "type": "array"
         }
@@ -337,17 +340,19 @@
     },
     "DownwardAPIVolumeFile": {
       "properties": {
-        "path": {
-          "type": "string"
-        },
         "fieldRef": {
-          "$ref": "#/$defs/ObjectFieldSelector"
-        },
-        "resourceFieldRef": {
-          "$ref": "#/$defs/ResourceFieldSelector"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/ObjectFieldSelector"
         },
         "mode": {
           "type": "integer"
+        },
+        "path": {
+          "type": "string"
+        },
+        "resourceFieldRef": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/ResourceFieldSelector"
         }
       },
       "additionalProperties": false,
@@ -355,14 +360,15 @@
     },
     "DownwardAPIVolumeSource": {
       "properties": {
-        "items": {
-          "items": {
-            "$ref": "#/$defs/DownwardAPIVolumeFile"
-          },
-          "type": "array"
-        },
         "defaultMode": {
           "type": "integer"
+        },
+        "items": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/DownwardAPIVolumeFile"
+          },
+          "type": "array"
         }
       },
       "additionalProperties": false,
@@ -374,7 +380,8 @@
           "type": "string"
         },
         "sizeLimit": {
-          "$ref": "#/$defs/Quantity"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/Quantity"
         }
       },
       "additionalProperties": false,
@@ -382,14 +389,16 @@
     },
     "EnvFromSource": {
       "properties": {
+        "configMapRef": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/ConfigMapEnvSource"
+        },
         "prefix": {
           "type": "string"
         },
-        "configMapRef": {
-          "$ref": "#/$defs/ConfigMapEnvSource"
-        },
         "secretRef": {
-          "$ref": "#/$defs/SecretEnvSource"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/SecretEnvSource"
         }
       },
       "additionalProperties": false,
@@ -404,7 +413,8 @@
           "type": "string"
         },
         "valueFrom": {
-          "$ref": "#/$defs/EnvVarSource"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/EnvVarSource"
         }
       },
       "additionalProperties": false,
@@ -412,17 +422,19 @@
     },
     "EnvVarSource": {
       "properties": {
+        "configMapKeyRef": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/ConfigMapKeySelector"
+        },
         "fieldRef": {
-          "$ref": "#/$defs/ObjectFieldSelector"
+          "$ref": "#/definitions/ObjectFieldSelector"
         },
         "resourceFieldRef": {
-          "$ref": "#/$defs/ResourceFieldSelector"
-        },
-        "configMapKeyRef": {
-          "$ref": "#/$defs/ConfigMapKeySelector"
+          "$ref": "#/definitions/ResourceFieldSelector"
         },
         "secretKeyRef": {
-          "$ref": "#/$defs/SecretKeySelector"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/SecretKeySelector"
         }
       },
       "additionalProperties": false,
@@ -430,20 +442,23 @@
     },
     "Environment": {
       "properties": {
-        "kind": {
-          "type": "string"
-        },
         "apiVersion": {
           "type": "string"
         },
+        "kind": {
+          "type": "string"
+        },
         "metadata": {
-          "$ref": "#/$defs/ObjectMeta"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/ObjectMeta"
         },
         "spec": {
-          "$ref": "#/$defs/EnvironmentSpec"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/EnvironmentSpec"
         },
         "status": {
-          "$ref": "#/$defs/EnvironmentStatus"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/EnvironmentStatus"
         }
       },
       "additionalProperties": false,
@@ -454,10 +469,10 @@
         "kind": {
           "type": "string"
         },
-        "url": {
+        "ref": {
           "type": "string"
         },
-        "ref": {
+        "url": {
           "type": "string"
         }
       },
@@ -466,41 +481,44 @@
     },
     "EnvironmentSpec": {
       "properties": {
+        "cluster": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
         "label": {
           "type": "string"
         },
         "namespace": {
           "type": "string"
         },
-        "cluster": {
-          "type": "string"
-        },
-        "promotionStrategy": {
-          "type": "string"
-        },
-        "source": {
-          "$ref": "#/$defs/EnvironmentRepository"
-        },
         "order": {
           "type": "integer"
         },
-        "kind": {
+        "previewGitInfo": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/PreviewGitSpec"
+        },
+        "promotionStrategy": {
           "type": "string"
         },
         "pullRequestURL": {
           "type": "string"
         },
-        "teamSettings": {
-          "$ref": "#/$defs/TeamSettings"
+        "remoteCluster": {
+          "type": "boolean"
         },
-        "previewGitInfo": {
-          "$ref": "#/$defs/PreviewGitSpec"
+        "source": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/EnvironmentRepository"
+        },
+        "teamSettings": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/TeamSettings"
         },
         "webHookEngine": {
           "type": "string"
-        },
-        "remoteCluster": {
-          "type": "boolean"
         }
       },
       "additionalProperties": false,
@@ -517,11 +535,11 @@
     },
     "EphemeralContainer": {
       "properties": {
-        "name": {
-          "type": "string"
-        },
-        "image": {
-          "type": "string"
+        "args": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
         },
         "command": {
           "items": {
@@ -529,80 +547,67 @@
           },
           "type": "array"
         },
-        "args": {
+        "env": {
           "items": {
-            "type": "string"
-          },
-          "type": "array"
-        },
-        "workingDir": {
-          "type": "string"
-        },
-        "ports": {
-          "items": {
-            "$ref": "#/$defs/ContainerPort"
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/EnvVar"
           },
           "type": "array"
         },
         "envFrom": {
           "items": {
-            "$ref": "#/$defs/EnvFromSource"
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/EnvFromSource"
           },
           "type": "array"
         },
-        "env": {
-          "items": {
-            "$ref": "#/$defs/EnvVar"
-          },
-          "type": "array"
-        },
-        "resources": {
-          "$ref": "#/$defs/ResourceRequirements"
-        },
-        "resizePolicy": {
-          "items": {
-            "$ref": "#/$defs/ContainerResizePolicy"
-          },
-          "type": "array"
-        },
-        "restartPolicy": {
-          "type": "string"
-        },
-        "volumeMounts": {
-          "items": {
-            "$ref": "#/$defs/VolumeMount"
-          },
-          "type": "array"
-        },
-        "volumeDevices": {
-          "items": {
-            "$ref": "#/$defs/VolumeDevice"
-          },
-          "type": "array"
-        },
-        "livenessProbe": {
-          "$ref": "#/$defs/Probe"
-        },
-        "readinessProbe": {
-          "$ref": "#/$defs/Probe"
-        },
-        "startupProbe": {
-          "$ref": "#/$defs/Probe"
-        },
-        "lifecycle": {
-          "$ref": "#/$defs/Lifecycle"
-        },
-        "terminationMessagePath": {
-          "type": "string"
-        },
-        "terminationMessagePolicy": {
+        "image": {
           "type": "string"
         },
         "imagePullPolicy": {
           "type": "string"
         },
+        "lifecycle": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/Lifecycle"
+        },
+        "livenessProbe": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/Probe"
+        },
+        "name": {
+          "type": "string"
+        },
+        "ports": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/ContainerPort"
+          },
+          "type": "array"
+        },
+        "readinessProbe": {
+          "$ref": "#/definitions/Probe"
+        },
+        "resizePolicy": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/ContainerResizePolicy"
+          },
+          "type": "array"
+        },
+        "resources": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/ResourceRequirements"
+        },
+        "restartPolicy": {
+          "type": "string"
+        },
         "securityContext": {
-          "$ref": "#/$defs/SecurityContext"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/SecurityContext"
+        },
+        "startupProbe": {
+          "$ref": "#/definitions/Probe"
         },
         "stdin": {
           "type": "boolean"
@@ -610,10 +615,33 @@
         "stdinOnce": {
           "type": "boolean"
         },
+        "targetContainerName": {
+          "type": "string"
+        },
+        "terminationMessagePath": {
+          "type": "string"
+        },
+        "terminationMessagePolicy": {
+          "type": "string"
+        },
         "tty": {
           "type": "boolean"
         },
-        "targetContainerName": {
+        "volumeDevices": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/VolumeDevice"
+          },
+          "type": "array"
+        },
+        "volumeMounts": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/VolumeMount"
+          },
+          "type": "array"
+        },
+        "workingDir": {
           "type": "string"
         }
       },
@@ -623,7 +651,8 @@
     "EphemeralVolumeSource": {
       "properties": {
         "volumeClaimTemplate": {
-          "$ref": "#/$defs/PersistentVolumeClaimTemplate"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/PersistentVolumeClaimTemplate"
         }
       },
       "additionalProperties": false,
@@ -643,20 +672,20 @@
     },
     "FCVolumeSource": {
       "properties": {
+        "fsType": {
+          "type": "string"
+        },
+        "lun": {
+          "type": "integer"
+        },
+        "readOnly": {
+          "type": "boolean"
+        },
         "targetWWNs": {
           "items": {
             "type": "string"
           },
           "type": "array"
-        },
-        "lun": {
-          "type": "integer"
-        },
-        "fsType": {
-          "type": "string"
-        },
-        "readOnly": {
-          "type": "boolean"
         },
         "wwids": {
           "items": {
@@ -669,7 +698,6 @@
       "type": "object"
     },
     "FieldsV1": {
-      "properties": {},
       "additionalProperties": false,
       "type": "object"
     },
@@ -681,17 +709,19 @@
         "fsType": {
           "type": "string"
         },
-        "secretRef": {
-          "$ref": "#/$defs/LocalObjectReference"
+        "options": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
         },
         "readOnly": {
           "type": "boolean"
         },
-        "options": {
-          "additionalProperties": {
-            "type": "string"
-          },
-          "type": "object"
+        "secretRef": {
+          "$ref": "#/definitions/LocalObjectReference"
         }
       },
       "additionalProperties": false,
@@ -711,14 +741,14 @@
     },
     "GCEPersistentDiskVolumeSource": {
       "properties": {
-        "pdName": {
-          "type": "string"
-        },
         "fsType": {
           "type": "string"
         },
         "partition": {
           "type": "integer"
+        },
+        "pdName": {
+          "type": "string"
         },
         "readOnly": {
           "type": "boolean"
@@ -741,13 +771,13 @@
     },
     "GitRepoVolumeSource": {
       "properties": {
+        "directory": {
+          "type": "string"
+        },
         "repository": {
           "type": "string"
         },
         "revision": {
-          "type": "string"
-        },
-        "directory": {
           "type": "string"
         }
       },
@@ -771,23 +801,25 @@
     },
     "HTTPGetAction": {
       "properties": {
-        "path": {
-          "type": "string"
-        },
-        "port": {
-          "$ref": "#/$defs/IntOrString"
-        },
         "host": {
-          "type": "string"
-        },
-        "scheme": {
           "type": "string"
         },
         "httpHeaders": {
           "items": {
-            "$ref": "#/$defs/HTTPHeader"
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/HTTPHeader"
           },
           "type": "array"
+        },
+        "path": {
+          "type": "string"
+        },
+        "port": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/IntOrString"
+        },
+        "scheme": {
+          "type": "string"
         }
       },
       "additionalProperties": false,
@@ -807,14 +839,14 @@
     },
     "HostAlias": {
       "properties": {
-        "ip": {
-          "type": "string"
-        },
         "hostnames": {
           "items": {
             "type": "string"
           },
           "type": "array"
+        },
+        "ip": {
+          "type": "string"
         }
       },
       "additionalProperties": false,
@@ -834,23 +866,26 @@
     },
     "ISCSIVolumeSource": {
       "properties": {
-        "targetPortal": {
+        "chapAuthDiscovery": {
+          "type": "boolean"
+        },
+        "chapAuthSession": {
+          "type": "boolean"
+        },
+        "fsType": {
+          "type": "string"
+        },
+        "initiatorName": {
           "type": "string"
         },
         "iqn": {
           "type": "string"
         },
-        "lun": {
-          "type": "integer"
-        },
         "iscsiInterface": {
           "type": "string"
         },
-        "fsType": {
-          "type": "string"
-        },
-        "readOnly": {
-          "type": "boolean"
+        "lun": {
+          "type": "integer"
         },
         "portals": {
           "items": {
@@ -858,16 +893,14 @@
           },
           "type": "array"
         },
-        "chapAuthDiscovery": {
-          "type": "boolean"
-        },
-        "chapAuthSession": {
+        "readOnly": {
           "type": "boolean"
         },
         "secretRef": {
-          "$ref": "#/$defs/LocalObjectReference"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/LocalObjectReference"
         },
-        "initiatorName": {
+        "targetPortal": {
           "type": "string"
         }
       },
@@ -876,14 +909,14 @@
     },
     "IntOrString": {
       "properties": {
-        "Type": {
-          "type": "integer"
-        },
         "IntVal": {
           "type": "integer"
         },
         "StrVal": {
           "type": "string"
+        },
+        "Type": {
+          "type": "integer"
         }
       },
       "additionalProperties": false,
@@ -891,20 +924,22 @@
     },
     "Job": {
       "properties": {
-        "kind": {
-          "type": "string"
-        },
         "apiVersion": {
           "type": "string"
         },
+        "kind": {
+          "type": "string"
+        },
         "metadata": {
-          "$ref": "#/$defs/ObjectMeta"
+          "$ref": "#/definitions/ObjectMeta"
         },
         "spec": {
-          "$ref": "#/$defs/JobSpec"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/JobSpec"
         },
         "status": {
-          "$ref": "#/$defs/JobStatus"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/JobStatus"
         }
       },
       "additionalProperties": false,
@@ -912,22 +947,30 @@
     },
     "JobCondition": {
       "properties": {
-        "type": {
+        "lastProbeTime": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "lastTransitionTime": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "message": {
+          "type": "string"
+        },
+        "reason": {
           "type": "string"
         },
         "status": {
           "type": "string"
         },
-        "lastProbeTime": {
-          "$ref": "#/$defs/Time"
-        },
-        "lastTransitionTime": {
-          "$ref": "#/$defs/Time"
-        },
-        "reason": {
-          "type": "string"
-        },
-        "message": {
+        "type": {
           "type": "string"
         }
       },
@@ -936,20 +979,8 @@
     },
     "JobSpec": {
       "properties": {
-        "parallelism": {
-          "type": "integer"
-        },
-        "completions": {
-          "type": "integer"
-        },
         "activeDeadlineSeconds": {
           "type": "integer"
-        },
-        "podFailurePolicy": {
-          "$ref": "#/$defs/PodFailurePolicy"
-        },
-        "successPolicy": {
-          "$ref": "#/$defs/SuccessPolicy"
         },
         "backoffLimit": {
           "type": "integer"
@@ -957,32 +988,48 @@
         "backoffLimitPerIndex": {
           "type": "integer"
         },
-        "maxFailedIndexes": {
+        "completionMode": {
+          "type": "string"
+        },
+        "completions": {
           "type": "integer"
         },
-        "selector": {
-          "$ref": "#/$defs/LabelSelector"
+        "managedBy": {
+          "type": "string"
         },
         "manualSelector": {
           "type": "boolean"
         },
-        "template": {
-          "$ref": "#/$defs/PodTemplateSpec"
-        },
-        "ttlSecondsAfterFinished": {
+        "maxFailedIndexes": {
           "type": "integer"
         },
-        "completionMode": {
-          "type": "string"
+        "parallelism": {
+          "type": "integer"
         },
-        "suspend": {
-          "type": "boolean"
+        "podFailurePolicy": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/PodFailurePolicy"
         },
         "podReplacementPolicy": {
           "type": "string"
         },
-        "managedBy": {
-          "type": "string"
+        "selector": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/LabelSelector"
+        },
+        "successPolicy": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/SuccessPolicy"
+        },
+        "suspend": {
+          "type": "boolean"
+        },
+        "template": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/PodTemplateSpec"
+        },
+        "ttlSecondsAfterFinished": {
+          "type": "integer"
         }
       },
       "additionalProperties": false,
@@ -990,41 +1037,51 @@
     },
     "JobStatus": {
       "properties": {
-        "conditions": {
-          "items": {
-            "$ref": "#/$defs/JobCondition"
-          },
-          "type": "array"
-        },
-        "startTime": {
-          "$ref": "#/$defs/Time"
-        },
-        "completionTime": {
-          "$ref": "#/$defs/Time"
-        },
         "active": {
-          "type": "integer"
-        },
-        "succeeded": {
-          "type": "integer"
-        },
-        "failed": {
-          "type": "integer"
-        },
-        "terminating": {
           "type": "integer"
         },
         "completedIndexes": {
           "type": "string"
         },
+        "completionTime": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "conditions": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/JobCondition"
+          },
+          "type": "array"
+        },
+        "failed": {
+          "type": "integer"
+        },
         "failedIndexes": {
           "type": "string"
         },
-        "uncountedTerminatedPods": {
-          "$ref": "#/$defs/UncountedTerminatedPods"
-        },
         "ready": {
           "type": "integer"
+        },
+        "startTime": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "succeeded": {
+          "type": "integer"
+        },
+        "terminating": {
+          "type": "integer"
+        },
+        "uncountedTerminatedPods": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/UncountedTerminatedPods"
         }
       },
       "additionalProperties": false,
@@ -1035,11 +1092,11 @@
         "key": {
           "type": "string"
         },
-        "path": {
-          "type": "string"
-        },
         "mode": {
           "type": "integer"
+        },
+        "path": {
+          "type": "string"
         }
       },
       "additionalProperties": false,
@@ -1047,17 +1104,20 @@
     },
     "LabelSelector": {
       "properties": {
-        "matchLabels": {
-          "additionalProperties": {
-            "type": "string"
-          },
-          "type": "object"
-        },
         "matchExpressions": {
           "items": {
-            "$ref": "#/$defs/LabelSelectorRequirement"
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/LabelSelectorRequirement"
           },
           "type": "array"
+        },
+        "matchLabels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
         }
       },
       "additionalProperties": false,
@@ -1084,10 +1144,11 @@
     "Lifecycle": {
       "properties": {
         "postStart": {
-          "$ref": "#/$defs/LifecycleHandler"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/LifecycleHandler"
         },
         "preStop": {
-          "$ref": "#/$defs/LifecycleHandler"
+          "$ref": "#/definitions/LifecycleHandler"
         }
       },
       "additionalProperties": false,
@@ -1096,16 +1157,17 @@
     "LifecycleHandler": {
       "properties": {
         "exec": {
-          "$ref": "#/$defs/ExecAction"
+          "$ref": "#/definitions/ExecAction"
         },
         "httpGet": {
-          "$ref": "#/$defs/HTTPGetAction"
-        },
-        "tcpSocket": {
-          "$ref": "#/$defs/TCPSocketAction"
+          "$ref": "#/definitions/HTTPGetAction"
         },
         "sleep": {
-          "$ref": "#/$defs/SleepAction"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/SleepAction"
+        },
+        "tcpSocket": {
+          "$ref": "#/definitions/TCPSocketAction"
         }
       },
       "additionalProperties": false,
@@ -1122,26 +1184,31 @@
     },
     "ManagedFieldsEntry": {
       "properties": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "fieldsType": {
+          "type": "string"
+        },
+        "fieldsV1": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/FieldsV1"
+        },
         "manager": {
           "type": "string"
         },
         "operation": {
           "type": "string"
         },
-        "apiVersion": {
+        "subresource": {
           "type": "string"
         },
         "time": {
-          "$ref": "#/$defs/Time"
-        },
-        "fieldsType": {
-          "type": "string"
-        },
-        "fieldsV1": {
-          "$ref": "#/$defs/FieldsV1"
-        },
-        "subresource": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         }
       },
       "additionalProperties": false,
@@ -1149,14 +1216,14 @@
     },
     "NFSVolumeSource": {
       "properties": {
-        "server": {
-          "type": "string"
-        },
         "path": {
           "type": "string"
         },
         "readOnly": {
           "type": "boolean"
+        },
+        "server": {
+          "type": "string"
         }
       },
       "additionalProperties": false,
@@ -1164,14 +1231,16 @@
     },
     "NodeAffinity": {
       "properties": {
-        "requiredDuringSchedulingIgnoredDuringExecution": {
-          "$ref": "#/$defs/NodeSelector"
-        },
         "preferredDuringSchedulingIgnoredDuringExecution": {
           "items": {
-            "$ref": "#/$defs/PreferredSchedulingTerm"
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/PreferredSchedulingTerm"
           },
           "type": "array"
+        },
+        "requiredDuringSchedulingIgnoredDuringExecution": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/NodeSelector"
         }
       },
       "additionalProperties": false,
@@ -1181,7 +1250,8 @@
       "properties": {
         "nodeSelectorTerms": {
           "items": {
-            "$ref": "#/$defs/NodeSelectorTerm"
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/NodeSelectorTerm"
           },
           "type": "array"
         }
@@ -1211,13 +1281,14 @@
       "properties": {
         "matchExpressions": {
           "items": {
-            "$ref": "#/$defs/NodeSelectorRequirement"
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/NodeSelectorRequirement"
           },
           "type": "array"
         },
         "matchFields": {
           "items": {
-            "$ref": "#/$defs/NodeSelectorRequirement"
+            "$ref": "#/definitions/NodeSelectorRequirement"
           },
           "type": "array"
         }
@@ -1239,53 +1310,30 @@
     },
     "ObjectMeta": {
       "properties": {
-        "name": {
-          "type": "string"
-        },
-        "generateName": {
-          "type": "string"
-        },
-        "namespace": {
-          "type": "string"
-        },
-        "selfLink": {
-          "type": "string"
-        },
-        "uid": {
-          "type": "string"
-        },
-        "resourceVersion": {
-          "type": "string"
-        },
-        "generation": {
-          "type": "integer"
+        "annotations": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
         },
         "creationTimestamp": {
-          "$ref": "#/$defs/Time"
-        },
-        "deletionTimestamp": {
-          "$ref": "#/$defs/Time"
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         },
         "deletionGracePeriodSeconds": {
           "type": "integer"
         },
-        "labels": {
-          "additionalProperties": {
-            "type": "string"
-          },
-          "type": "object"
-        },
-        "annotations": {
-          "additionalProperties": {
-            "type": "string"
-          },
-          "type": "object"
-        },
-        "ownerReferences": {
-          "items": {
-            "$ref": "#/$defs/OwnerReference"
-          },
-          "type": "array"
+        "deletionTimestamp": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         },
         "finalizers": {
           "items": {
@@ -1293,11 +1341,48 @@
           },
           "type": "array"
         },
+        "generateName": {
+          "type": "string"
+        },
+        "generation": {
+          "type": "integer"
+        },
+        "labels": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
         "managedFields": {
           "items": {
-            "$ref": "#/$defs/ManagedFieldsEntry"
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/ManagedFieldsEntry"
           },
           "type": "array"
+        },
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "ownerReferences": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/OwnerReference"
+          },
+          "type": "array"
+        },
+        "resourceVersion": {
+          "type": "string"
+        },
+        "selfLink": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
         }
       },
       "additionalProperties": false,
@@ -1308,6 +1393,12 @@
         "apiVersion": {
           "type": "string"
         },
+        "blockOwnerDeletion": {
+          "type": "boolean"
+        },
+        "controller": {
+          "type": "boolean"
+        },
         "kind": {
           "type": "string"
         },
@@ -1316,12 +1407,6 @@
         },
         "uid": {
           "type": "string"
-        },
-        "controller": {
-          "type": "boolean"
-        },
-        "blockOwnerDeletion": {
-          "type": "boolean"
         }
       },
       "additionalProperties": false,
@@ -1335,28 +1420,31 @@
           },
           "type": "array"
         },
-        "selector": {
-          "$ref": "#/$defs/LabelSelector"
+        "dataSource": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/TypedLocalObjectReference"
+        },
+        "dataSourceRef": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/TypedObjectReference"
         },
         "resources": {
-          "$ref": "#/$defs/VolumeResourceRequirements"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/VolumeResourceRequirements"
         },
-        "volumeName": {
-          "type": "string"
+        "selector": {
+          "$ref": "#/definitions/LabelSelector"
         },
         "storageClassName": {
+          "type": "string"
+        },
+        "volumeAttributesClassName": {
           "type": "string"
         },
         "volumeMode": {
           "type": "string"
         },
-        "dataSource": {
-          "$ref": "#/$defs/TypedLocalObjectReference"
-        },
-        "dataSourceRef": {
-          "$ref": "#/$defs/TypedObjectReference"
-        },
-        "volumeAttributesClassName": {
+        "volumeName": {
           "type": "string"
         }
       },
@@ -1366,10 +1454,11 @@
     "PersistentVolumeClaimTemplate": {
       "properties": {
         "metadata": {
-          "$ref": "#/$defs/ObjectMeta"
+          "$ref": "#/definitions/ObjectMeta"
         },
         "spec": {
-          "$ref": "#/$defs/PersistentVolumeClaimSpec"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/PersistentVolumeClaimSpec"
         }
       },
       "additionalProperties": false,
@@ -1389,10 +1478,10 @@
     },
     "PhotonPersistentDiskVolumeSource": {
       "properties": {
-        "pdID": {
+        "fsType": {
           "type": "string"
         },
-        "fsType": {
+        "pdID": {
           "type": "string"
         }
       },
@@ -1401,15 +1490,17 @@
     },
     "PodAffinity": {
       "properties": {
-        "requiredDuringSchedulingIgnoredDuringExecution": {
+        "preferredDuringSchedulingIgnoredDuringExecution": {
           "items": {
-            "$ref": "#/$defs/PodAffinityTerm"
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/WeightedPodAffinityTerm"
           },
           "type": "array"
         },
-        "preferredDuringSchedulingIgnoredDuringExecution": {
+        "requiredDuringSchedulingIgnoredDuringExecution": {
           "items": {
-            "$ref": "#/$defs/WeightedPodAffinityTerm"
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/PodAffinityTerm"
           },
           "type": "array"
         }
@@ -1420,19 +1511,7 @@
     "PodAffinityTerm": {
       "properties": {
         "labelSelector": {
-          "$ref": "#/$defs/LabelSelector"
-        },
-        "namespaces": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        },
-        "topologyKey": {
-          "type": "string"
-        },
-        "namespaceSelector": {
-          "$ref": "#/$defs/LabelSelector"
+          "$ref": "#/definitions/LabelSelector"
         },
         "matchLabelKeys": {
           "items": {
@@ -1445,6 +1524,18 @@
             "type": "string"
           },
           "type": "array"
+        },
+        "namespaceSelector": {
+          "$ref": "#/definitions/LabelSelector"
+        },
+        "namespaces": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "topologyKey": {
+          "type": "string"
         }
       },
       "additionalProperties": false,
@@ -1452,15 +1543,15 @@
     },
     "PodAntiAffinity": {
       "properties": {
-        "requiredDuringSchedulingIgnoredDuringExecution": {
+        "preferredDuringSchedulingIgnoredDuringExecution": {
           "items": {
-            "$ref": "#/$defs/PodAffinityTerm"
+            "$ref": "#/definitions/WeightedPodAffinityTerm"
           },
           "type": "array"
         },
-        "preferredDuringSchedulingIgnoredDuringExecution": {
+        "requiredDuringSchedulingIgnoredDuringExecution": {
           "items": {
-            "$ref": "#/$defs/WeightedPodAffinityTerm"
+            "$ref": "#/definitions/PodAffinityTerm"
           },
           "type": "array"
         }
@@ -1476,15 +1567,16 @@
           },
           "type": "array"
         },
-        "searches": {
+        "options": {
           "items": {
-            "type": "string"
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/PodDNSConfigOption"
           },
           "type": "array"
         },
-        "options": {
+        "searches": {
           "items": {
-            "$ref": "#/$defs/PodDNSConfigOption"
+            "type": "string"
           },
           "type": "array"
         }
@@ -1508,7 +1600,8 @@
       "properties": {
         "rules": {
           "items": {
-            "$ref": "#/$defs/PodFailurePolicyRule"
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/PodFailurePolicyRule"
           },
           "type": "array"
         }
@@ -1536,10 +1629,10 @@
     },
     "PodFailurePolicyOnPodConditionsPattern": {
       "properties": {
-        "type": {
+        "status": {
           "type": "string"
         },
-        "status": {
+        "type": {
           "type": "string"
         }
       },
@@ -1552,11 +1645,13 @@
           "type": "string"
         },
         "onExitCodes": {
-          "$ref": "#/$defs/PodFailurePolicyOnExitCodesRequirement"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/PodFailurePolicyOnExitCodesRequirement"
         },
         "onPodConditions": {
           "items": {
-            "$ref": "#/$defs/PodFailurePolicyOnPodConditionsPattern"
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/PodFailurePolicyOnPodConditionsPattern"
           },
           "type": "array"
         }
@@ -1588,7 +1683,8 @@
           "type": "string"
         },
         "source": {
-          "$ref": "#/$defs/ClaimSource"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/ClaimSource"
         }
       },
       "additionalProperties": false,
@@ -1605,14 +1701,14 @@
     },
     "PodSecurityContext": {
       "properties": {
-        "seLinuxOptions": {
-          "$ref": "#/$defs/SELinuxOptions"
+        "appArmorProfile": {
+          "$ref": "#/definitions/AppArmorProfile"
         },
-        "windowsOptions": {
-          "$ref": "#/$defs/WindowsSecurityContextOptions"
-        },
-        "runAsUser": {
+        "fsGroup": {
           "type": "integer"
+        },
+        "fsGroupChangePolicy": {
+          "type": "string"
         },
         "runAsGroup": {
           "type": "integer"
@@ -1620,29 +1716,30 @@
         "runAsNonRoot": {
           "type": "boolean"
         },
+        "runAsUser": {
+          "type": "integer"
+        },
+        "seLinuxOptions": {
+          "$ref": "#/definitions/SELinuxOptions"
+        },
+        "seccompProfile": {
+          "$ref": "#/definitions/SeccompProfile"
+        },
         "supplementalGroups": {
           "items": {
             "type": "integer"
           },
           "type": "array"
         },
-        "fsGroup": {
-          "type": "integer"
-        },
         "sysctls": {
           "items": {
-            "$ref": "#/$defs/Sysctl"
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/Sysctl"
           },
           "type": "array"
         },
-        "fsGroupChangePolicy": {
-          "type": "string"
-        },
-        "seccompProfile": {
-          "$ref": "#/$defs/SeccompProfile"
-        },
-        "appArmorProfile": {
-          "$ref": "#/$defs/AppArmorProfile"
+        "windowsOptions": {
+          "$ref": "#/definitions/WindowsSecurityContextOptions"
         }
       },
       "additionalProperties": false,
@@ -1650,59 +1747,48 @@
     },
     "PodSpec": {
       "properties": {
-        "volumes": {
-          "items": {
-            "$ref": "#/$defs/Volume"
-          },
-          "type": "array"
-        },
-        "initContainers": {
-          "items": {
-            "$ref": "#/$defs/Container"
-          },
-          "type": "array"
-        },
-        "containers": {
-          "items": {
-            "$ref": "#/$defs/Container"
-          },
-          "type": "array"
-        },
-        "ephemeralContainers": {
-          "items": {
-            "$ref": "#/$defs/EphemeralContainer"
-          },
-          "type": "array"
-        },
-        "restartPolicy": {
-          "type": "string"
-        },
-        "terminationGracePeriodSeconds": {
-          "type": "integer"
-        },
         "activeDeadlineSeconds": {
           "type": "integer"
         },
-        "dnsPolicy": {
-          "type": "string"
-        },
-        "nodeSelector": {
-          "additionalProperties": {
-            "type": "string"
-          },
-          "type": "object"
-        },
-        "serviceAccountName": {
-          "type": "string"
-        },
-        "serviceAccount": {
-          "type": "string"
+        "affinity": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/Affinity"
         },
         "automountServiceAccountToken": {
           "type": "boolean"
         },
-        "nodeName": {
+        "containers": {
+          "items": {
+            "$ref": "#/definitions/Container"
+          },
+          "type": "array"
+        },
+        "dnsConfig": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/PodDNSConfig"
+        },
+        "dnsPolicy": {
           "type": "string"
+        },
+        "enableServiceLinks": {
+          "type": "boolean"
+        },
+        "ephemeralContainers": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/EphemeralContainer"
+          },
+          "type": "array"
+        },
+        "hostAliases": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/HostAlias"
+          },
+          "type": "array"
+        },
+        "hostIPC": {
+          "type": "boolean"
         },
         "hostNetwork": {
           "type": "boolean"
@@ -1710,96 +1796,127 @@
         "hostPID": {
           "type": "boolean"
         },
-        "hostIPC": {
+        "hostUsers": {
           "type": "boolean"
-        },
-        "shareProcessNamespace": {
-          "type": "boolean"
-        },
-        "securityContext": {
-          "$ref": "#/$defs/PodSecurityContext"
-        },
-        "imagePullSecrets": {
-          "items": {
-            "$ref": "#/$defs/LocalObjectReference"
-          },
-          "type": "array"
         },
         "hostname": {
           "type": "string"
         },
-        "subdomain": {
-          "type": "string"
-        },
-        "affinity": {
-          "$ref": "#/$defs/Affinity"
-        },
-        "schedulerName": {
-          "type": "string"
-        },
-        "tolerations": {
+        "imagePullSecrets": {
           "items": {
-            "$ref": "#/$defs/Toleration"
+            "$ref": "#/definitions/LocalObjectReference"
           },
           "type": "array"
         },
-        "hostAliases": {
+        "initContainers": {
           "items": {
-            "$ref": "#/$defs/HostAlias"
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/Container"
           },
           "type": "array"
         },
-        "priorityClassName": {
+        "nodeName": {
+          "type": "string"
+        },
+        "nodeSelector": {
+          "patternProperties": {
+            ".*": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "os": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/PodOS"
+        },
+        "overhead": {
+          "patternProperties": {
+            ".*": {
+              "$ref": "#/definitions/Quantity"
+            }
+          },
+          "type": "object"
+        },
+        "preemptionPolicy": {
           "type": "string"
         },
         "priority": {
           "type": "integer"
         },
-        "dnsConfig": {
-          "$ref": "#/$defs/PodDNSConfig"
+        "priorityClassName": {
+          "type": "string"
         },
         "readinessGates": {
           "items": {
-            "$ref": "#/$defs/PodReadinessGate"
-          },
-          "type": "array"
-        },
-        "runtimeClassName": {
-          "type": "string"
-        },
-        "enableServiceLinks": {
-          "type": "boolean"
-        },
-        "preemptionPolicy": {
-          "type": "string"
-        },
-        "overhead": {
-          "$ref": "#/$defs/ResourceList"
-        },
-        "topologySpreadConstraints": {
-          "items": {
-            "$ref": "#/$defs/TopologySpreadConstraint"
-          },
-          "type": "array"
-        },
-        "setHostnameAsFQDN": {
-          "type": "boolean"
-        },
-        "os": {
-          "$ref": "#/$defs/PodOS"
-        },
-        "hostUsers": {
-          "type": "boolean"
-        },
-        "schedulingGates": {
-          "items": {
-            "$ref": "#/$defs/PodSchedulingGate"
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/PodReadinessGate"
           },
           "type": "array"
         },
         "resourceClaims": {
           "items": {
-            "$ref": "#/$defs/PodResourceClaim"
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/PodResourceClaim"
+          },
+          "type": "array"
+        },
+        "restartPolicy": {
+          "type": "string"
+        },
+        "runtimeClassName": {
+          "type": "string"
+        },
+        "schedulerName": {
+          "type": "string"
+        },
+        "schedulingGates": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/PodSchedulingGate"
+          },
+          "type": "array"
+        },
+        "securityContext": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/PodSecurityContext"
+        },
+        "serviceAccount": {
+          "type": "string"
+        },
+        "serviceAccountName": {
+          "type": "string"
+        },
+        "setHostnameAsFQDN": {
+          "type": "boolean"
+        },
+        "shareProcessNamespace": {
+          "type": "boolean"
+        },
+        "subdomain": {
+          "type": "string"
+        },
+        "terminationGracePeriodSeconds": {
+          "type": "integer"
+        },
+        "tolerations": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/Toleration"
+          },
+          "type": "array"
+        },
+        "topologySpreadConstraints": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/TopologySpreadConstraint"
+          },
+          "type": "array"
+        },
+        "volumes": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/Volume"
           },
           "type": "array"
         }
@@ -1810,10 +1927,11 @@
     "PodTemplateSpec": {
       "properties": {
         "metadata": {
-          "$ref": "#/$defs/ObjectMeta"
+          "$ref": "#/definitions/ObjectMeta"
         },
         "spec": {
-          "$ref": "#/$defs/PodSpec"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/PodSpec"
         }
       },
       "additionalProperties": false,
@@ -1821,14 +1939,14 @@
     },
     "PortworxVolumeSource": {
       "properties": {
-        "volumeID": {
-          "type": "string"
-        },
         "fsType": {
           "type": "string"
         },
         "readOnly": {
           "type": "boolean"
+        },
+        "volumeID": {
+          "type": "string"
         }
       },
       "additionalProperties": false,
@@ -1836,11 +1954,11 @@
     },
     "PreferredSchedulingTerm": {
       "properties": {
+        "preference": {
+          "$ref": "#/definitions/NodeSelectorTerm"
+        },
         "weight": {
           "type": "integer"
-        },
-        "preference": {
-          "$ref": "#/$defs/NodeSelectorTerm"
         }
       },
       "additionalProperties": false,
@@ -1848,19 +1966,10 @@
     },
     "PreviewGitSpec": {
       "properties": {
-        "name": {
+        "appName": {
           "type": "string"
         },
-        "url": {
-          "type": "string"
-        },
-        "user": {
-          "$ref": "#/$defs/UserSpec"
-        },
-        "title": {
-          "type": "string"
-        },
-        "description": {
+        "applicationURL": {
           "type": "string"
         },
         "buildStatus": {
@@ -1869,11 +1978,21 @@
         "buildStatusUrl": {
           "type": "string"
         },
-        "appName": {
+        "description": {
           "type": "string"
         },
-        "applicationURL": {
+        "name": {
           "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "user": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/UserSpec"
         }
       },
       "additionalProperties": false,
@@ -1882,21 +2001,21 @@
     "Probe": {
       "properties": {
         "exec": {
-          "$ref": "#/$defs/ExecAction"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/ExecAction"
         },
-        "httpGet": {
-          "$ref": "#/$defs/HTTPGetAction"
-        },
-        "tcpSocket": {
-          "$ref": "#/$defs/TCPSocketAction"
-        },
-        "grpc": {
-          "$ref": "#/$defs/GRPCAction"
-        },
-        "initialDelaySeconds": {
+        "failureThreshold": {
           "type": "integer"
         },
-        "timeoutSeconds": {
+        "grpc": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/GRPCAction"
+        },
+        "httpGet": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/HTTPGetAction"
+        },
+        "initialDelaySeconds": {
           "type": "integer"
         },
         "periodSeconds": {
@@ -1905,10 +2024,14 @@
         "successThreshold": {
           "type": "integer"
         },
-        "failureThreshold": {
-          "type": "integer"
+        "tcpSocket": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/TCPSocketAction"
         },
         "terminationGracePeriodSeconds": {
+          "type": "integer"
+        },
+        "timeoutSeconds": {
           "type": "integer"
         }
       },
@@ -1917,37 +2040,36 @@
     },
     "ProjectedVolumeSource": {
       "properties": {
-        "sources": {
-          "items": {
-            "$ref": "#/$defs/VolumeProjection"
-          },
-          "type": "array"
-        },
         "defaultMode": {
           "type": "integer"
+        },
+        "sources": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/VolumeProjection"
+          },
+          "type": "array"
         }
       },
       "additionalProperties": false,
       "type": "object"
     },
     "Quantity": {
-      "properties": {
-        "Format": {
-          "type": "string"
-        }
-      },
       "additionalProperties": false,
       "type": "object"
     },
     "QuickStartLocation": {
       "properties": {
-        "gitUrl": {
-          "type": "string"
+        "excludes": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
         },
         "gitKind": {
           "type": "string"
         },
-        "owner": {
+        "gitUrl": {
           "type": "string"
         },
         "includes": {
@@ -1956,11 +2078,8 @@
           },
           "type": "array"
         },
-        "excludes": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
+        "owner": {
+          "type": "string"
         }
       },
       "additionalProperties": false,
@@ -1968,22 +2087,22 @@
     },
     "QuobyteVolumeSource": {
       "properties": {
-        "registry": {
-          "type": "string"
-        },
-        "volume": {
+        "group": {
           "type": "string"
         },
         "readOnly": {
           "type": "boolean"
         },
-        "user": {
-          "type": "string"
-        },
-        "group": {
+        "registry": {
           "type": "string"
         },
         "tenant": {
+          "type": "string"
+        },
+        "user": {
+          "type": "string"
+        },
+        "volume": {
           "type": "string"
         }
       },
@@ -1992,32 +2111,32 @@
     },
     "RBDVolumeSource": {
       "properties": {
+        "fsType": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        },
+        "keyring": {
+          "type": "string"
+        },
         "monitors": {
           "items": {
             "type": "string"
           },
           "type": "array"
         },
-        "image": {
-          "type": "string"
-        },
-        "fsType": {
-          "type": "string"
-        },
         "pool": {
           "type": "string"
         },
-        "user": {
-          "type": "string"
-        },
-        "keyring": {
-          "type": "string"
-        },
-        "secretRef": {
-          "$ref": "#/$defs/LocalObjectReference"
-        },
         "readOnly": {
           "type": "boolean"
+        },
+        "secretRef": {
+          "$ref": "#/definitions/LocalObjectReference"
+        },
+        "user": {
+          "type": "string"
         }
       },
       "additionalProperties": false,
@@ -2037,20 +2156,14 @@
         "containerName": {
           "type": "string"
         },
+        "divisor": {
+          "$ref": "#/definitions/Quantity"
+        },
         "resource": {
           "type": "string"
-        },
-        "divisor": {
-          "$ref": "#/$defs/Quantity"
         }
       },
       "additionalProperties": false,
-      "type": "object"
-    },
-    "ResourceList": {
-      "additionalProperties": {
-        "$ref": "#/$defs/Quantity"
-      },
       "type": "object"
     },
     "ResourceReference": {
@@ -2073,17 +2186,28 @@
     },
     "ResourceRequirements": {
       "properties": {
-        "limits": {
-          "$ref": "#/$defs/ResourceList"
-        },
-        "requests": {
-          "$ref": "#/$defs/ResourceList"
-        },
         "claims": {
           "items": {
-            "$ref": "#/$defs/ResourceClaim"
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/ResourceClaim"
           },
           "type": "array"
+        },
+        "limits": {
+          "patternProperties": {
+            ".*": {
+              "$ref": "#/definitions/Quantity"
+            }
+          },
+          "type": "object"
+        },
+        "requests": {
+          "patternProperties": {
+            ".*": {
+              "$ref": "#/definitions/Quantity"
+            }
+          },
+          "type": "object"
         }
       },
       "additionalProperties": false,
@@ -2091,7 +2215,7 @@
     },
     "SELinuxOptions": {
       "properties": {
-        "user": {
+        "level": {
           "type": "string"
         },
         "role": {
@@ -2100,7 +2224,7 @@
         "type": {
           "type": "string"
         },
-        "level": {
+        "user": {
           "type": "string"
         }
       },
@@ -2109,35 +2233,35 @@
     },
     "ScaleIOVolumeSource": {
       "properties": {
+        "fsType": {
+          "type": "string"
+        },
         "gateway": {
           "type": "string"
         },
-        "system": {
+        "protectionDomain": {
           "type": "string"
         },
+        "readOnly": {
+          "type": "boolean"
+        },
         "secretRef": {
-          "$ref": "#/$defs/LocalObjectReference"
+          "$ref": "#/definitions/LocalObjectReference"
         },
         "sslEnabled": {
           "type": "boolean"
         },
-        "protectionDomain": {
+        "storageMode": {
           "type": "string"
         },
         "storagePool": {
           "type": "string"
         },
-        "storageMode": {
+        "system": {
           "type": "string"
         },
         "volumeName": {
           "type": "string"
-        },
-        "fsType": {
-          "type": "string"
-        },
-        "readOnly": {
-          "type": "boolean"
         }
       },
       "additionalProperties": false,
@@ -2145,10 +2269,10 @@
     },
     "SeccompProfile": {
       "properties": {
-        "type": {
+        "localhostProfile": {
           "type": "string"
         },
-        "localhostProfile": {
+        "type": {
           "type": "string"
         }
       },
@@ -2169,10 +2293,10 @@
     },
     "SecretKeySelector": {
       "properties": {
-        "name": {
+        "key": {
           "type": "string"
         },
-        "key": {
+        "name": {
           "type": "string"
         },
         "optional": {
@@ -2184,14 +2308,14 @@
     },
     "SecretProjection": {
       "properties": {
-        "name": {
-          "type": "string"
-        },
         "items": {
           "items": {
-            "$ref": "#/$defs/KeyToPath"
+            "$ref": "#/definitions/KeyToPath"
           },
           "type": "array"
+        },
+        "name": {
+          "type": "string"
         },
         "optional": {
           "type": "boolean"
@@ -2202,20 +2326,21 @@
     },
     "SecretVolumeSource": {
       "properties": {
-        "secretName": {
-          "type": "string"
-        },
-        "items": {
-          "items": {
-            "$ref": "#/$defs/KeyToPath"
-          },
-          "type": "array"
-        },
         "defaultMode": {
           "type": "integer"
         },
+        "items": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/KeyToPath"
+          },
+          "type": "array"
+        },
         "optional": {
           "type": "boolean"
+        },
+        "secretName": {
+          "type": "string"
         }
       },
       "additionalProperties": false,
@@ -2223,20 +2348,25 @@
     },
     "SecurityContext": {
       "properties": {
+        "allowPrivilegeEscalation": {
+          "type": "boolean"
+        },
+        "appArmorProfile": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/AppArmorProfile"
+        },
         "capabilities": {
-          "$ref": "#/$defs/Capabilities"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/Capabilities"
         },
         "privileged": {
           "type": "boolean"
         },
-        "seLinuxOptions": {
-          "$ref": "#/$defs/SELinuxOptions"
+        "procMount": {
+          "type": "string"
         },
-        "windowsOptions": {
-          "$ref": "#/$defs/WindowsSecurityContextOptions"
-        },
-        "runAsUser": {
-          "type": "integer"
+        "readOnlyRootFilesystem": {
+          "type": "boolean"
         },
         "runAsGroup": {
           "type": "integer"
@@ -2244,20 +2374,20 @@
         "runAsNonRoot": {
           "type": "boolean"
         },
-        "readOnlyRootFilesystem": {
-          "type": "boolean"
+        "runAsUser": {
+          "type": "integer"
         },
-        "allowPrivilegeEscalation": {
-          "type": "boolean"
-        },
-        "procMount": {
-          "type": "string"
+        "seLinuxOptions": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/SELinuxOptions"
         },
         "seccompProfile": {
-          "$ref": "#/$defs/SeccompProfile"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/SeccompProfile"
         },
-        "appArmorProfile": {
-          "$ref": "#/$defs/AppArmorProfile"
+        "windowsOptions": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/WindowsSecurityContextOptions"
         }
       },
       "additionalProperties": false,
@@ -2289,16 +2419,16 @@
     },
     "StorageLocation": {
       "properties": {
-        "classifier": {
+        "bucketUrl": {
           "type": "string"
         },
-        "gitUrl": {
+        "classifier": {
           "type": "string"
         },
         "gitBranch": {
           "type": "string"
         },
-        "bucketUrl": {
+        "gitUrl": {
           "type": "string"
         }
       },
@@ -2307,12 +2437,6 @@
     },
     "StorageOSVolumeSource": {
       "properties": {
-        "volumeName": {
-          "type": "string"
-        },
-        "volumeNamespace": {
-          "type": "string"
-        },
         "fsType": {
           "type": "string"
         },
@@ -2320,7 +2444,13 @@
           "type": "boolean"
         },
         "secretRef": {
-          "$ref": "#/$defs/LocalObjectReference"
+          "$ref": "#/definitions/LocalObjectReference"
+        },
+        "volumeName": {
+          "type": "string"
+        },
+        "volumeNamespace": {
+          "type": "string"
         }
       },
       "additionalProperties": false,
@@ -2330,7 +2460,8 @@
       "properties": {
         "rules": {
           "items": {
-            "$ref": "#/$defs/SuccessPolicyRule"
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/SuccessPolicyRule"
           },
           "type": "array"
         }
@@ -2340,11 +2471,11 @@
     },
     "SuccessPolicyRule": {
       "properties": {
-        "succeededIndexes": {
-          "type": "string"
-        },
         "succeededCount": {
           "type": "integer"
+        },
+        "succeededIndexes": {
+          "type": "string"
         }
       },
       "additionalProperties": false,
@@ -2364,11 +2495,11 @@
     },
     "TCPSocketAction": {
       "properties": {
-        "port": {
-          "$ref": "#/$defs/IntOrString"
-        },
         "host": {
           "type": "string"
+        },
+        "port": {
+          "$ref": "#/definitions/IntOrString"
         }
       },
       "additionalProperties": false,
@@ -2376,106 +2507,110 @@
     },
     "TeamSettings": {
       "properties": {
-        "branchPatterns": {
-          "type": "string"
-        },
-        "forkBranchPatterns": {
-          "type": "string"
-        },
-        "quickstartLocations": {
-          "items": {
-            "$ref": "#/$defs/QuickStartLocation"
-          },
-          "type": "array"
-        },
-        "postPreviewJobs": {
-          "items": {
-            "$ref": "#/$defs/Job"
-          },
-          "type": "array"
-        },
-        "promotionEngine": {
-          "type": "string"
-        },
-        "gitServer": {
-          "type": "string"
-        },
-        "organisation": {
-          "type": "string"
-        },
-        "envOrganisation": {
-          "type": "string"
-        },
-        "pipelineUsername": {
-          "type": "string"
-        },
-        "pipelineUserEmail": {
-          "type": "string"
-        },
-        "dockerRegistryOrg": {
-          "type": "string"
-        },
-        "gitPublic": {
-          "type": "boolean"
-        },
-        "kubeProvider": {
-          "type": "string"
-        },
-        "appsRepository": {
-          "type": "string"
-        },
-        "storageLocations": {
-          "items": {
-            "$ref": "#/$defs/StorageLocation"
-          },
-          "type": "array"
-        },
-        "deployKind": {
-          "type": "string"
-        },
         "appPrefixes": {
           "items": {
             "type": "string"
           },
           "type": "array"
         },
-        "defaultScheduler": {
-          "$ref": "#/$defs/ResourceReference"
-        },
-        "prowConfig": {
+        "appsRepository": {
           "type": "string"
         },
         "bootRequirements": {
           "type": "string"
         },
+        "branchPatterns": {
+          "type": "string"
+        },
+        "defaultScheduler": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/ResourceReference"
+        },
+        "deployKind": {
+          "type": "string"
+        },
         "deployOptions": {
-          "$ref": "#/$defs/DeployOptions"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/DeployOptions"
+        },
+        "dockerRegistryOrg": {
+          "type": "string"
+        },
+        "envOrganisation": {
+          "type": "string"
+        },
+        "forkBranchPatterns": {
+          "type": "string"
+        },
+        "gitPublic": {
+          "type": "boolean"
+        },
+        "gitServer": {
+          "type": "string"
+        },
+        "kubeProvider": {
+          "type": "string"
+        },
+        "organisation": {
+          "type": "string"
+        },
+        "pipelineUserEmail": {
+          "type": "string"
+        },
+        "pipelineUsername": {
+          "type": "string"
+        },
+        "postPreviewJobs": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/Job"
+          },
+          "type": "array"
+        },
+        "promotionEngine": {
+          "type": "string"
+        },
+        "prowConfig": {
+          "type": "string"
+        },
+        "quickstartLocations": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/QuickStartLocation"
+          },
+          "type": "array"
+        },
+        "storageLocations": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$ref": "#/definitions/StorageLocation"
+          },
+          "type": "array"
         }
       },
       "additionalProperties": false,
       "type": "object"
     },
     "Time": {
-      "properties": {},
       "additionalProperties": false,
       "type": "object"
     },
     "Toleration": {
       "properties": {
+        "effect": {
+          "type": "string"
+        },
         "key": {
           "type": "string"
         },
         "operator": {
           "type": "string"
         },
-        "value": {
-          "type": "string"
-        },
-        "effect": {
-          "type": "string"
-        },
         "tolerationSeconds": {
           "type": "integer"
+        },
+        "value": {
+          "type": "string"
         }
       },
       "additionalProperties": false,
@@ -2483,17 +2618,17 @@
     },
     "TopologySpreadConstraint": {
       "properties": {
+        "labelSelector": {
+          "$ref": "#/definitions/LabelSelector"
+        },
+        "matchLabelKeys": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
         "maxSkew": {
           "type": "integer"
-        },
-        "topologyKey": {
-          "type": "string"
-        },
-        "whenUnsatisfiable": {
-          "type": "string"
-        },
-        "labelSelector": {
-          "$ref": "#/$defs/LabelSelector"
         },
         "minDomains": {
           "type": "integer"
@@ -2504,11 +2639,11 @@
         "nodeTaintsPolicy": {
           "type": "string"
         },
-        "matchLabelKeys": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
+        "topologyKey": {
+          "type": "string"
+        },
+        "whenUnsatisfiable": {
+          "type": "string"
         }
       },
       "additionalProperties": false,
@@ -2549,13 +2684,13 @@
     },
     "UncountedTerminatedPods": {
       "properties": {
-        "succeeded": {
+        "failed": {
           "items": {
             "type": "string"
           },
           "type": "array"
         },
-        "failed": {
+        "succeeded": {
           "items": {
             "type": "string"
           },
@@ -2567,16 +2702,16 @@
     },
     "UserSpec": {
       "properties": {
-        "username": {
-          "type": "string"
-        },
-        "name": {
+        "imageUrl": {
           "type": "string"
         },
         "linkUrl": {
           "type": "string"
         },
-        "imageUrl": {
+        "name": {
+          "type": "string"
+        },
+        "username": {
           "type": "string"
         }
       },
@@ -2585,95 +2720,124 @@
     },
     "Volume": {
       "properties": {
+        "awsElasticBlockStore": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/AWSElasticBlockStoreVolumeSource"
+        },
+        "azureDisk": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/AzureDiskVolumeSource"
+        },
+        "azureFile": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/AzureFileVolumeSource"
+        },
+        "cephfs": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/CephFSVolumeSource"
+        },
+        "cinder": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/CinderVolumeSource"
+        },
+        "configMap": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/ConfigMapVolumeSource"
+        },
+        "csi": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/CSIVolumeSource"
+        },
+        "downwardAPI": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/DownwardAPIVolumeSource"
+        },
+        "emptyDir": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/EmptyDirVolumeSource"
+        },
+        "ephemeral": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/EphemeralVolumeSource"
+        },
+        "fc": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/FCVolumeSource"
+        },
+        "flexVolume": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/FlexVolumeSource"
+        },
+        "flocker": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/FlockerVolumeSource"
+        },
+        "gcePersistentDisk": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/GCEPersistentDiskVolumeSource"
+        },
+        "gitRepo": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/GitRepoVolumeSource"
+        },
+        "glusterfs": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/GlusterfsVolumeSource"
+        },
+        "hostPath": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/HostPathVolumeSource"
+        },
+        "iscsi": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/ISCSIVolumeSource"
+        },
         "name": {
           "type": "string"
         },
-        "hostPath": {
-          "$ref": "#/$defs/HostPathVolumeSource"
-        },
-        "emptyDir": {
-          "$ref": "#/$defs/EmptyDirVolumeSource"
-        },
-        "gcePersistentDisk": {
-          "$ref": "#/$defs/GCEPersistentDiskVolumeSource"
-        },
-        "awsElasticBlockStore": {
-          "$ref": "#/$defs/AWSElasticBlockStoreVolumeSource"
-        },
-        "gitRepo": {
-          "$ref": "#/$defs/GitRepoVolumeSource"
-        },
-        "secret": {
-          "$ref": "#/$defs/SecretVolumeSource"
-        },
         "nfs": {
-          "$ref": "#/$defs/NFSVolumeSource"
-        },
-        "iscsi": {
-          "$ref": "#/$defs/ISCSIVolumeSource"
-        },
-        "glusterfs": {
-          "$ref": "#/$defs/GlusterfsVolumeSource"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/NFSVolumeSource"
         },
         "persistentVolumeClaim": {
-          "$ref": "#/$defs/PersistentVolumeClaimVolumeSource"
-        },
-        "rbd": {
-          "$ref": "#/$defs/RBDVolumeSource"
-        },
-        "flexVolume": {
-          "$ref": "#/$defs/FlexVolumeSource"
-        },
-        "cinder": {
-          "$ref": "#/$defs/CinderVolumeSource"
-        },
-        "cephfs": {
-          "$ref": "#/$defs/CephFSVolumeSource"
-        },
-        "flocker": {
-          "$ref": "#/$defs/FlockerVolumeSource"
-        },
-        "downwardAPI": {
-          "$ref": "#/$defs/DownwardAPIVolumeSource"
-        },
-        "fc": {
-          "$ref": "#/$defs/FCVolumeSource"
-        },
-        "azureFile": {
-          "$ref": "#/$defs/AzureFileVolumeSource"
-        },
-        "configMap": {
-          "$ref": "#/$defs/ConfigMapVolumeSource"
-        },
-        "vsphereVolume": {
-          "$ref": "#/$defs/VsphereVirtualDiskVolumeSource"
-        },
-        "quobyte": {
-          "$ref": "#/$defs/QuobyteVolumeSource"
-        },
-        "azureDisk": {
-          "$ref": "#/$defs/AzureDiskVolumeSource"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/PersistentVolumeClaimVolumeSource"
         },
         "photonPersistentDisk": {
-          "$ref": "#/$defs/PhotonPersistentDiskVolumeSource"
-        },
-        "projected": {
-          "$ref": "#/$defs/ProjectedVolumeSource"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/PhotonPersistentDiskVolumeSource"
         },
         "portworxVolume": {
-          "$ref": "#/$defs/PortworxVolumeSource"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/PortworxVolumeSource"
+        },
+        "projected": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/ProjectedVolumeSource"
+        },
+        "quobyte": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/QuobyteVolumeSource"
+        },
+        "rbd": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/RBDVolumeSource"
         },
         "scaleIO": {
-          "$ref": "#/$defs/ScaleIOVolumeSource"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/ScaleIOVolumeSource"
+        },
+        "secret": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/SecretVolumeSource"
         },
         "storageos": {
-          "$ref": "#/$defs/StorageOSVolumeSource"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/StorageOSVolumeSource"
         },
-        "csi": {
-          "$ref": "#/$defs/CSIVolumeSource"
-        },
-        "ephemeral": {
-          "$ref": "#/$defs/EphemeralVolumeSource"
+        "vsphereVolume": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/VsphereVirtualDiskVolumeSource"
         }
       },
       "additionalProperties": false,
@@ -2681,10 +2845,10 @@
     },
     "VolumeDevice": {
       "properties": {
-        "name": {
+        "devicePath": {
           "type": "string"
         },
-        "devicePath": {
+        "name": {
           "type": "string"
         }
       },
@@ -2693,6 +2857,12 @@
     },
     "VolumeMount": {
       "properties": {
+        "mountPath": {
+          "type": "string"
+        },
+        "mountPropagation": {
+          "type": "string"
+        },
         "name": {
           "type": "string"
         },
@@ -2702,13 +2872,7 @@
         "recursiveReadOnly": {
           "type": "string"
         },
-        "mountPath": {
-          "type": "string"
-        },
         "subPath": {
-          "type": "string"
-        },
-        "mountPropagation": {
           "type": "string"
         },
         "subPathExpr": {
@@ -2720,20 +2884,25 @@
     },
     "VolumeProjection": {
       "properties": {
-        "secret": {
-          "$ref": "#/$defs/SecretProjection"
-        },
-        "downwardAPI": {
-          "$ref": "#/$defs/DownwardAPIProjection"
+        "clusterTrustBundle": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/ClusterTrustBundleProjection"
         },
         "configMap": {
-          "$ref": "#/$defs/ConfigMapProjection"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/ConfigMapProjection"
+        },
+        "downwardAPI": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/DownwardAPIProjection"
+        },
+        "secret": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/SecretProjection"
         },
         "serviceAccountToken": {
-          "$ref": "#/$defs/ServiceAccountTokenProjection"
-        },
-        "clusterTrustBundle": {
-          "$ref": "#/$defs/ClusterTrustBundleProjection"
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "$ref": "#/definitions/ServiceAccountTokenProjection"
         }
       },
       "additionalProperties": false,
@@ -2742,10 +2911,20 @@
     "VolumeResourceRequirements": {
       "properties": {
         "limits": {
-          "$ref": "#/$defs/ResourceList"
+          "patternProperties": {
+            ".*": {
+              "$ref": "#/definitions/Quantity"
+            }
+          },
+          "type": "object"
         },
         "requests": {
-          "$ref": "#/$defs/ResourceList"
+          "patternProperties": {
+            ".*": {
+              "$ref": "#/definitions/Quantity"
+            }
+          },
+          "type": "object"
         }
       },
       "additionalProperties": false,
@@ -2753,16 +2932,16 @@
     },
     "VsphereVirtualDiskVolumeSource": {
       "properties": {
-        "volumePath": {
+        "fsType": {
           "type": "string"
         },
-        "fsType": {
+        "storagePolicyID": {
           "type": "string"
         },
         "storagePolicyName": {
           "type": "string"
         },
-        "storagePolicyID": {
+        "volumePath": {
           "type": "string"
         }
       },
@@ -2771,11 +2950,11 @@
     },
     "WeightedPodAffinityTerm": {
       "properties": {
+        "podAffinityTerm": {
+          "$ref": "#/definitions/PodAffinityTerm"
+        },
         "weight": {
           "type": "integer"
-        },
-        "podAffinityTerm": {
-          "$ref": "#/$defs/PodAffinityTerm"
         }
       },
       "additionalProperties": false,
@@ -2783,17 +2962,17 @@
     },
     "WindowsSecurityContextOptions": {
       "properties": {
-        "gmsaCredentialSpecName": {
-          "type": "string"
-        },
         "gmsaCredentialSpec": {
           "type": "string"
         },
-        "runAsUserName": {
+        "gmsaCredentialSpecName": {
           "type": "string"
         },
         "hostProcess": {
           "type": "boolean"
+        },
+        "runAsUserName": {
+          "type": "string"
         }
       },
       "additionalProperties": false,
