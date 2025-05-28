@@ -502,6 +502,8 @@ type AutoUpdateConfig struct {
 	Schedule string `json:"schedule"`
 	// AutoMerge if enabled lets auto merge any generated update PullRequests on the dev cluster git repository
 	AutoMerge bool `json:"autoMerge,omitempty"`
+	// ReusePullRequest if enabled lets reuse existing open update PullRequests on the dev cluster git repository
+	ReusePullRequest bool `json:"reusePullRequest,omitempty"`
 }
 
 // RequirementsValues contains the logical installation requirements in the `jx-requirements.yml` file as helm values
