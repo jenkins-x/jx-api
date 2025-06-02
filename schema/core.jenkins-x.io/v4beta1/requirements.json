@@ -146,12 +146,6 @@
         "kanikoSAName": {
           "type": "string"
         },
-        "devEnvApprovers": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        },
         "issueProvider": {
           "$ref": "#/$defs/IssueTracker"
         }

@@ -103,8 +103,6 @@ const (
 	RequirementStorageRepositoryURL = "JX_REQUIREMENT_STORAGE_REPOSITORY_URL"
 	// RequirementGkeProjectNumber is the gke project number
 	RequirementGkeProjectNumber = "JX_REQUIREMENT_GKE_PROJECT_NUMBER"
-	// RequirementDevEnvApprovers contains the optional list of users to populate the dev env's OWNERS with
-	RequirementDevEnvApprovers = "JX_REQUIREMENT_DEV_ENV_APPROVERS"
 )
 
 // ChartRepositoryType is the type of chart repository used for helm
@@ -175,7 +173,7 @@ const (
 	IngressTypeIngress IngressType = "ingress"
 	// IngressTypeIstio uses istio VirtualService resources to implement ingress instead of the extensions/v1 Ingress resources
 	IngressTypeIstio IngressType = "istio"
-	// IngressTypeHTTPRoute uses the Ingress V2 / HTTPRoute resources - see: https://kubernetes-sigs.github.io/service-apis/http-routing/
+	// IngressTypeHTTPRoute uses the Ingress V2 / HTTPRoute resources - see: https://gateway-api.sigs.k8s.io/guides/http-routing/
 	IngressTypeHTTPRoute IngressType = "httproute"
 )
 
@@ -350,41 +348,8 @@ type ClusterConfig struct {
 	GitServer string `json:"gitServer,omitempty"`
 	// ExternalDNSSAName the service account name for external dns
 	ExternalDNSSAName string `json:"externalDNSSAName,omitempty" envconfig:"JX_REQUIREMENT_EXTERNALDNS_SA_NAME"`
-	// VaultSAName the service account name for vault
-	// KanikoSAName the service account name for kaniko
-	KanikoSAName string `json:"kanikoSAName,omitempty" envconfig:"JX_REQUIREMENT_KANIKO_SA_NAME"`
-	// DevEnvApprovers contains an optional list of approvers to populate the initial OWNERS file in the dev env repo
-	DevEnvApprovers []string `json:"devEnvApprovers,omitempty"`
 	// Issue tracker to use for generating changelog
 	IssueTracker *IssueTracker `json:"issueProvider,omitempty"`
-}
-
-// Deprecated: migrate to top level Requirements object
-type legacyRequirementsConfig struct {
-	RequirementsConfig `json:",inline"`
-
-	Storage LegacyStorageConfig `json:"storage"`
-}
-
-// Deprecated: migrate to top level Requirements object
-type LegacyStorageConfig struct {
-	// Logs for storing build logs
-	Logs LegacyStorageEntryConfig `json:"logs"`
-	// Tests for storing test results, coverage + code quality reports
-	Reports LegacyStorageEntryConfig `json:"reports"`
-	// Repository for storing repository artifacts
-	Repository LegacyStorageEntryConfig `json:"repository"`
-	// Backup for backing up kubernetes resource
-	Backup LegacyStorageEntryConfig `json:"backup"`
-}
-
-// Deprecated: migrate to top level Requirements object
-type LegacyStorageEntryConfig struct {
-	// Enabled if the storage is enabled
-	Enabled bool `json:"enabled"`
-	// URL the cloud storage bucket URL such as 'gs://mybucket' or 's3://foo' or `azblob://thingy'
-	// see https://jenkins-x.io/architecture/storage/
-	URL string `json:"url"`
 }
 
 // VaultConfig contains Vault configuration for Boot
@@ -502,6 +467,8 @@ type AutoUpdateConfig struct {
 	Schedule string `json:"schedule"`
 	// AutoMerge if enabled lets auto merge any generated update PullRequests on the dev cluster git repository
 	AutoMerge bool `json:"autoMerge,omitempty"`
+	// ReusePullRequest if enabled lets reuse existing open update PullRequests on the dev cluster git repository
+	ReusePullRequest bool `json:"reusePullRequest,omitempty"`
 }
 
 // RequirementsValues contains the logical installation requirements in the `jx-requirements.yml` file as helm values
@@ -603,13 +570,6 @@ func LoadRequirementsConfig(dir string, failOnValidationErrors bool) (*Requireme
 	return nil, "", fmt.Errorf("jx-requirements.yml file not found")
 }
 
-func IsNewRequirementsFile(s string) bool {
-	if strings.Contains(s, "apiVersion:") && strings.Contains(s, "kind:") && strings.Contains(s, "spec:") {
-		return true
-	}
-	return false
-}
-
 // LoadRequirementsConfigFile loads a specific project YAML configuration file
 func LoadRequirementsConfigFileNoDefaults(fileName string, failOnValidationErrors bool) (*Requirements, error) {
 
@@ -641,46 +601,21 @@ func loadRequirements(fileName string, failOnValidationErrors bool) (*Requiremen
 		return nil, fmt.Errorf("failed to load file %s due to %s", fileName, err)
 	}
 
-	// //check whether new or old jx requirements
-	if IsNewRequirementsFile(string(data)) {
-		validationErrors, err := util.ValidateYaml(requirements, data)
-		if err != nil {
-			return nil, fmt.Errorf("failed to validate YAML file %s due to %s", fileName, err)
+	validationErrors, err := util.ValidateYaml(requirements, data)
+	if err != nil {
+		return nil, fmt.Errorf("failed to validate YAML file %s due to %s", fileName, err)
+	}
+
+	if len(validationErrors) > 0 {
+		log.Logger().Warnf("validation failures in YAML file %s: %s", fileName, strings.Join(validationErrors, ", "))
+		if failOnValidationErrors {
+			return nil, fmt.Errorf("validation failures in YAML file %s:\n%s", fileName, strings.Join(validationErrors, "\n"))
 		}
+	}
 
-		if len(validationErrors) > 0 {
-			log.Logger().Warnf("validation failures in YAML file %s: %s", fileName, strings.Join(validationErrors, ", "))
-			if failOnValidationErrors {
-				return nil, fmt.Errorf("validation failures in YAML file %s:\n%s", fileName, strings.Join(validationErrors, "\n"))
-			}
-		}
-
-		err = yaml.Unmarshal(data, requirements)
-		if err != nil {
-			return nil, fmt.Errorf("failed to unmarshal YAML file %s due to %s", fileName, err)
-		}
-
-	} else {
-		config := &legacyRequirementsConfig{}
-		validationErrors, err := util.ValidateYaml(config, data)
-		if err != nil {
-			return nil, fmt.Errorf("failed to validate YAML file %s due to %s", fileName, err)
-		}
-
-		if len(validationErrors) > 0 {
-			log.Logger().Warnf("validation failures in YAML file %s: %s", fileName, strings.Join(validationErrors, ", "))
-
-			if failOnValidationErrors {
-				return nil, fmt.Errorf("validation failures in YAML file %s:\n%s", fileName, strings.Join(validationErrors, "\n"))
-			}
-		}
-
-		err = yaml.Unmarshal(data, config)
-		if err != nil {
-			return nil, fmt.Errorf("failed to unmarshal YAML file %s due to %s", fileName, err)
-		}
-
-		requirements.migrateV3(config)
+	err = yaml.Unmarshal(data, requirements)
+	if err != nil {
+		return nil, fmt.Errorf("failed to unmarshal YAML file %s due to %s", fileName, err)
 	}
 
 	return requirements, nil
@@ -771,24 +706,6 @@ func (c *Requirements) MergeSave(src *Requirements, requirementsFileName string)
 		return fmt.Errorf("error saving the merged jx-requirements.yml files to %s: %w", requirementsFileName, err)
 	}
 	return nil
-}
-
-// lets remove this on the next major version update, currently v4
-func (c *Requirements) migrateV3(config *legacyRequirementsConfig) {
-	c.Spec = config.RequirementsConfig
-
-	if config.Storage.Backup.Enabled && config.Storage.Backup.URL != "" {
-		c.Spec.AddOrUpdateStorageURL(backupName, config.Storage.Backup.URL)
-	}
-	if config.Storage.Logs.Enabled && config.Storage.Logs.URL != "" {
-		c.Spec.AddOrUpdateStorageURL(logsName, config.Storage.Logs.URL)
-	}
-	if config.Storage.Reports.Enabled && config.Storage.Reports.URL != "" {
-		c.Spec.AddOrUpdateStorageURL(reportsName, config.Storage.Reports.URL)
-	}
-	if config.Storage.Repository.Enabled && config.Storage.Repository.URL != "" {
-		c.Spec.AddOrUpdateStorageURL(repositoryName, config.Storage.Repository.URL)
-	}
 }
 
 // EnvironmentMap creates a map of maps tree which can be used inside Go templates to access the environment
@@ -969,13 +886,6 @@ func (c *RequirementsConfig) OverrideRequirementsFromEnvironment(gkeProjectNumbe
 			Name: repositoryName,
 			URL:  os.Getenv(RequirementStorageRepositoryURL),
 		})
-	}
-
-	if os.Getenv(RequirementDevEnvApprovers) != "" {
-		rawApprovers := os.Getenv(RequirementDevEnvApprovers)
-		for _, approver := range strings.Split(rawApprovers, ",") {
-			c.Cluster.DevEnvApprovers = append(c.Cluster.DevEnvApprovers, strings.TrimSpace(approver))
-		}
 	}
 
 	// set this if its not currently configured
