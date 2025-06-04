@@ -66,6 +66,17 @@ bool
 <p>AutoMerge if enabled lets auto merge any generated update PullRequests on the dev cluster git repository</p>
 </td>
 </tr>
+<tr>
+<td>
+<code>reusePullRequest</code></br>
+<em>
+bool
+</em>
+</td>
+<td>
+<p>ReusePullRequest if enabled lets reuse existing open update PullRequests on the dev cluster git repository</p>
+</td>
+</tr>
 </tbody>
 </table>
 <h3 id="core.jenkins-x.io/v4beta1.AzureClusterNodesConfig">AzureClusterNodesConfig
@@ -462,29 +473,6 @@ string
 </td>
 <td>
 <p>ExternalDNSSAName the service account name for external dns</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>kanikoSAName</code></br>
-<em>
-string
-</em>
-</td>
-<td>
-<p>VaultSAName the service account name for vault
-KanikoSAName the service account name for kaniko</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>devEnvApprovers</code></br>
-<em>
-[]string
-</em>
-</td>
-<td>
-<p>DevEnvApprovers contains an optional list of approvers to populate the initial OWNERS file in the dev env repo</p>
 </td>
 </tr>
 <tr>
@@ -989,115 +977,6 @@ string
 <td>
 <p>The Jira API token is taken from the environment variable JIRA_API_TOKEN. Can be populated using the jx-boot-job-env-vars secret.
 Not used at the moment</p>
-</td>
-</tr>
-</tbody>
-</table>
-<h3 id="core.jenkins-x.io/v4beta1.LegacyStorageConfig">LegacyStorageConfig
-</h3>
-<p>
-<p>Deprecated: migrate to top level Requirements object</p>
-</p>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<code>logs</code></br>
-<em>
-<a href="#core.jenkins-x.io/v4beta1.LegacyStorageEntryConfig">
-LegacyStorageEntryConfig
-</a>
-</em>
-</td>
-<td>
-<p>Logs for storing build logs</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>reports</code></br>
-<em>
-<a href="#core.jenkins-x.io/v4beta1.LegacyStorageEntryConfig">
-LegacyStorageEntryConfig
-</a>
-</em>
-</td>
-<td>
-<p>Tests for storing test results, coverage + code quality reports</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>repository</code></br>
-<em>
-<a href="#core.jenkins-x.io/v4beta1.LegacyStorageEntryConfig">
-LegacyStorageEntryConfig
-</a>
-</em>
-</td>
-<td>
-<p>Repository for storing repository artifacts</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>backup</code></br>
-<em>
-<a href="#core.jenkins-x.io/v4beta1.LegacyStorageEntryConfig">
-LegacyStorageEntryConfig
-</a>
-</em>
-</td>
-<td>
-<p>Backup for backing up kubernetes resource</p>
-</td>
-</tr>
-</tbody>
-</table>
-<h3 id="core.jenkins-x.io/v4beta1.LegacyStorageEntryConfig">LegacyStorageEntryConfig
-</h3>
-<p>
-(<em>Appears on:</em>
-<a href="#core.jenkins-x.io/v4beta1.LegacyStorageConfig">LegacyStorageConfig</a>)
-</p>
-<p>
-<p>Deprecated: migrate to top level Requirements object</p>
-</p>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<code>enabled</code></br>
-<em>
-bool
-</em>
-</td>
-<td>
-<p>Enabled if the storage is enabled</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>url</code></br>
-<em>
-string
-</em>
-</td>
-<td>
-<p>URL the cloud storage bucket URL such as &lsquo;gs://mybucket&rsquo; or &lsquo;s3://foo&rsquo; or `azblob://thingy&rsquo;
-see <a href="https://jenkins-x.io/architecture/storage/">https://jenkins-x.io/architecture/storage/</a></p>
 </td>
 </tr>
 </tbody>
@@ -2421,5 +2300,5 @@ If not specified the &lsquo;kubernetes&rsquo; is used.</p>
 <hr/>
 <p><em>
 Generated with <code>gen-crd-api-reference-docs</code>
-on git commit <code>c471c8c</code>.
+on git commit <code>aeefa90</code>.
 </em></p>
