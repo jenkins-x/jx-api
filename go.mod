@@ -5,7 +5,7 @@ go 1.26.3
 require (
 	dario.cat/mergo v1.0.2
 	github.com/ghodss/yaml v1.0.0
-	github.com/jenkins-x/jx-logging/v3 v3.1.4
+	github.com/jenkins-x/jx-logging/v3 v3.1.6
 	github.com/mattbaird/jsonpatch v0.0.0-20240118010651-0ba75a80ca38
 	github.com/rawlingsj/jsonschema v0.0.0-20210511142122-a9c2cfdb7dcf // use a fork until nil is accepted as value for object (like creationTimestamp)
 	github.com/stretchr/testify v1.11.1
@@ -41,7 +41,7 @@ require (
 	github.com/go-stack/stack v1.8.1 // indirect
 	github.com/google/gnostic-models v0.7.1 // indirect
 	github.com/google/uuid v1.6.0 // indirect
-	github.com/jenkins-x/logrus-stackdriver-formatter v0.2.8 // indirect
+	github.com/jenkins-x/logrus-stackdriver-formatter v0.2.9 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.22 // indirect

@@ -62,10 +62,10 @@ github.com/google/go-cmp v0.7.0/go.mod h1:pXiqmnSA92OHEEa9HXL2W4E7lf9JzCmGVUdgjX
 github.com/google/gofuzz v1.0.0/go.mod h1:dBl0BpW6vV/+mYPU4Po3pmUjxk6FQPldtuIdl/M65Eg=
 github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=
 github.com/google/uuid v1.6.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
-github.com/jenkins-x/jx-logging/v3 v3.1.4 h1:7MJXmai8ncU2gDhuMrKzTNMp/4vAVDE203bSXFrriYk=
-github.com/jenkins-x/jx-logging/v3 v3.1.4/go.mod h1:6RFiAYloZ9X/L6RRKGrQvqJxzxIbwTrSlwOfNEsPx+Q=
-github.com/jenkins-x/logrus-stackdriver-formatter v0.2.8 h1:71qqOqutjjNFIg3LdQaeoed1/u99ulKUQRzl82j6MTc=
-github.com/jenkins-x/logrus-stackdriver-formatter v0.2.8/go.mod h1:p3MydyTFEaIvhgtuZ/OFGxRpzUT1eTKoaD5CI7E7qOg=
+github.com/jenkins-x/jx-logging/v3 v3.1.6 h1:3X5BJiRe1jF3eN1jtV3356DNbMN5wrwnMfwfS/lIpRo=
+github.com/jenkins-x/jx-logging/v3 v3.1.6/go.mod h1:vAynkJb/eJMLnAOHd2sBOKKeo9mCpNyauOivZxv1xaY=
+github.com/jenkins-x/logrus-stackdriver-formatter v0.2.9 h1:2p+iS+xNLdzIWHtZYi/nh/BH2Z7TbWgUfpHY+KMhcVg=
+github.com/jenkins-x/logrus-stackdriver-formatter v0.2.9/go.mod h1:basV0MHPAnDqTIQ05bmt8GBauDVTuvcGBKv/Dfyuee4=
 github.com/json-iterator/go v1.1.12 h1:PV8peI4a0ysnczrg+LtxykD8LfKY9ML6u2jnxaEnrnM=
 github.com/json-iterator/go v1.1.12/go.mod h1:e30LSqwooZae/UwlEbR2852Gd8hjQvJoHmT4TnhNGBo=
 github.com/kr/pretty v0.3.1 h1:flRD4NNwYAUpkphVc1HcthR4KEIFJ65n8Mw5qdRn3LE=
