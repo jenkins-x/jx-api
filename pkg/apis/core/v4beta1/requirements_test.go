@@ -119,8 +119,7 @@ func Test_OverrideRequirementsFromEnvironment_populate_requirements_from_environ
 			v4beta1.RequirementsConfig{Cluster: v4beta1.ClusterConfig{DestinationConfig: v4beta1.DestinationConfig{Registry: "my-registry"}}}},
 		{v4beta1.RequirementEnvGitOwner, "john-doe",
 			v4beta1.RequirementsConfig{Cluster: v4beta1.ClusterConfig{DestinationConfig: v4beta1.DestinationConfig{EnvironmentGitOwner: "john-doe"}}}},
-		{v4beta1.RequirementKanikoServiceAccountName, "kaniko-sa", v4beta1.RequirementsConfig{Cluster: v4beta1.ClusterConfig{KanikoSAName: "kaniko-sa"}}},
-		{v4beta1.RequirementEnvGitPublic, "true", v4beta1.RequirementsConfig{Cluster: v4beta1.ClusterConfig{EnvironmentGitPublic: true}}},
+{v4beta1.RequirementEnvGitPublic, "true", v4beta1.RequirementsConfig{Cluster: v4beta1.ClusterConfig{EnvironmentGitPublic: true}}},
 		{v4beta1.RequirementEnvGitPublic, "false", v4beta1.RequirementsConfig{Cluster: v4beta1.ClusterConfig{EnvironmentGitPublic: false}}},
 		{v4beta1.RequirementEnvGitPublic, "", v4beta1.RequirementsConfig{Cluster: v4beta1.ClusterConfig{EnvironmentGitPublic: false}}},
 		{v4beta1.RequirementGitPublic, "true", v4beta1.RequirementsConfig{Cluster: v4beta1.ClusterConfig{GitPublic: true}}},
@@ -530,7 +529,7 @@ func Test_LoadRequirementsConfig(t *testing.T) {
 			var expectedRequirementsFile string
 			if testCase.createRequirements {
 				expectedRequirementsFile = filepath.Join(testPath, v4beta1.RequirementsConfigFileName)
-				dummyRequirementsData := []byte("webhook: prow\n")
+				dummyRequirementsData := []byte("apiVersion: core.jenkins-x.io/v4beta1\nkind: Requirements\nspec:\n  webhook: prow\n")
 				err := os.WriteFile(expectedRequirementsFile, dummyRequirementsData, 0600)
 				require.NoError(t, err, "unable to write requirements file %s", expectedRequirementsFile)
 			}
@@ -559,7 +558,7 @@ func TestLoadRequirementsConfig_load_invalid_yaml(t *testing.T) {
 
 	_, _, err = v4beta1.LoadRequirementsConfig(testDir, v4beta1.DefaultFailOnValidationError)
 	requirementsConfigPath := path.Join(absolute, v4beta1.RequirementsConfigFileName)
-	assert.EqualError(t, err, fmt.Sprintf("validation failures in YAML file %s:\nenvironments.0: Additional property foobar is not allowed", requirementsConfigPath))
+	assert.EqualError(t, err, fmt.Sprintf("validation failures in YAML file %s:\nspec.environments.0: Additional property foobar is not allowed", requirementsConfigPath))
 }
 
 func TestBackwardsCompatibleRequirementsFile(t *testing.T) {

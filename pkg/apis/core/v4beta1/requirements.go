@@ -81,9 +81,7 @@ const (
 	RequirementVaultDisableURLDiscovery = "JX_REQUIREMENT_VAULT_DISABLE_URL_DISCOVERY"
 	// RequirementSecretStorageType the secret storage type
 	RequirementSecretStorageType = "JX_REQUIREMENT_SECRET_STORAGE_TYPE"
-	// RequirementKanikoServiceAccountName the service account name for kaniko
-	RequirementKanikoServiceAccountName = "JX_REQUIREMENT_KANIKO_SA_NAME"
-	// RequirementIngressTLSProduction use the lets encrypt production server
+// RequirementIngressTLSProduction use the lets encrypt production server
 	RequirementIngressTLSProduction = "JX_REQUIREMENT_INGRESS_TLS_PRODUCTION"
 	// RequirementChartRepository the helm chart repository for jx
 	RequirementChartRepository = "JX_REQUIREMENT_CHART_REPOSITORY"
